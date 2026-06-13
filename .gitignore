@@ -1,0 +1,10 @@
+# Sibling codebase — its own separate repo, not part of this one
+schedapro/
+
+# Personal media (kept out of version control for privacy)
+*.webp
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
