@@ -10,4 +10,3 @@ grant execute on function companion_private.refresh_checkins() to authenticated;
 create function public.refresh_private_checkins() returns void language sql security invoker set search_path='' as $$ select companion_private.refresh_checkins() $$;
 revoke all on function public.refresh_private_checkins() from public,anon;
 grant execute on function public.refresh_private_checkins() to authenticated;
-

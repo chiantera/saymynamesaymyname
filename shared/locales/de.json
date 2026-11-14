@@ -66,5 +66,6 @@
   "localPreview": "Fiktive Vorschau",
   "cloudMode": "Private Cloud-Synchronisierung · simulierte KI · keine externen Nachrichten",
   "betaPending": "Dein Konto ist noch nicht für diese private Beta zugelassen.",
-  "authError": "Anmeldung fehlgeschlagen. Prüfe die Zugangsdaten deines verifizierten Kontos."
+  "authError": "Anmeldung fehlgeschlagen. Prüfe die Zugangsdaten deines verifizierten Kontos.",
+  "cancelled": "Abgebrochen"
 }

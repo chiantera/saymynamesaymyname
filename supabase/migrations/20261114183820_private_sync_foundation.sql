@@ -103,4 +103,3 @@ grant execute on function public.create_private_checkin(text,text,text),public.d
 create index on public.companion_checkins(owner,created_at desc);
 create index on public.companion_entries(owner,created_at desc);
 create index on public.companion_relationships(owner);
-

@@ -88,7 +88,8 @@ HTTP initial local contracts:
   This is not a multi-user Supabase/OAuth/RLS proof.
 - [x] Test atomic competing decisions, restart persistence, job claim/idempotency,
   lease recovery, skip-without-artifact and snooze/deadline behavior.
-- [ ] Test pause, quiet-hour/DST/timezone handling and the per-user proactive cap.
+- [x] Test local scheduling pause/disable, quiet-hour/DST/local-day caps and fair
+  cadence with no cross-scope burst. Postgres dispatcher parity remains M3 work.
 - [x] Verify catalog key parity, locale fallback and consistent Mandarin/Cantonese labels.
 - [x] Run build plus functional browser smoke at mobile/desktop widths; no console
   errors; verify keyboard controls and switching all seven locales.

@@ -66,5 +66,6 @@
   "localPreview": "Fictional preview",
   "cloudMode": "Private cloud sync · mock AI only · no outbound messages",
   "betaPending": "Your account is not admitted to this private beta yet.",
-  "authError": "Sign-in failed. Check your verified account credentials."
+  "authError": "Sign-in failed. Check your verified account credentials.",
+  "cancelled": "Cancelled"
 }

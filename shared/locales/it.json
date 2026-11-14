@@ -66,5 +66,6 @@
   "localPreview": "Anteprima fittizia",
   "cloudMode": "Sincronizzazione cloud privata · solo AI simulata · nessun invio esterno",
   "betaPending": "Il tuo account non è ancora ammesso alla beta privata.",
-  "authError": "Accesso non riuscito. Verifica le credenziali del tuo account verificato."
+  "authError": "Accesso non riuscito. Verifica le credenziali del tuo account verificato.",
+  "cancelled": "Annullato"
 }

@@ -66,5 +66,6 @@
   "localPreview": "虛構預覽",
   "cloudMode": "私人雲端同步 · 只用模擬 AI · 唔會向外傳訊息",
   "betaPending": "你嘅帳戶暫時未獲准參加私人測試。",
-  "authError": "登入失敗，請檢查已驗證帳戶嘅登入資料。"
+  "authError": "登入失敗，請檢查已驗證帳戶嘅登入資料。",
+  "cancelled": "已取消"
 }

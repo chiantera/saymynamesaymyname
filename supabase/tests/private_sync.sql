@@ -26,5 +26,15 @@ do $$ begin
  if exists(select 1 from public.companion_checkins) then raise exception 'Cross-user checkin leak';end if;
  if (select count(*) from public.companion_profiles)<>1 then raise exception 'Cross-user profile leak';end if;
 end $$;
+select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000003',true);
+do $$ begin
+ if public.has_beta_access() then raise exception 'Admission bypass'; end if;
+ if exists(select 1 from public.companion_profiles) then raise exception 'Unadmitted read'; end if;
+ begin
+  perform public.create_private_checkin('en','unauthorized','draft');
+  raise exception 'Unadmitted write';
+ exception when raise_exception then
+  if sqlerrm<>'beta_access_required' then raise; end if;
+ end;
+end $$;
 rollback;
-

@@ -5,7 +5,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (58 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (69 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -17,7 +17,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Validation
 
 - `npm run check`: seven-catalog parity/encoding checks, 2 frontend domain tests,
-  22 backend tests, TypeScript and Vite production build.
+  24 backend tests, TypeScript and Vite production build.
 - `npm run test:browser`: isolated temporary demo database and dedicated ports;
   edit/save, skip, reload persistence, all locales, relationship creation, snooze,
   390px mobile layout, themes and keyboard focus. Zero uncaught page errors.
@@ -82,3 +82,18 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   https://saymynamesaymyname.vercel.app; existing account deployment protection retained.
   First deployment READY. Verify a subsequent Git push triggers deployment before
   claiming automatic deployment works.
+
+## Latest verified deployment / remaining activation work
+
+- Git-triggered deployment of commit 1469c99 succeeded automatically; GitHub CI also
+  succeeded. Production alias returns 200 and a fresh remote browser exercised
+  fictional compose/save and the cloud sign-in form without submitting credentials.
+- Scheduling additionally prevents cross-scope notification bursts and cancels/revokes
+  scheduled jobs/snoozed prompts on pause/disable; 24 backend tests pass locally.
+- Beta-access table intentionally has RLS with no read policy and no client grants;
+  the security advisor reports this as INFO, not an exposed-table permission.
+- Email signup/recovery callbacks and Google credentials require Auth dashboard setup;
+  no management credential is available through the local Supabase CLI. No keys were
+  requested or copied from another project. Real account sign-in is not E2E-certified.
+- No real beta account was created by this agent. Operator admission must follow a
+  verified sign-up; the deployed prototype explicitly explains these current limits.

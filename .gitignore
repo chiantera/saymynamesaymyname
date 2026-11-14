@@ -25,3 +25,6 @@ frontend/android/
 .vercel/
 playwright-report/
 test-results/
+
+# Supabase CLI generated cache
+supabase/.temp/

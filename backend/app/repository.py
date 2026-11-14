@@ -115,14 +115,24 @@ class Repository:
                 raise DomainError('not_found',404)
             db.execute('INSERT INTO schedules(owner,scope,enabled,cadence) VALUES (?,?,?,?) ON CONFLICT(owner,scope) DO UPDATE SET enabled=excluded.enabled,cadence=excluded.cadence',(owner,scope,int(enabled),cadence))
             db.execute('INSERT INTO schedule_settings VALUES (?,?,?,?,?,?) ON CONFLICT(owner) DO UPDATE SET paused=excluded.paused,paused_until=excluded.paused_until,quiet_start=excluded.quiet_start,quiet_end=excluded.quiet_end,cap=excluded.cap',(owner,int(paused),paused_until,quiet_start,quiet_end,cap))
+            if paused or not enabled or (paused_until and datetime.fromisoformat(paused_until)>utcnow()):
+                if paused or paused_until:
+                    db.execute("UPDATE jobs SET status='cancelled',lease=NULL WHERE owner=? AND scheduled=1 AND status IN ('queued','processing')",(owner,))
+                else:
+                    db.execute("UPDATE jobs SET status='cancelled',lease=NULL WHERE owner=? AND coalesce(relationship_id,'')=? AND scheduled=1 AND status IN ('queued','processing')",(owner,scope))
+                db.execute("UPDATE checkins SET status='cancelled',version=version+1,deadline=NULL,snoozed_until=NULL WHERE owner=? AND status IN ('pending','deferred') AND job_id IN (SELECT id FROM jobs WHERE scheduled=1 AND owner=? AND (? OR coalesce(relationship_id,'')=?))",(owner,owner,int(paused or bool(paused_until)),scope))
 
-    def _eligible(self, db, owner, now):
+    def _eligible(self, db, owner, now, *, new_nudge=False):
         profile=db.execute('SELECT timezone FROM profiles WHERE owner=?',(owner,)).fetchone()
         settings=db.execute('SELECT * FROM schedule_settings WHERE owner=?',(owner,)).fetchone()
         if not profile or not settings or settings['paused']:
             return False
         if settings['paused_until'] and settings['paused_until'] > stamp(now):
             return False
+        if new_nudge:
+            latest=db.execute('SELECT max(presented_at) FROM nudge_receipts WHERE owner=?',(owner,)).fetchone()[0]
+            gap=db.execute('SELECT min(cadence) FROM schedules WHERE owner=? AND enabled=1',(owner,)).fetchone()[0] or 6
+            if latest and now-datetime.fromisoformat(latest)<timedelta(hours=gap): return False
         local=now.astimezone(ZoneInfo(profile['timezone']))
         clock=local.strftime('%H:%M'); start=settings['quiet_start']; end=settings['quiet_end']
         if start != end and ((start < end and start <= clock < end) or (start > end and (clock >= start or clock < end))):
@@ -139,7 +149,7 @@ class Repository:
             seen=set()
             for scope in scopes:
                 owner=scope['owner']
-                if owner in seen or not self._eligible(db,owner,now): continue
+                if owner in seen or not self._eligible(db,owner,now,new_nudge=True): continue
                 if scope['last_at'] and now-datetime.fromisoformat(scope['last_at']) < timedelta(hours=scope['cadence']): continue
                 if db.execute("SELECT 1 FROM jobs WHERE owner=? AND status IN ('queued','processing')",(owner,)).fetchone(): continue
                 if db.execute("SELECT 1 FROM checkins WHERE owner=? AND status IN ('pending','deferred')",(owner,)).fetchone(): continue
@@ -182,7 +192,7 @@ class Repository:
                              (job["id"], job["lease"], stamp(now))).fetchone()
             if not row:
                 return False
-            if row['scheduled'] and not self._eligible(db,row['owner'],now):
+            if row['scheduled'] and (not self._eligible(db,row['owner'],now,new_nudge=True) or not db.execute('SELECT 1 FROM schedules WHERE owner=? AND scope=? AND enabled=1',(row['owner'],row['relationship_id'] or '')).fetchone()):
                 db.execute("UPDATE jobs SET status='cancelled', lease=NULL WHERE id=?",(row['id'],))
                 return False
             db.execute("INSERT OR IGNORE INTO checkins VALUES (?,?,?,?,?,'pending',0,?,?,?,?,NULL)",

@@ -66,5 +66,6 @@
   "localPreview": "虚构预览",
   "cloudMode": "私人云同步 · 仅模拟 AI · 不发送外部消息",
   "betaPending": "你的账户尚未获准参加私人测试。",
-  "authError": "登录失败。请检查已验证账户的凭据。"
+  "authError": "登录失败。请检查已验证账户的凭据。",
+  "cancelled": "已取消"
 }

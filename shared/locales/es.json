@@ -66,5 +66,6 @@
   "localPreview": "Vista ficticia",
   "cloudMode": "Sincronización privada · IA simulada · sin mensajes externos",
   "betaPending": "Tu cuenta aún no está admitida en esta beta privada.",
-  "authError": "No se pudo acceder. Comprueba las credenciales de tu cuenta verificada."
+  "authError": "No se pudo acceder. Comprueba las credenciales de tu cuenta verificada.",
+  "cancelled": "Cancelado"
 }

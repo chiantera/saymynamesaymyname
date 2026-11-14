@@ -64,3 +64,25 @@ def test_timed_pause_and_fair_scopes(repo):
     assert repo.dispatch_due(later+timedelta(hours=6))==1
     assert work_once(repo,later+timedelta(hours=6))
     assert repo.snapshot('a')['checkins'][0]['relationship_id'] != first
+
+def test_no_cross_scope_burst_and_disable_revokes_claim(repo):
+    now=at('2026-11-14T08:00:00+00:00')
+    scope=repo.add_relationship('a','second')['id']
+    repo.configure_schedule('a');repo.configure_schedule('a',scope=scope)
+    repo.dispatch_due(now);work_once(repo,now);clear(repo,now)
+    assert repo.dispatch_due(now+timedelta(minutes=1))==0
+    later=now+timedelta(hours=6)
+    assert repo.dispatch_due(later)==1
+    job=repo.claim(later)
+    repo.configure_schedule('a',scope=job['relationship_id'] or '',enabled=False)
+    assert not repo.finish(job,'prompt','draft',later)
+
+def test_pause_cancels_snoozed_scheduled_prompt(repo):
+    now=at('2026-11-14T08:00:00+00:00')
+    repo.configure_schedule('a');repo.dispatch_due(now);work_once(repo,now)
+    item=repo.snapshot('a')['checkins'][0]
+    repo.decide('a',item['id'],'snooze',0,now=now)
+    repo.configure_schedule('a',paused=True)
+    assert repo.snapshot('a')['checkins'][0]['status']=='cancelled'
+    repo.advance(now+timedelta(hours=2))
+    assert repo.snapshot('a')['checkins'][0]['status']=='cancelled'
