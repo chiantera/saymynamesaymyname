@@ -56,5 +56,15 @@
   "zeroCost": "Keine externen API-Aufrufe",
   "errorMessage": "Aktion fehlgeschlagen. Prüfe lokale API und Worker und versuche es erneut.",
   "errorConflict": "Dieser Check-in wurde geändert oder ist abgelaufen. Der aktuelle Stand wird angezeigt.",
-  "retry": "Neu verbinden"
+  "retry": "Neu verbinden",
+  "cloudAccount": "Cloud-Konto",
+  "cloudSetup": "Verifizierte Beta-Konten können sich anmelden. Registrierung, Wiederherstellung und Google sind noch nicht aktiviert.",
+  "email": "E-Mail",
+  "password": "Passwort",
+  "signIn": "Anmelden",
+  "signOut": "Abmelden",
+  "localPreview": "Fiktive Vorschau",
+  "cloudMode": "Private Cloud-Synchronisierung · simulierte KI · keine externen Nachrichten",
+  "betaPending": "Dein Konto ist noch nicht für diese private Beta zugelassen.",
+  "authError": "Anmeldung fehlgeschlagen. Prüfe die Zugangsdaten deines verifizierten Kontos."
 }

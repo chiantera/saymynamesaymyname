@@ -62,3 +62,23 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - Dedicated Supabase created: chxlkmmkoadgcaomkznd, Frankfurt, healthy.
 - Vercel project creation blocked by team grant (403); authorization recovery link
   issued. No remote deployment or Git auto-deploy has been confirmed yet.
+
+## Cloud/auth milestone
+
+- Supabase project chxlkmmkoadgcaomkznd (Frankfurt) now has versioned private profile,
+  relationship-label, check-in and entry tables, RLS, beta admission and guarded atomic
+  check-in RPCs. No anonymous table access; no service key in the frontend.
+- Live transactional SQL test passed: owner-only reads, approved reflection, duplicate
+  rejection and cross-user denial; all synthetic auth users/data rolled back.
+- Client has Supabase email/password sign-in, server-side beta-admission check,
+  account-keyed remount on session changes, private record synchronization and sign-out.
+- Hosted unauthenticated preview uses browser-local fictional data, never a shared
+  server SQLite database. Cloud mode uses only publishable configuration and RLS.
+- Registration/recovery redirects, Google OAuth credentials and actual verified tester
+  admission are not configured. Those flows are not represented as working yet.
+- Cloud worker/automatic scheduling is NOT enabled by this private manual-check-in
+  foundation; local scheduling rules still need a Postgres dispatcher/worker port.
+- Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
+  https://saymynamesaymyname.vercel.app; existing account deployment protection retained.
+  First deployment READY. Verify a subsequent Git push triggers deployment before
+  claiming automatic deployment works.

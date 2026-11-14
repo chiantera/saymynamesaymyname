@@ -56,5 +56,15 @@
   "zeroCost": "Nessuna chiamata API esterna",
   "errorMessage": "Azione non completata. Controlla che API e worker locali siano avviati e riprova.",
   "errorConflict": "Questo check-in è cambiato o scaduto. Ora vedi la versione aggiornata.",
-  "retry": "Riconnetti"
+  "retry": "Riconnetti",
+  "cloudAccount": "Account cloud",
+  "cloudSetup": "Gli account beta verificati possono accedere. Registrazione, recupero e Google non sono ancora abilitati.",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Accedi",
+  "signOut": "Esci",
+  "localPreview": "Anteprima fittizia",
+  "cloudMode": "Sincronizzazione cloud privata · solo AI simulata · nessun invio esterno",
+  "betaPending": "Il tuo account non è ancora ammesso alla beta privata.",
+  "authError": "Accesso non riuscito. Verifica le credenziali del tuo account verificato."
 }

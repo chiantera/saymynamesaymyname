@@ -56,5 +56,15 @@
   "zeroCost": "冇呼叫外部 API",
   "errorMessage": "未能完成操作。請檢查本機 API 同工作程序，再試一次。",
   "errorConflict": "問候已更改或者到期，依家顯示最新版本。",
-  "retry": "重新連接"
+  "retry": "重新連接",
+  "cloudAccount": "雲端帳戶",
+  "cloudSetup": "已驗證嘅測試帳戶可以登入。註冊、復原同 Google 登入暫時未開放。",
+  "email": "電郵",
+  "password": "密碼",
+  "signIn": "登入",
+  "signOut": "登出",
+  "localPreview": "虛構預覽",
+  "cloudMode": "私人雲端同步 · 只用模擬 AI · 唔會向外傳訊息",
+  "betaPending": "你嘅帳戶暫時未獲准參加私人測試。",
+  "authError": "登入失敗，請檢查已驗證帳戶嘅登入資料。"
 }

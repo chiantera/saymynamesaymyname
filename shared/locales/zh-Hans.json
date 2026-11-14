@@ -56,5 +56,15 @@
   "zeroCost": "未调用外部 API",
   "errorMessage": "无法完成操作。请检查本地 API 和工作进程后重试。",
   "errorConflict": "问候已更改或过期，现已显示最新版本。",
-  "retry": "重新连接"
+  "retry": "重新连接",
+  "cloudAccount": "云端账户",
+  "cloudSetup": "已验证的测试账户可登录。注册、恢复和 Google 登录尚未启用。",
+  "email": "电子邮箱",
+  "password": "密码",
+  "signIn": "登录",
+  "signOut": "退出登录",
+  "localPreview": "虚构预览",
+  "cloudMode": "私人云同步 · 仅模拟 AI · 不发送外部消息",
+  "betaPending": "你的账户尚未获准参加私人测试。",
+  "authError": "登录失败。请检查已验证账户的凭据。"
 }

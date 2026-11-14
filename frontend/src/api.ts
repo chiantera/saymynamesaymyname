@@ -1,3 +1,4 @@
+import {cloudRequest,isCloudActive} from './cloud';
 import { browserPreview } from './browser-preview';
 import type { Locale } from './domain';
 
@@ -11,6 +12,7 @@ export class ApiError extends Error {
   constructor(public status: number) { super('Local API request failed'); }
 }
 async function request<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
+  if (isCloudActive()) return cloudRequest(path,method,body) as Promise<T>;
   if (import.meta.env.VITE_BROWSER_PREVIEW === '1') return browserPreview(path,method,body) as Promise<T>;
   const response = await fetch(`/api${path}`, {
     method, headers: { Authorization: `Bearer ${token}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },

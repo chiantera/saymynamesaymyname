@@ -1,3 +1,4 @@
+import {isCloudActive} from './cloud';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api, ApiError, type Entry, type Preferences, type Relationship, type Snapshot } from './api';
@@ -90,11 +91,11 @@ export default function App() {
       <p className="nav-note">{t('contextOff')}</p>
     </nav>
     <main id="main" tabIndex={-1}>
-      <aside className="demo-notice"><strong>{t('demoBadge')}</strong><p>{t('demoNotice')}</p><small>{t('translationNotice')}</small></aside>
+      <aside className="demo-notice"><strong>{t(isCloudActive()?'cloudAccount':'demoBadge')}</strong><p>{t(isCloudActive()?'cloudMode':'demoNotice')}</p><small>{t('translationNotice')}</small></aside>
       {error && <div className="error" role="alert"><p>{t(error)}</p><button onClick={() => void connect()} disabled={busy}>{t('retry')}</button></div>}
       {tab === 'home' && <>
         <section className="hero"><span className="eyebrow">{t('today')}</span><h1>{t('welcome')}</h1><p>{t('lead')}</p><div className="generate-controls">
-          <label><span className="sr-only">{t('relationships')}</span><select value={scope} onChange={e => setScope(e.target.value)}><option value="">{t('solo')}</option>{relationships.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}</select></label>
+          <label><span className="sr-only">{t('relationships')}</span><select disabled={isCloudActive()} value={scope} onChange={e => setScope(e.target.value)}><option value="">{t('solo')}</option>{relationships.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}</select></label>
           <button className="primary" disabled={!prefs || busy || !canGenerate(snapshot.checkins.map(c => c.status), snapshot.jobs.map(j => j.status))} onClick={() => void perform(() => api.generate(scope || null))}>{t('generate')} <span aria-hidden="true">↗</span></button>
         </div></section>
         <div className="content-grid"><section className="card inbox"><div className="section-heading"><h2>{t('checkinTitle')}</h2><span className="pill">{t('privateLabel')}</span></div>

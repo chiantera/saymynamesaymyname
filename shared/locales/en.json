@@ -56,5 +56,15 @@
   "zeroCost": "No external API calls",
   "errorMessage": "Couldn’t complete that action. Check that the local API and worker are running, then try again.",
   "errorConflict": "This check-in changed or expired. The latest version is now shown.",
-  "retry": "Reconnect"
+  "retry": "Reconnect",
+  "cloudAccount": "Cloud account",
+  "cloudSetup": "Verified beta accounts can sign in. New registration, recovery and Google setup are not enabled yet.",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "localPreview": "Fictional preview",
+  "cloudMode": "Private cloud sync · mock AI only · no outbound messages",
+  "betaPending": "Your account is not admitted to this private beta yet.",
+  "authError": "Sign-in failed. Check your verified account credentials."
 }

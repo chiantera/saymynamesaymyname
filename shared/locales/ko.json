@@ -56,5 +56,15 @@
   "zeroCost": "외부 API 호출 없음",
   "errorMessage": "작업을 완료하지 못했어요. 로컬 API와 작업 프로세스를 확인하고 다시 시도하세요.",
   "errorConflict": "체크인이 변경되었거나 만료됐어요. 최신 상태를 표시합니다.",
-  "retry": "다시 연결"
+  "retry": "다시 연결",
+  "cloudAccount": "클라우드 계정",
+  "cloudSetup": "인증된 베타 계정만 로그인할 수 있습니다. 가입, 복구, Google 설정은 아직 준비 중입니다.",
+  "email": "이메일",
+  "password": "비밀번호",
+  "signIn": "로그인",
+  "signOut": "로그아웃",
+  "localPreview": "가상 미리보기",
+  "cloudMode": "비공개 클라우드 동기화 · 모의 AI · 외부 메시지 없음",
+  "betaPending": "아직 비공개 베타에 승인되지 않은 계정입니다.",
+  "authError": "로그인하지 못했습니다. 인증된 계정 정보를 확인하세요."
 }

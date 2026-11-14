@@ -2,7 +2,9 @@
 
 > A personal growth & relationship companion — built around a timely, AI-drafted check-in loop.
 > **Status: implementation started.** A runnable local fictional-data check-in demo
-> is available. Supabase auth/sync, live AI and Android push are not connected yet.
+> is available locally and on [Vercel](https://saymynamesaymyname.vercel.app).
+> Supabase private-sync foundation and sign-in client are connected; account setup,
+> live processors, cloud scheduling and Android push remain incomplete.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
 
