@@ -1,3 +1,4 @@
+import { browserPreview } from './browser-preview';
 import type { Locale } from './domain';
 
 export interface Preferences { locale: Locale; timezone: string; cadence_hours: number; quiet_start: string; quiet_end: string; daily_nudge_cap: number }
@@ -10,6 +11,7 @@ export class ApiError extends Error {
   constructor(public status: number) { super('Local API request failed'); }
 }
 async function request<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
+  if (import.meta.env.VITE_BROWSER_PREVIEW === '1') return browserPreview(path,method,body) as Promise<T>;
   const response = await fetch(`/api${path}`, {
     method, headers: { Authorization: `Bearer ${token}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(8000),
