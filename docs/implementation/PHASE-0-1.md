@@ -96,8 +96,12 @@ HTTP initial local contracts:
 
 ### M2 — Supabase/auth foundation
 
-- [ ] Review current Supabase documentation and CLI before schema work; create versioned
+- [x] Review current Supabase documentation and CLI before schema work; create versioned
   migrations locally using its migration tooling. Keep deployment separate.
+- [x] Deploy private profile/relationship-label/check-in/entry tables in the dedicated
+  Frankfurt project with RLS, explicit verified-email beta admission and atomic
+  versioned check-in RPCs. Transactional multi-actor SQL tests pass. This is a private
+  foundation, not the full shared relationship schema or a certified login flow.
 - [ ] Profiles/preferences, relationships/membership/archives, user_blocks, recipient
   grants, versioned invites/approvals and revocation state. RLS/Storage policies on
   exposed data; no authorization from editable user metadata.
@@ -179,7 +183,10 @@ React localization: https://react.i18next.com/latest/using-with-hooks
 
 ## Verified first-slice progress
 
-M0 is complete as a **local fictional-data demo**, not a cloud release. M1 is partially
-complete; pause/quiet-hour/DST/proactive-cap integration remains open alongside M2–M6.
-See CURRENT-TASK.md for commands/results. The local API exposes only a fictional
-bearer session and owner-scoped SQLite test adapter; production mode fails closed.
+M0/M1 are complete as a **local fictional-data demo** with tested scheduling rules.
+The hosted preview uses browser-local fictional data; a dedicated Frankfurt Supabase
+project now holds the private-sync foundation. Git pushes to main deploy to Vercel.
+M2 is partial: real email/Google setup, shared membership and consent remain open.
+The scheduling dispatcher still needs a Postgres/hosted-worker port in M3. See
+CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
+The local FastAPI adapter remains development-only and fails closed in production.

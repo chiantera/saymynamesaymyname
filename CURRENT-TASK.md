@@ -12,7 +12,8 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 - Edit/save a private mock reflection, skip without an artifact, snooze one hour,
   30-minute default expiry, atomic versioned decisions and stale-worker rejection.
 - Optional privately tracked relationship labels; no invitations or sharing yet.
-- No external AI, cloud project, real login, production data or paid calls.
+- External AI, outbound messages and paid provider calls remain disabled. The hosted
+  fictional preview and private Supabase foundation are described below.
 
 ## Validation
 
@@ -46,8 +47,9 @@ Do not enter real sensitive information: this preview is a local test adapter.
   timed pause, quiet hours, DST-safe local-day caps, fair scope selection, presentation
   revalidation and deferred snooze. PATCH /api/schedule configures the local adapter.
   Supabase/hosted worker parity and scheduling UI controls remain integration work.
-- M2 dedicated Supabase project/migrations/RLS, real email/Google auth, membership,
-  unanimous invites, pairwise blocks and sharing/revocation.
+- M2 private Supabase tables/RLS and email sign-in client are implemented; full
+  email/Google auth activation, membership, unanimous invites, pairwise blocks and
+  sharing/revocation remain incomplete.
 - M3 durable Postgres worker/scheduler integration and outward decision/delivery gates.
 - M4 live provider consent/data-term checks, real usage reservations/reconciliation.
 - M5 actual Android project/build/device validation and native push.
@@ -60,8 +62,8 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - Existing GitHub repo: chiantera/saymynamesaymyname (main). Commit/push each tested
   milestone going forward, including documentation changes.
 - Dedicated Supabase created: chxlkmmkoadgcaomkznd, Frankfurt, healthy.
-- Vercel project creation blocked by team grant (403); authorization recovery link
-  issued. No remote deployment or Git auto-deploy has been confirmed yet.
+- Vercel authorization recovered. Project and Git integration are active; tested
+  pushes to main deploy automatically to https://saymynamesaymyname.vercel.app.
 
 ## Cloud/auth milestone
 
@@ -69,7 +71,9 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   relationship-label, check-in and entry tables, RLS, beta admission and guarded atomic
   check-in RPCs. No anonymous table access; no service key in the frontend.
 - Live transactional SQL test passed: owner-only reads, approved reflection, duplicate
-  rejection and cross-user denial; all synthetic auth users/data rolled back.
+  rejection, cross-user denial, and read/write denial for unadmitted or unverified
+  accounts. Admission requires a current, verified Auth email. All synthetic auth
+  users/data rolled back.
 - Client has Supabase email/password sign-in, server-side beta-admission check,
   account-keyed remount on session changes, private record synchronization and sign-out.
 - Hosted unauthenticated preview uses browser-local fictional data, never a shared
@@ -80,12 +84,11 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   foundation; local scheduling rules still need a Postgres dispatcher/worker port.
 - Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
   https://saymynamesaymyname.vercel.app; existing account deployment protection retained.
-  First deployment READY. Verify a subsequent Git push triggers deployment before
-  claiming automatic deployment works.
+  Git-source deployments verified READY, including commit 37d3962; GitHub CI passed.
 
 ## Latest verified deployment / remaining activation work
 
-- Git-triggered deployment of commit 1469c99 succeeded automatically; GitHub CI also
+- Git-triggered deployments of commits 1469c99 and 37d3962 succeeded; GitHub CI also
   succeeded. Production alias returns 200 and a fresh remote browser exercised
   fictional compose/save and the cloud sign-in form without submitting credentials.
 - Scheduling additionally prevents cross-scope notification bursts and cancels/revokes
@@ -93,7 +96,9 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - Beta-access table intentionally has RLS with no read policy and no client grants;
   the security advisor reports this as INFO, not an exposed-table permission.
 - Email signup/recovery callbacks and Google credentials require Auth dashboard setup;
-  no management credential is available through the local Supabase CLI. No keys were
-  requested or copied from another project. Real account sign-in is not E2E-certified.
+  no management credential is available through the local Supabase CLI, and the
+  built-in browser reached the Supabase sign-in page. No keys were requested or copied
+  from another project. Real account sign-in is not E2E-certified.
 - No real beta account was created by this agent. Operator admission must follow a
   verified sign-up; the deployed prototype explicitly explains these current limits.
+- Concrete activation and validation steps: [Cloud auth setup](docs/implementation/CLOUD-AUTH-SETUP.md).

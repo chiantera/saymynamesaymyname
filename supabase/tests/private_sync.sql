@@ -1,8 +1,11 @@
 
 begin;
-insert into auth.users(id,email) values ('10000000-0000-0000-0000-000000000001','actor-a@example.invalid'),('10000000-0000-0000-0000-000000000002','actor-b@example.invalid');
+insert into auth.users(id,email,email_confirmed_at) values ('10000000-0000-0000-0000-000000000001','actor-a@example.invalid',now()),('10000000-0000-0000-0000-000000000002','actor-b@example.invalid',now());
 insert into public.beta_access values('10000000-0000-0000-0000-000000000001'),('10000000-0000-0000-0000-000000000002');
 insert into public.companion_profiles(owner) values('10000000-0000-0000-0000-000000000001'),('10000000-0000-0000-0000-000000000002');
+insert into auth.users(id,email) values('10000000-0000-0000-0000-000000000004','unverified@example.invalid');
+insert into public.beta_access values('10000000-0000-0000-0000-000000000004');
+insert into public.companion_profiles(owner) values('10000000-0000-0000-0000-000000000004');
 set local role authenticated;
 select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000001',true);
 select public.create_private_checkin('en','Fictional prompt','Fictional draft');
@@ -33,6 +36,17 @@ do $$ begin
  begin
   perform public.create_private_checkin('en','unauthorized','draft');
   raise exception 'Unadmitted write';
+ exception when raise_exception then
+  if sqlerrm<>'beta_access_required' then raise; end if;
+ end;
+end $$;
+select set_config('request.jwt.claim.sub','10000000-0000-0000-0000-000000000004',true);
+do $$ begin
+ if public.has_beta_access() then raise exception 'Unverified admission bypass'; end if;
+ if exists(select 1 from public.companion_profiles) then raise exception 'Unverified read'; end if;
+ begin
+  perform public.create_private_checkin('en','unverified','draft');
+  raise exception 'Unverified write';
  exception when raise_exception then
   if sqlerrm<>'beta_access_required' then raise; end if;
  end;
