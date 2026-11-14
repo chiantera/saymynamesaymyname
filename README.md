@@ -1,7 +1,29 @@
 # saymynamesaymyname
 
 > A personal growth & relationship companion — built around a timely, AI-drafted check-in loop.
-> **Status: planning.** Nothing is built yet. This repo currently holds the living plan.
+> **Status: implementation started.** A runnable local fictional-data check-in demo
+> is available. Supabase auth/sync, live AI and Android push are not connected yet.
+> Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
+> Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
+
+---
+
+## Try the local preview
+
+```powershell
+npm --prefix frontend ci
+uv sync --directory backend --locked --python 3.12
+npm run dev
+```
+
+With Node 24 and uv installed, open [the local preview](http://127.0.0.1:5174).
+The command starts React, FastAPI and a separate mock worker. Review/edit/save,
+skip or snooze a private check-in; try all seven languages and optional private
+relationship labels. Local SQLite is a demo adapter, not the production database.
+No provider keys or paid APIs are used. Do not enter real sensitive data.
+
+Validation: `npm run check` and `npm run test:browser`. Browser tests use isolated
+fictional state. Details and limitations are in [CURRENT-TASK.md](CURRENT-TASK.md).
 
 ---
 
@@ -29,12 +51,15 @@ A mobile-first app that helps people **show up** — for the relationships they 
   non-dyadic structures). **No assumptions about gender, orientation, or shape.** LGBTQA+
   and non-traditional relationships are first-class. Copy is neutral and affirming.
 - **You're always in control.** Per check-in: **send / edit / auto / skip**, with
-  per-channel defaults *and* a per-check-in override. Nothing is sent behind your back.
-- **Private by default.** Personal data stays yours; sharing is opt-in; the AI sees only
+  per-channel defaults *and* a per-check-in override. The initial preset is **skip
+  after 30 minutes**; users can change both action and window at either level.
+- **Private by default.** Personal data syncs privately across your devices by default;
+  sharing with relationship members is opt-in and AI-provider access is separate; the AI sees only
   what it needs. Context you upload is treated as **untrusted data, never instructions**.
 - **Safety is the floor, not a feature.** The app will **never** enable monitoring,
-  tracking, pressuring, or controlling another person. A muted / left / blocked / archived
-  member is **unreachable** through the app — enforced in code, not just by the model.
+  tracking, pressuring, or controlling another person. Delivery respects personal
+  mute/leave/archive boundaries and **user-to-user blocks**, enforced in code.
+  If A blocks B, B and C can still communicate, share and make plans together.
   Crisis signals drop the persona and surface region-correct help.
 - **A warm, human voice — the "friendly neighborhood bartender."** Grounded in real
   relationship psychology, but never clinical and **never called therapy**. Honest that
@@ -50,19 +75,22 @@ A six-stage state machine — everything else serves this:
 Schedule → Trigger → Compose → Deliver → Respond → Reflect
 ```
 
-- **Schedule / Trigger** — each member sets their own frequency (≈ every 3–12h); a
-  tick + due-scan with per-user timezones and an autopilot window.
+- **Schedule / Trigger** — start at every 6 waking hours, with editable frequency
+  and local quiet hours of 22:00–08:00. A tick + due-scan respects per-user timezones
+  and the approval window; deferred nudges do not flood the user in the morning.
 - **Compose** — the AI drafts the check-in from privacy-filtered context.
 - **Deliver** — through the member's chosen channel, gated by a **recipient-reachability**
   check (boundaries are honored before anything sends).
-- **Respond / Reflect** — a single fulfilled-state machine with a single-writer guard so
-  the user and autopilot can never double-act on the same check-in.
+- **Respond / Reflect** — one winning decision with separate fulfilled, skipped,
+  cancelled, failed and uncertain outcomes. Internal idempotency prevents double claims;
+  unknown external delivery is reconciled rather than blindly retried.
 
 ---
 
 ## Delivery channels (per-user, configurable, phased)
 
 Push · SMS · Email · WhatsApp · Telegram · Google Calendar · In-app.
+Notification previews are discreet by default; richer details require opt-in.
 
 ---
 
@@ -79,29 +107,42 @@ Push · SMS · Email · WhatsApp · Telegram · Google Calendar · In-app.
 
 - **Provider abstraction:** **DeepSeek primary, Anthropic fallback**, with a cheap/strong
   (Flash/Pro-style) split, normalized tool-use / vision / streaming, and failover.
+- **Provider consent:** separate approval for each processor and capability; automatic
+  fallback uses approved providers only. Voice input has its own speech-to-text
+  adapter, initially evaluating Groq from SchedaPRO.
 - **Centralized system-prompt core** prepended to *every* call — it enforces the inclusive
   invariants (mirror the user's own names, pronouns, and labels; never guess) and the
   safety guardrails.
 - **Context-builder** assembles a privacy-filtered view per call; uploaded docs/images
   (OCR'd) become citable context, tagged as data.
+- **Saved-context controls:** opt in separately to journals, extracted documents and
+  previous chats, with per-item exclusions. Without opt-in, use only the current
+  conversation and explicitly attached material.
+- **Saved memories:** the bartender asks before saving each profile fact. Users can
+  review, edit or delete approved memories in a private list.
 - **Graceful degradation:** if the API is down, the bartender simply says so
   ("the bar's closed…") rather than failing silently.
 
 ---
 
-## Tech (provisional — some decisions still open)
+## Agreed technical direction
 
 | Layer | Direction |
 |---|---|
-| Client | Mobile-first. **Open decision:** Capacitor (max reuse of our sibling codebase) vs. Expo/RN. |
-| Backend / DB | **Supabase** (Postgres, Auth, Storage) — a server DB is required because shared relationships sync across members/devices. |
-| Scheduling | Supabase `pg_cron` + Edge Functions (tick + due-scan). |
+| Client | **React + Vite + TypeScript + Capacitor** (decided): shared web UI; **web + Android first**, iOS later; reuse SchedaPRO. |
+| Backend / DB | **FastAPI** reused from SchedaPRO + a **dedicated Supabase project in Europe** (Postgres, Auth, Storage). Frankfurt selected; Vercel request handlers + Frankfurt processing worker (PLT Render pattern), durable Supabase jobs. |
+| Sign-in | Email/password and Google on web and Android, with email verification and password recovery. |
+| Web hosting | **Vercel**, drawing on PLT's frontend/FastAPI deployment pattern. |
+| Scheduling | Supabase `pg_cron` due-scan + durable Postgres jobs; Frankfurt worker executes leased tasks. |
 | AI | DeepSeek (primary) + Anthropic (fallback); Mistral / Claude vision for OCR. |
-| Localization | Static UI via i18n; dynamic AI content generated per-recipient (no machine translation); RTL-aware; localized crisis resources. |
+| Localization | **Italian, Spanish, Korean, Mandarin, Cantonese, English and German first.** Static UI via i18n; dynamic AI content generated per-recipient (no machine translation); RTL-aware; localized crisis resources. |
 
 This app is the third in a family — **PLT (legal) → SchedaPRO (fitness) → this
 (relationships)** — that recycles infrastructure and swaps the domain. Reuse candidates
-and the domain mapping live in `PLAN.md` §13.
+and the domain mapping live in `PLAN.md` §13. Remaining pre-build decisions and
+first-slice acceptance criteria are in §14. §27 closes routine decision-making and
+lists owner-sensitive choices. The PLT hybrid is decided: Vercel, a Frankfurt
+processing worker, and durable job state in Supabase.
 
 ---
 
@@ -112,6 +153,9 @@ and the domain mapping live in `PLAN.md` §13.
 | `PLAN.md` | The full living plan — idea, check-in loop, data model, roadmap, crons, AI usage, localization, **guardrails (§12)**, and reuse notes. **Start here.** |
 | `SOUL.md` | Why the product exists — mission, thesis, who it's for, what it is *not*, and the smell tests every feature must pass. |
 | `CLAUDE.md` | Working guidance & living source of truth for project context. |
+| `CURRENT-TASK.md` | Verified milestone progress, run/test commands and remaining limitations. |
+| `docs/implementation/PHASE-0-1.md` | Ordered implementation milestones and completion gates. |
+| `frontend/` · `backend/` · `shared/` | Local React client, FastAPI/demo worker and seven prototype catalogs. |
 | `LICENSE` | MIT. |
 
 > Not committed here: the sibling codebase (`schedapro/`, its own repo) and a personal
@@ -119,7 +163,113 @@ and the domain mapping live in `PLAN.md` §13.
 
 ---
 
+## Navigation and localization
+
+The planned navigation is **Home, Relationships, Growth, Bartender and Settings**.
+Relationship context stays separate by default; private multi-relationship advice
+requires explicit selection. Seven launch languages include German. Translation
+catalogs live in Git, with native-speaker review and professional safety-copy review;
+full right-to-left interface locales follow later.
+
+---
+
+## Account security and imports
+
+The first version uses encrypted transport and managed at-rest encryption with
+server-side authorization; it does not claim end-to-end encryption. Approved AI
+processing receives only authorized content. Authenticator-app 2FA is optional for
+users and required for administrative/support accounts. Google Drive imports are
+one-time copies of user-selected files, separately authorized from Google sign-in.
+
+---
+
+## Analytics
+
+Three separate planned areas: **private personal insights**, **content-free product
+analytics**, and **operations/cost monitoring**. Other members cannot view a user's
+private activity dashboard; developer product metrics do not grant access to it.
+Measure helpfulness and notification burden alongside reliability. Product analytics
+is opt-in/off by default and stored separately in European Supabase: events retained
+90 days, non-identifying totals 12 months, with small-cohort suppression. No session
+replay, screen recording or keystroke capture. Personal insights show factual progress
+and self-reported moods; AI interpretation is requested separately. No tracking is
+implemented yet.
+
+---
+
+## Everyday controls
+
+Read cached content and draft notes offline; sharing and sending require connectivity.
+Start with a configurable cap of three proactive nudges per user per day. Optional
+PIN/biometric app lock uses a five-minute idle timeout. Users can pause reminders or
+snooze individual check-ins; snoozing suspends automatic sending. Use one primary
+reminder channel with explicitly enabled fallbacks. Group shares preview their
+recipients; personal streaks stay private and optional. Settings includes account
+deletion with final confirmation and an export option beforehand. Exports are private
+ZIPs with readable text, JSON and accessible retained originals. Conflicting offline
+edits preserve both versions; owners can revoke live sharing access. Automated outward
+sends and sensitive AI actions pass independent server-side gates.
+
+---
+
+## Remaining owner review
+
+The latest ten defaults are approved, including session controls, confirmed timezone
+changes, pending-send cancellation, truthful delivery status, date reminders, app-owned
+Calendar publishing, growth goals, accessibility, themes and quick-exit.
+
+Routine engineering defaults are delegated. The finite review list is **public brand,
+outward AI attribution, translated-message approval, total infrastructure budget,
+future public pricing/AI allowances, and actual processor data terms**. Setup facts
+such as the support address and reviewer assignments still need to be supplied and
+verified. See `PLAN.md` §27; there is no further numbered approval queue.
+
+---
+
+## Planned inputs and testing
+
+Context uploads initially support PDF, DOCX, TXT, JPEG, PNG and WebP, up to 20 MB
+per file and ten per batch. Voice notes are capped at five minutes. Users review
+extracted text before accepting it into saved context. Shared-plan participants
+respond for themselves; declining push permission leaves the in-app inbox available.
+Local/preview testing uses fictional data and mocked providers by default, with
+explicitly enabled live tests and real web/Android validation before beta.
+
+---
+
+## Storage and versions
+
+Private originals live in Supabase Storage; extracted text lives in Postgres in our
+European project and stays until the user deletes it. Bartender chat history also
+syncs privately and stays until user deletion on both free and paid tiers. Free context-original storage
+is **50 MB per user / 30 days**, with oldest originals removed first at capacity and
+extracted text preserved. Users can also extract text and discard an original.
+The initial paid tier provides **5 GB per user for context originals**, retaining them
+until user deletion within the paid allowance, with no automatic 30-day expiry.
+Deliberately saved gallery memories share the tier's byte allowance, but never
+expire or get automatically evicted, including after downgrade; new storage pauses
+when the remaining allowance is insufficient.
+When paid storage fills, existing originals stay accessible and new original storage
+pauses; users can free space or extract text without retaining a new original.
+After paid access expires, a **30-day grace period** preserves originals and export
+access. Then the free storage policy applies; extracted text remains.
+Voice recordings are discarded after successful transcription by default; users may
+keep individual originals under their storage tier. Saved transcripts remain separate.
+Public pricing follows measured beta usage; the invite-only beta has no real billing.
+Selected testers may receive time-limited paid-feature grants. Diagnostic logs contain
+redacted technical metadata for 14 days; users choose what to share with support.
+Support-report content is deleted 30 days after closure, independently of user originals.
+These are planned features, not live services.
+
+---
+
 ## Roadmap (phased)
+
+Initial access will be an **invite-only beta with worldwide intended coverage**;
+admission is separate from relationship invitations. Locale, country-specific help
+and provider availability are handled independently. The AI development budget is
+EUR 20/month, tracked centrally; hosting/storage costs are separate. See `PLAN.md`
+§15–§16 for worldwide rollout and cost accounting.
 
 - **Phase 0** — solo growth + relationships scaffolding (accounts, invite, data model).
 - **Phase 1** — the minimal AI check-in loop end-to-end.

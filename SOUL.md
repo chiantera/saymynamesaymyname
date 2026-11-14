@@ -41,7 +41,8 @@ yours.**
 - **Not a therapist, doctor, or lawyer.** The bartender is warm and grounded, never
   clinical, and always points to real professionals when it's out of its depth.
 - **Not a surveillance tool.** It will never help you monitor, track, pressure, or
-  control another person. People who set a boundary become unreachable through the app.
+  control another person. Boundaries are enforced for the relevant people and
+  relationships: A blocking B never prevents B and C from communicating.
 - **Not a feed or a vanity-metrics machine.** No engagement-bait. Fewer, better nudges.
 - **Not a place that assumes one "right" kind of relationship.**
 

@@ -1,4 +1,4 @@
-# Sibling codebase — its own separate repo, not part of this one
+# Sibling codebase â€” its own separate repo, not part of this one
 schedapro/
 
 # Personal media (kept out of version control for privacy)
@@ -8,3 +8,20 @@ schedapro/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Dependencies, generated output, local-only data and secrets
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+frontend/dist/
+frontend/android/
+.local/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.vercel/
+playwright-report/
+test-results/

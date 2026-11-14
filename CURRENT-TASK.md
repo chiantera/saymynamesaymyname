@@ -1,0 +1,64 @@
+# Current task — Phase 0/1 implementation started
+
+Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
+
+## Implemented and verified
+
+- M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
+- Five-tab responsive UI; seven draft catalogs (58 keys each), language switching,
+  system/light/dark theme, local-only fictional-data banner.
+- FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
+- Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
+- Edit/save a private mock reflection, skip without an artifact, snooze one hour,
+  30-minute default expiry, atomic versioned decisions and stale-worker rejection.
+- Optional privately tracked relationship labels; no invitations or sharing yet.
+- No external AI, cloud project, real login, production data or paid calls.
+
+## Validation
+
+- `npm run check`: seven-catalog parity/encoding checks, 2 frontend domain tests,
+  22 backend tests, TypeScript and Vite production build.
+- `npm run test:browser`: isolated temporary demo database and dedicated ports;
+  edit/save, skip, reload persistence, all locales, relationship creation, snooze,
+  390px mobile layout, themes and keyboard focus. Zero uncaught page errors.
+- npm audit: 0 reported vulnerabilities in installed frontend dependencies.
+- Local screenshots: `.local/screenshots/desktop.png`, `mobile.png` (ignored).
+- Reuse: adapted SchedaPRO Vite proxy/relative build/chunk configuration and its
+  React/Capacitor structure; provider/job interfaces rewritten under our guardrails.
+
+## Run locally
+
+Requires Node 24 and uv (Python 3.12 is managed by uv).
+
+```powershell
+npm --prefix frontend ci
+uv sync --directory backend --locked --python 3.12
+npm run dev
+```
+
+Open http://127.0.0.1:5174. The command runs the API (8002), worker and web client.
+Local demo state is `.local/demo.sqlite`. Browser tests use separate disposable data.
+Do not enter real sensitive information: this preview is a local test adapter.
+
+## Remaining milestones — not represented as done
+
+- Local scheduling implemented: transactional due scan, per-scope cadence, pause/
+  timed pause, quiet hours, DST-safe local-day caps, fair scope selection, presentation
+  revalidation and deferred snooze. PATCH /api/schedule configures the local adapter.
+  Supabase/hosted worker parity and scheduling UI controls remain integration work.
+- M2 dedicated Supabase project/migrations/RLS, real email/Google auth, membership,
+  unanimous invites, pairwise blocks and sharing/revocation.
+- M3 durable Postgres worker/scheduler integration and outward decision/delivery gates.
+- M4 live provider consent/data-term checks, real usage reservations/reconciliation.
+- M5 actual Android project/build/device validation and native push.
+- M6 hosted beta, recovery checks, reviewed language/safety resources and support setup.
+
+The first local milestone is complete; the overall Phase 0/1 plan is not complete.
+
+## Publishing and cloud milestone
+
+- Existing GitHub repo: chiantera/saymynamesaymyname (main). Commit/push each tested
+  milestone going forward, including documentation changes.
+- Dedicated Supabase created: chxlkmmkoadgcaomkznd, Frankfurt, healthy.
+- Vercel project creation blocked by team grant (403); authorization recovery link
+  issued. No remote deployment or Git auto-deploy has been confirmed yet.

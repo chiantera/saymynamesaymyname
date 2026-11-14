@@ -1,0 +1,13 @@
+{
+  "name": "relationship-companion-workspace",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix frontend run build",
+    "test": "node scripts/check-locales.mjs && npm --prefix frontend test",
+    "test:backend": "uv run --directory backend pytest",
+    "check": "npm test && npm run test:backend && npm run build",
+    "test:browser": "uv run --directory backend python scripts/browser_smoke.py"
+  }
+}
