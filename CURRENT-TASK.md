@@ -258,3 +258,9 @@ confirmation cancel button now uses the existing localized cancelAction key.
 Added queue/lease/atomic publication contracts and restricted worker role. Local
 PostgreSQL tests cover cross-owner denial, duplicate requests, competing claims,
 stale leases, cancellation and membership rechecks. Runtime/hosting remain separate.
+
+## Durable cloud execution — milestone 2
+
+Added opt-in schedules, revision-guarded settings, quiet-window/local-day/gap/cap
+checks, fair dispatch and stale-work cancellation. Synthetic DST, competing scans,
+pause-after-claim, privacy and invalid-timezone tests run in disposable Postgres.
