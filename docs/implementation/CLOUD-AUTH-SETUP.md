@@ -25,8 +25,9 @@
 Connected Supabase tools can manage database migrations but do not expose Auth
 configuration here. The local CLI has no management login. The user has now signed
 into the dashboard in the built-in browser. Google configuration and the first
-verified tester admission are complete. Independent-device and email recovery checks
-are separate acceptance steps. No sibling credentials were copied.
+verified tester admission are complete. The user confirmed the reflection in a second
+independent browser/device. Email recovery is the remaining immediate acceptance step.
+No sibling credentials were copied.
 
 ## Dashboard walkthrough and exact values
 
@@ -95,7 +96,9 @@ Live browser acceptance passed for Google consent → PKCE return → admission 
 → authorized admission → private app load → fictional reflection save → full reload.
 A database count independently confirmed one matching owned reflection and fulfilled
 check-in, with no duplicate artifact. No personal journal text was used in this test.
-An independent second browser/device check and real email recovery are still pending.
+The user additionally confirmed that the same reflection appears after Google sign-in
+in a second independent browser/device. The exact hardware/browser was not recorded;
+this does not certify the native Android wrapper. Real email recovery remains pending.
 
 `npm run test:auth` builds the production frontend with a fictional auth host and
 intercepts every auth/data request. It covers signup, PKCE recovery/password update,

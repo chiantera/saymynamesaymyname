@@ -80,7 +80,8 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   server SQLite database. Cloud mode uses only publishable configuration and RLS.
 - Registration/recovery redirects are configured and the web client flows exist.
   Live web Google sign-in, verified beta admission and cloud persistence passed.
-  Real email delivery/recovery and independent-device acceptance remain separate checks.
+  Independent-browser/device sync was confirmed by the user. Real email delivery/
+  recovery remains a separate acceptance check.
 - Cloud worker/automatic scheduling is NOT enabled by this private manual-check-in
   foundation; local scheduling rules still need a Postgres dispatcher/worker port.
 - Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
@@ -138,5 +139,7 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   one matching owned reflection and one fulfilled check-in; no duplicate artifact.
 - Screenshot: `.local/screenshots/live-private-sync.jpg` (ignored; fictional content).
 - Removed obsolete provider-setup wording from all seven sign-in catalogs.
-- Second independent browser/device validation and real email recovery remain pending;
-  Android auth remains M5. Cloud auto-scheduling and live AI are still disabled.
+- User confirmed the same saved reflection in a second independent browser/device.
+  This is live web sync evidence, not an Android wrapper/device certification.
+- Real email recovery is the next acceptance check. Android auth remains M5.
+  Cloud auto-scheduling and live AI are still disabled.
