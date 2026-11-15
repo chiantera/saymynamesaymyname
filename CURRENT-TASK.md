@@ -251,3 +251,10 @@ selection. The full browser test also checks block-driven revocation and C's
 continued access. Local reruns passed: 23 PostgreSQL tests, three-account browser
 flow, 8 frontend tests, 24 backend tests and production TypeScript/build. The
 confirmation cancel button now uses the existing localized cancelAction key.
+
+
+## Durable cloud execution — milestone 1
+
+Added queue/lease/atomic publication contracts and restricted worker role. Local
+PostgreSQL tests cover cross-owner denial, duplicate requests, competing claims,
+stale leases, cancellation and membership rechecks. Runtime/hosting remain separate.

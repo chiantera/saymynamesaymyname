@@ -5,8 +5,8 @@
 > is available locally and on [Vercel](https://saymynamesaymyname.vercel.app).
 > Core web Google/email sign-in, recovery and private reflection sync are verified
 > for the admitted tester. Cloud relationship membership, unanimous invite links and
-> pairwise block controls are implemented and tested. Broader signup, content sharing,
-> live AI, cloud scheduling and native Android remain incomplete.
+> pairwise block controls are implemented and tested. Explicit saved-reflection sharing and revocation are tested. Broader signup,
+> live AI, hosted-worker activation and native Android remain incomplete.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
 
@@ -306,3 +306,28 @@ recipients before sharing, read received copies and revoke access individually.
 Pairwise blocks cancel only that pair’s grants. This does not enable AI use or
 external delivery. See [sharing implementation](docs/implementation/SHARING.md) for
 the access model, tests and limits.
+
+
+## Developer map
+
+| Folder | Purpose |
+|---|---|
+| [frontend](frontend/README.md) | React web client, Capacitor configuration and account-scoped cloud access |
+| [backend](backend/README.md) | Local FastAPI adapter and separate cloud worker runtime |
+| [supabase](supabase/README.md) | Versioned SQL, guarded RPCs and transactional hosted smoke tests |
+| [shared](shared/README.md) | Seven draft locale catalogs, shared by browser and deterministic worker |
+| [scripts](scripts/README.md) | Local process launcher and catalog checks |
+| [docs](docs/README.md) | Implementation evidence, deployment runbooks and remaining activation gates |
+
+## Durable cloud execution
+
+The production database is the queue authority. A user submits a request with an
+idempotency key; the queue exposes only that user's job status. A restricted worker
+claims a 90-second fenced lease. Completion rechecks beta admission and current
+membership, atomically creates one private check-in and completes the job. Lost
+leases may be recovered, with at most three claims; stale workers cannot publish.
+No private journal/context is sent to the deterministic mock composer.
+
+This is separate from the instant private preview path. Adding queue tables does
+not mean that a Render worker is deployed or that real AI calls are enabled.
+See [cloud scheduling runbook](docs/implementation/CLOUD-SCHEDULING.md).
