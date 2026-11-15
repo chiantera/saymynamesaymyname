@@ -1,5 +1,11 @@
 # Current task — Phase 0/1 implementation started
 
+Active slice: relationship membership, unanimous invitations and pairwise blocking.
+Backend migration and isolated PostgreSQL integration tests are implemented; frontend
+integration and application to the hosted project are next. See
+[MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md). The hosted app still uses private
+relationship labels until that integration is deployed.
+
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Implemented and verified
