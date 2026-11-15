@@ -49,6 +49,9 @@ real test-account admission are still in progress. No sibling credentials were c
    `https://www.googleapis.com/auth/userinfo.email` and
    `https://www.googleapis.com/auth/userinfo.profile`. No Drive/Calendar scopes.
 5. Under Clients → Create client, choose **Web application**, name it `Web beta`.
+   Leave **Use this client for an AI-powered agent** unchecked. This client serves
+   human Google sign-in. Future Google MCP/agent actions require a separate client;
+   the app having an AI bartender does not make this identity client an agent client.
    Authorized JavaScript origins:
 
    ```text
@@ -66,7 +69,7 @@ real test-account admission are still in progress. No sibling credentials were c
    project's Supabase Authentication → Sign In / Providers → Google settings. Enable
    the provider and save. The secret belongs only there: never in GitHub, Vercel
    frontend variables, screenshots, app code or chat. Do not skip nonce checks or
-   enable unverified-email sign-in. Keep the Google secret securely; it may only be
+   enable users without an email. Keep the Google secret securely; it may only be
    displayed once. Save before leaving Google's creation dialog.
 7. Web callback code is implemented. Confirm email templates use Supabase's
    `{{ .ConfirmationURL }}` links with the intended redirect, or adapt deliberately
@@ -98,6 +101,8 @@ Sources checked: [Supabase Google setup](https://supabase.com/docs/guides/auth/s
 [password auth](https://supabase.com/docs/guides/auth/passwords),
 [SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and
 [Google consent setup](https://developers.google.com/workspace/guides/configure-oauth-consent).
+Google's [OAuth client guidance](https://support.google.com/cloud/answer/15549257)
+requires separating standard user features from Google agent/MCP workflows.
 
 ## Cloud sync scope
 

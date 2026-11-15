@@ -33,6 +33,7 @@ server = subprocess.Popen([str(node),str(root/'frontend/node_modules/vite/bin/vi
                           cwd=root/'frontend',env=env,stdout=log,stderr=log,creationflags=flags)
 records = {actor_a:[],actor_b:[]}
 checkins = {actor_a:[],actor_b:[]}
+profiles = {}
 requests = []
 admitted = True
 
@@ -77,7 +78,12 @@ def handle(route):
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
     if path=='/rest/v1/rpc/refresh_private_checkins': return reply(None)
     if path=='/rest/v1/companion_profiles':
-        return reply([{'owner':actor,'locale':'en','timezone':'Europe/Berlin'}])
+        if req.method=='POST':
+            assert body['owner']==actor
+            assert 'resolution=ignore-duplicates' in req.headers.get('prefer','')
+            profiles.setdefault(actor,body)
+            return reply(None,201)
+        return reply([profiles[actor]] if actor in profiles else [])
     if path=='/rest/v1/companion_relationships': return reply([])
     if path=='/rest/v1/companion_entries': return reply(records[actor])
     if path=='/rest/v1/companion_checkins': return reply(checkins[actor])

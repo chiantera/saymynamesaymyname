@@ -20,7 +20,7 @@ export async function cloudRequest(path:string,method:string,body:any){
  if(path==='/preferences'){
   if(method==='PATCH')await checked(()=>cloud!.from('companion_profiles').upsert({owner:user.id,locale:body.locale,timezone:body.timezone}));
   let rows=await checked(()=>cloud!.from('companion_profiles').select('*').eq('owner',user.id));
-  if(!rows.length){await checked(()=>cloud!.from('companion_profiles').insert({owner:user.id,locale:i18n.language,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone}));rows=await checked(()=>cloud!.from('companion_profiles').select('*').eq('owner',user.id));}
+  if(!rows.length){await checked(()=>cloud!.from('companion_profiles').upsert({owner:user.id,locale:i18n.language,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone},{onConflict:'owner',ignoreDuplicates:true}));rows=await checked(()=>cloud!.from('companion_profiles').select('*').eq('owner',user.id));}
   return {...rows[0],cadence_hours:6,quiet_start:'22:00',quiet_end:'08:00',daily_nudge_cap:3};
  }
  if(path==='/relationships'){

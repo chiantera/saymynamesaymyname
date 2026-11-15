@@ -119,3 +119,7 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   isolation, Google basic scopes/PKCE and rejected callbacks. This is client evidence;
   real Supabase RLS is covered separately by transactional SQL tests. No real emails sent.
 - CI now runs the isolated auth browser test in addition to check/build.
+- Follow-up auth fixture also exercises first-login profile creation with
+  insert-if-absent semantics. Concurrent setup preserves existing cloud preferences.
+- Google standard sign-in client remains separate from future Google agent/MCP
+  credentials; the setup guide records the AI-agent checkbox choice and its source.
