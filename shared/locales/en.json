@@ -85,5 +85,7 @@
   "authLinkError": "This sign-in link could not be completed. It may have expired or belong to another browser. Start again.",
   "authActionError": "Couldn’t complete that request. Check your details or try again later.",
   "authUnavailable": "Account services are unavailable. Try again shortly.",
-  "betaExplanation": "Verify your email and wait for beta admission. Creating an account does not share your content or admit you automatically."
+  "betaExplanation": "Verify your email and wait for beta admission. Creating an account does not share your content or admit you automatically.",
+  "authLinkExpired": "This sign-in link has expired or was already used. Request a new link and open it immediately in the same browser/profile.",
+  "authLinkBrowser": "Start recovery again in this browser/profile, then open the new email link here."
 }

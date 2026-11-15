@@ -99,6 +99,8 @@ check-in, with no duplicate artifact. No personal journal text was used in this 
 The user additionally confirmed that the same reflection appears after Google sign-in
 in a second independent browser/device. The exact hardware/browser was not recorded;
 this does not certify the native Android wrapper. Real email recovery remains pending.
+The recovery email was received, but the first return produced `flow_state_expired`;
+this is not a successful password-reset acceptance test.
 
 `npm run test:auth` builds the production frontend with a fictional auth host and
 intercepts every auth/data request. It covers signup, PKCE recovery/password update,
@@ -107,6 +109,25 @@ basic scopes and failed callback cleanup. It creates no actual accounts or email
 The live SQL suite separately verifies Supabase ownership/admission rules. Neither
 test replaces real email acceptance or real two-device testing. Google acceptance
 has now also been performed separately as described above.
+
+### Email/password acceptance for a Google-first account
+
+Use the same admitted email, not a new account. In a regular browser/profile where
+the user can also open their email: sign out of the app, choose Forgot password,
+request one recovery email, and open its link in that initiating browser/profile.
+Complete this as one continuous test: do not pause between receipt and opening.
+Supabase authorization codes are single-use and expire after five minutes. If a
+flow expires, start a fresh request rather than revisiting the old callback/link.
+The user enters and confirms a new app-specific password privately (12+ characters),
+then signs in with email/password and checks that the existing reflection remains.
+This changes the app password only; it does not change the Google password.
+Never put a password, recovery link or code in chat, screenshots, logs or source.
+An owner-address email test does not certify delivery to other testers; verify SMTP
+configuration, recipient restrictions and rate limits before broader email signup.
+
+Callbacks preserve `sb_flow_id` before cleaning the address bar and pass it explicitly
+to `exchangeCodeForSession`. This retains the correct SDK verifier slot when multiple
+flows/tabs exist. Never fall back to another flow's verifier or disable PKCE to recover.
 
 For `invalid_client`, verify that Supabase holds the full Client Secret value from
 the same Google client as its Client ID; a Secret ID or masked value is insufficient.
@@ -118,6 +139,7 @@ do not add unimplemented custom-scheme callbacks or claim Android OAuth is compl
 
 Sources checked: [Supabase Google setup](https://supabase.com/docs/guides/auth/social-sign-in/auth-google),
 [password auth](https://supabase.com/docs/guides/auth/passwords),
+[PKCE expiry/browser requirements](https://supabase.com/docs/guides/auth/sessions/pkce-flow),
 [SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and
 [Google consent setup](https://developers.google.com/workspace/guides/configure-oauth-consent).
 Google's [OAuth client guidance](https://support.google.com/cloud/answer/15549257)

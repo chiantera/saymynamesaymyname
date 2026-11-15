@@ -70,8 +70,8 @@ export default function AuthGate({children}: {children: ReactNode}) {
     void initializeAuth().then(async result => {
       if (stopped) return;
       ready = true;
-      if (result === 'error') {
-        setCloudActive(false); setScreen('login'); setMessage('authLinkError');
+      if (result === 'authLinkError' || result === 'authLinkExpired' || result === 'authLinkBrowser') {
+        setCloudActive(false); setScreen('login'); setMessage(result);
       } else {
         recovery.current = result === 'recovery';
         await checkSession();

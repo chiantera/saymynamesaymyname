@@ -85,5 +85,7 @@
   "authLinkError": "Dieser Anmeldelink konnte nicht abgeschlossen werden. Er ist eventuell abgelaufen oder gehört zu einem anderen Browser. Beginne erneut.",
   "authActionError": "Die Anfrage konnte nicht abgeschlossen werden. Prüfe die Angaben oder versuche es später erneut.",
   "authUnavailable": "Die Kontodienste sind nicht verfügbar. Versuche es in Kürze erneut.",
-  "betaExplanation": "Bestätige deine E-Mail-Adresse und warte auf die Beta-Zulassung. Ein Konto teilt keine Inhalte und gewährt nicht automatisch Zugang."
+  "betaExplanation": "Bestätige deine E-Mail-Adresse und warte auf die Beta-Zulassung. Ein Konto teilt keine Inhalte und gewährt nicht automatisch Zugang.",
+  "authLinkExpired": "Dieser Anmeldelink ist abgelaufen oder wurde bereits verwendet. Fordere einen neuen Link an und öffne ihn sofort im selben Browserprofil.",
+  "authLinkBrowser": "Starte die Wiederherstellung in diesem Browserprofil erneut und öffne den neuen E-Mail-Link hier."
 }

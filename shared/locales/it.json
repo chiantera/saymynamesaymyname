@@ -85,5 +85,7 @@
   "authLinkError": "Impossibile completare il link di accesso. Potrebbe essere scaduto o appartenere a un altro browser. Ricomincia.",
   "authActionError": "Impossibile completare la richiesta. Controlla i dati o riprova più tardi.",
   "authUnavailable": "I servizi dell’account non sono disponibili. Riprova tra poco.",
-  "betaExplanation": "Verifica l’email e attendi l’ammissione alla beta. Creare un account non condivide i contenuti e non ti ammette automaticamente."
+  "betaExplanation": "Verifica l’email e attendi l’ammissione alla beta. Creare un account non condivide i contenuti e non ti ammette automaticamente.",
+  "authLinkExpired": "Il link di accesso è scaduto o è già stato usato. Richiedine uno nuovo e aprilo subito nello stesso browser e profilo.",
+  "authLinkBrowser": "Ricomincia il recupero in questo browser e profilo, poi apri qui il nuovo link email."
 }

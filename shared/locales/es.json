@@ -85,5 +85,7 @@
   "authLinkError": "No se pudo completar este enlace. Puede haber caducado o pertenecer a otro navegador. Empieza de nuevo.",
   "authActionError": "No se pudo completar la solicitud. Revisa los datos o inténtalo más tarde.",
   "authUnavailable": "Los servicios de la cuenta no están disponibles. Inténtalo en unos momentos.",
-  "betaExplanation": "Verifica tu correo y espera la admisión a la beta. Crear una cuenta no comparte tu contenido ni te admite automáticamente."
+  "betaExplanation": "Verifica tu correo y espera la admisión a la beta. Crear una cuenta no comparte tu contenido ni te admite automáticamente.",
+  "authLinkExpired": "Este enlace ha caducado o ya se usó. Solicita uno nuevo y ábrelo de inmediato en el mismo navegador y perfil.",
+  "authLinkBrowser": "Inicia de nuevo la recuperación en este navegador y perfil y abre aquí el nuevo enlace del correo."
 }

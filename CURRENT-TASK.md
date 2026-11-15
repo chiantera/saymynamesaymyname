@@ -5,7 +5,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (87 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (89 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -17,7 +17,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Validation
 
-- `npm run check`: seven-catalog parity/encoding checks, 4 frontend domain/link tests,
+- `npm run check`: seven-catalog parity/encoding checks, 6 frontend domain/link tests,
   24 backend tests, TypeScript and Vite production build.
 - `npm run test:browser`: isolated temporary demo database and dedicated ports;
   edit/save, skip, reload persistence, all locales, relationship creation, snooze,
@@ -143,3 +143,17 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   This is live web sync evidence, not an Android wrapper/device certification.
 - Real email recovery is the next acceptance check. Android auth remains M5.
   Cloud auto-scheduling and live AI are still disabled.
+
+## Recovery callback follow-up — 2026-11-15
+
+- User confirmed receipt of the recovery email. The attempted return failed; live
+  auth logs identified `flow_state_expired`. Email/password completion is not yet
+  verified. Request a fresh link only after the callback build is deployed, then
+  open/complete it promptly in the initiating browser/profile.
+- Callback handling now preserves explicit `sb_flow_id` before URL cleanup and
+  passes it to the SDK. An invalid/missing slot cannot borrow another tab's verifier.
+- Static localized guidance distinguishes expired/used links and missing browser
+  verifier from generic errors; no provider details, tokens or recovery links logged.
+- Regression coverage: recovery succeeds from its explicit slot without the legacy
+  verifier; server expiry and an explicit nonexistent slot both deny private UI.
+  No expiry/verification limits were relaxed.

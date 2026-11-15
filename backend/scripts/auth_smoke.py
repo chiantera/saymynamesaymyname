@@ -66,6 +66,8 @@ def handle(route):
                       headers={'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'*'})
     if req.method=='OPTIONS': return reply({})
     if path=='/auth/v1/token':
+        if body.get('auth_code')=='fixture-expired-code':
+            return reply({'error_code':'flow_state_expired','msg':'Expired fixture'},422)
         actor=actor_b if body.get('email','').startswith('b@') else actor_a
         if body.get('password')=='incorrect-password': return reply({'error':'invalid_grant','error_description':'invalid credentials'},400)
         return reply(session(actor))
@@ -139,7 +141,16 @@ try:
         expect(page.get_by_role('status')).to_have_text(en['recoverySent'])
         reset=next(r for r in requests if r[0]=='/auth/v1/recover')
         assert parse_qs(reset[1])['redirect_to']==[origin+'/auth/recovery']
-        page.goto(origin+'/auth/recovery?code=fixture-recovery-code&next=https://evil.invalid')
+        # The SDK's fixed legacy verifier is deliberately removed in this fixture.
+        # A callback must retain sb_flow_id to find its own slot after URL cleanup.
+        recovery_flow=page.evaluate('''() => {
+          const key=Object.keys(localStorage).find(k => /-flow-[a-f0-9]{32}-code-verifier$/.test(k) && localStorage.getItem(k).includes('/recovery'));
+          if (!key) throw new Error('Missing fixture recovery slot');
+          const flow=key.match(/-flow-([a-f0-9]{32})-code-verifier$/)[1];
+          localStorage.removeItem('sb-auth-auth-token-code-verifier');
+          return flow;
+        }''')
+        page.goto(origin+'/auth/recovery?code=fixture-recovery-code&sb_flow_id='+recovery_flow+'&next=https://evil.invalid')
         expect(page.get_by_role('heading',name=en['setPassword'])).to_be_visible()
         assert page.url==origin+'/'
         page.get_by_label(en['newPassword'],exact=True).fill('new-fictional-password')
@@ -184,6 +195,17 @@ try:
         expect(page.get_by_role('status')).to_have_text(en['authLinkError'])
         assert page.url==origin+'/'
         expect(page.get_by_text('private-info')).to_have_count(0)
+        # A server-expired flow needs a fresh link and must never enter private UI.
+        page.evaluate("localStorage.setItem('sb-auth-auth-token-code-verifier',JSON.stringify('fixture-verifier/recovery'))")
+        page.goto(origin+'/auth/recovery?code=fixture-expired-code')
+        expect(page.get_by_role('status')).to_have_text(en['authLinkExpired'])
+        expect(page.locator('.app-shell')).to_have_count(0)
+        assert page.url==origin+'/'
+        # An explicit missing flow cannot fall back to another tab's verifier.
+        page.evaluate("localStorage.setItem('sb-auth-auth-token-code-verifier',JSON.stringify('another-flow-verifier/recovery'))")
+        page.goto(origin+'/auth/recovery?code=fixture-other-flow-code&sb_flow_id='+'0'*32)
+        expect(page.get_by_role('status')).to_have_text(en['authLinkBrowser'])
+        assert not any(body.get('auth_code')=='fixture-other-flow-code' for _,_,body in requests)
         assert not errors, errors
         context.close();other.close();browser.close()
 finally:
@@ -192,4 +214,4 @@ finally:
         else: server.terminate()
     server.wait(timeout=10)
     log.close()
-print('Auth client smoke passed: signup, PKCE recovery, pending admission, two-client sync, account isolation, Google request and rejected callback; all endpoints simulated.')
+print('Auth client smoke passed: signup, flow-bound PKCE recovery, expiry/missing-slot rejection, admission, two-client sync, account isolation and Google request; all endpoints simulated.')
