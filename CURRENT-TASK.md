@@ -301,3 +301,8 @@ Render dashboard quote verified: $7/month for 0.5 CPU / 512 MB. No service
 was created; restricted database-login provisioning and the separate infrastructure
 budget gate still apply. Existing security-advisor leaked-password WARN remains;
 new private tables have deliberate RLS/no-client-policy INFO notices (11 total).
+
+- Final milestone CI run 43703327766 passed; Vercel served af2d99a. Live Settings
+  shows unavailable worker and private/off defaults. Corrected an old local-demo
+  footer shown to cloud accounts; production build passed before the follow-up push.
+  The last three hosted cron runs succeeded; synthetic smoke user count is zero.
