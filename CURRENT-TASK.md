@@ -233,3 +233,21 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection.
 - Shared text is not wired into AI, search, offline cache or exports. Those future
   paths must use source-aware authorization and revocation before enablement.
+
+- Live Vercel UI verification: the existing account retains its original fictional
+  reflection; sharing starts with no selected recipients, empty sent/received
+  lists, and disabled confirmation when no eligible relationship exists. No real
+  grant was created during this check. Multi-account behavior is covered by the
+  isolated real-SQL browser fixture and hosted rolled-back smoke above.
+
+
+### Sharing refresh race fix
+
+CI exposed a late workspace refresh clearing a recipient selected while that
+request was in flight. Refresh now filters selections against current eligibility
+in the selected relationship, preserving valid selections and removing unavailable
+ones. A deterministic browser regression holds the older response until after
+selection. The full browser test also checks block-driven revocation and C's
+continued access. Local reruns passed: 23 PostgreSQL tests, three-account browser
+flow, 8 frontend tests, 24 backend tests and production TypeScript/build. The
+confirmation cancel button now uses the existing localized cancelAction key.

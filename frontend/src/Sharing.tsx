@@ -15,13 +15,18 @@ export default function Sharing({entries}:{entries:Entry[]}){
  const [recipients,setRecipients]=useState<string[]>([]); const [review,setReview]=useState(false);
  const [busy,setBusy]=useState(false); const [error,setError]=useState(false);
  const [opened,setOpened]=useState<{id:string;text:string}|null>(null);
+ const currentSpace=useRef(spaceId);currentSpace.current=spaceId;
  const sequence=useRef(0); const dialog=useRef<HTMLDialogElement>(null);
  const selected=spaces.relationships.find(s=>s.id===spaceId);
  const eligible=selected?.members.filter(m=>m.can_contact&&!m.is_self)??[];
  const refresh=useCallback(async()=>{
   const n=++sequence.current; setOpened(null);setReview(false);dialog.current?.close();
   try{const [w,s]=await Promise.all([membership.workspace(),action('workspace')]);
-   if(n===sequence.current){setSpaces(w);setShares(s);setRecipients([]);setError(false);}
+   if(n===sequence.current){setSpaces(w);setShares(s);
+    // A completed background refresh must not erase a still-valid selection.
+    const available=w.relationships.find(space=>space.id===currentSpace.current)?.members??[];
+    setRecipients(prev=>prev.filter(id=>available.some(m=>m.user_id===id&&m.can_contact&&!m.is_self)));
+    setError(false);}
   }catch{if(n===sequence.current){setSpaces({relationships:[],blocks:[]});setShares({sent:[],received:[]});setRecipients([]);setError(true);}}
  },[]);
  useEffect(()=>{void refresh();const timer=setInterval(()=>void refresh(),15000);
@@ -51,7 +56,7 @@ export default function Sharing({entries}:{entries:Entry[]}){
   <dialog className="confirmation" ref={dialog} aria-label={t('sharingReview')} onCancel={()=>setReview(false)}>
    {review&&<><h3>{t('sharingReview')}</h3><p>{entries.find(e=>e.id===entryId)?.text}</p><p>{t('sharingRecipients')}: {eligible.filter(m=>recipients.includes(m.user_id)).map(m=>m.alias).join(', ')}</p><p>{t('sharingPolicy')}</p>
     <button disabled={busy} onClick={()=>void mutate('share',{entry_id:entryId,relationship_id:spaceId,membership_version:selected?.membership_version,recipients})}>{t('sharingConfirm')}</button>
-    <button onClick={()=>{dialog.current?.close();setReview(false);}}>{t('cancel')}</button></>}
+    <button onClick={()=>{dialog.current?.close();setReview(false);}}>{t('cancelAction')}</button></>}
   </dialog>
   <h3>{t('sharingSent')}</h3>{shares.sent.map(s=><article key={s.id}><small>{t('sharingReflection')}: {entries.find(e=>e.id===s.entry_id)?.text.slice(0,65)}</small>{s.recipients.map(r=><p key={r.user_id}>{r.alias} · {t(r.revoked?'sharingRevoked':'sharingReadOnly')} {!r.revoked&&<button disabled={busy} onClick={()=>void mutate('revoke',{share_id:s.id,recipient:r.user_id})}>{t('sharingRevoke')}</button>}</p>)}</article>)}
   <h3>{t('sharingReceived')}</h3>{shares.received.length===0&&<p>{t('sharingEmpty')}</p>}{shares.received.map(s=><article key={s.id}><p>{s.alias} · {t('sharingReadOnly')}</p><button disabled={busy} onClick={()=>void read(s.id)}>{t('sharingOpen')}</button>{opened?.id===s.id&&<p className="received-text">{opened.text}</p>}</article>)}

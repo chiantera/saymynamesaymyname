@@ -31,6 +31,8 @@ def test_membership_browser(state):
     server=subprocess.Popen([str(node),str(ROOT/'frontend/node_modules/vite/bin/vite.js'),'preview','--host','127.0.0.1','--port','5177','--strictPort'],cwd=ROOT/'frontend',env=env,stdout=log,stderr=log,creationflags=flags)
     tokens={}
     errors=[]
+    delayed_workspace=[]
+    delay_workspace=False
     def user(letter):
         return {'id':state.people[letter],'email':state.emails[letter],'aud':'authenticated','role':'authenticated',
                 'email_confirmed_at':'2026-11-15T00:00:00Z','app_metadata':{},'user_metadata':{},'identities':[],'created_at':'2026-11-15T00:00:00Z'}
@@ -56,7 +58,12 @@ def test_membership_browser(state):
         try:
             with state.client(actor) as conn:
                 if path=='/rest/v1/rpc/has_beta_access':return reply(conn.execute('select public.has_beta_access()').fetchone()[0])
-                if path=='/rest/v1/rpc/relationship_workspace':return reply(conn.execute('select public.relationship_workspace()').fetchone()[0])
+                if path=='/rest/v1/rpc/relationship_workspace':
+                    value=conn.execute('select public.relationship_workspace()').fetchone()[0]
+                    if delay_workspace:
+                        delayed_workspace.append((route,value))
+                        return
+                    return reply(value)
                 if path=='/rest/v1/rpc/reflection_sharing':return reply(conn.execute('select public.reflection_sharing(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/relationship_action':return reply(conn.execute('select public.relationship_action(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/relationship_invite_preview':return reply(conn.execute('select public.relationship_invite_preview(%s)',(body['p_token'],)).fetchone()[0])
@@ -144,10 +151,22 @@ def test_membership_browser(state):
             def sharing(client):return client.get_by_role('region',name=en['sharingTitle'],exact=True)
             def access_refresh(client):sharing(client).get_by_role('button',name=en['sharingRefresh'],exact=True).click()
             def share_to(names):
-                access_refresh(a)
+                nonlocal delay_workspace
+                # Complete an older refresh after selection: this used to clear it.
+                expect(sharing(a).get_by_label(en['relationships'],exact=True).locator('option')).to_have_count(2)
+                delay_workspace=True
+                with a.expect_request(FAKE+'/rest/v1/rpc/relationship_workspace'):
+                    access_refresh(a)
                 sharing(a).get_by_label(en['sharingReflection'],exact=True).select_option(index=1)
                 sharing(a).get_by_label(en['relationships'],exact=True).select_option(index=1)
                 for name in names:sharing(a).get_by_label(name,exact=True).check()
+                assert delayed_workspace,'Expected pending access refresh'
+                delay_workspace=False
+                with a.expect_response(FAKE+'/rest/v1/rpc/relationship_workspace'):
+                    for route,value in delayed_workspace:
+                        route.fulfill(status=200,content_type='application/json',body=json.dumps(value),headers={'Access-Control-Allow-Origin':ORIGIN})
+                    delayed_workspace.clear()
+                for name in names:expect(sharing(a).get_by_label(name,exact=True)).to_be_checked()
                 sharing(a).get_by_role('button',name=en['sharingReview'],exact=True).click()
                 modal=a.get_by_role('dialog',name=en['sharingReview'],exact=True)
                 expect(modal).to_contain_text('Private fictional A history')
@@ -179,6 +198,14 @@ def test_membership_browser(state):
             dialog=a.get_by_role('dialog')
             expect(dialog).to_be_visible();dialog.get_by_role('button',name=en['confirmBlock'],exact=True).click()
             expect(space(a).get_by_role('button',name=en['unblockPerson'].replace('{{name}}','Blair'),exact=True)).to_be_visible()
+            # Blocking cancels only A/B grants. C's selected copy stays readable.
+            for client in (b,c):client.get_by_role('button',name=en['home'],exact=True).click()
+            access_refresh(b)
+            expect(sharing(b).get_by_role('button',name=en['sharingOpen'],exact=True)).to_have_count(0)
+            access_refresh(c)
+            sharing(c).get_by_role('button',name=en['sharingOpen'],exact=True).click()
+            expect(c.locator('.received-text')).to_have_text('Private fictional A history')
+            for client in (b,c):client.get_by_role('button',name=en['relationships'],exact=True).click()
             refresh(b)
             expect(space(b).locator('.member-row').filter(has_text='Casey')).to_contain_text(en['contactAvailable'])
             expect(space(b).locator('.member-row').filter(has_text='Alex')).to_contain_text(en['contactUnavailable'])
