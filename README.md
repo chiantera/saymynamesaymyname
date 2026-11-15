@@ -331,3 +331,36 @@ No private journal/context is sent to the deterministic mock composer.
 This is separate from the instant private preview path. Adding queue tables does
 not mean that a Render worker is deployed or that real AI calls are enabled.
 See [cloud scheduling runbook](docs/implementation/CLOUD-SCHEDULING.md).
+
+
+## Running and operating the cloud worker
+
+The queue, schedule RPCs, heartbeat and one-minute Supabase cron are installed in
+Frankfurt. **The Render worker is not yet provisioned.** Settings accurately shows
+it unavailable and disables queued generation. Schedules are off until explicitly
+enabled by their owner; private instant preview stays available independently.
+
+The validated [Render blueprint](render.yaml) uses Frankfurt, checks-passed deploys
+and a restricted database-login secret. Never put that secret in Vercel frontend
+variables or Git. See the [runbook](docs/implementation/CLOUD-SCHEDULING.md) for role
+provisioning, TLS, heartbeat, cancellation, recovery and activation checks.
+
+| Check | What it proves |
+|---|---|
+| `npm run check` | Catalogs, domain/API tests, TypeScript and production build |
+| `npm run test:database` | 34 real PostgreSQL authorization, concurrency, scheduling and subprocess tests |
+| `npm run test:auth` | Isolated client auth/recovery/account boundaries; Auth endpoints simulated |
+| `npm run test:membership` | Real browser plus SQL for membership, sharing, revocation and schedule persistence |
+| `supabase/tests/cloud_worker.sql` | Hosted synthetic queue workflow with rollback; admin invocation, not a Render process |
+
+Run browser suites sequentially because each builds frontend/dist. SQL tests refuse
+hosted DSNs. Static catalogs have 166 draft keys per locale; native/safety review
+remains open. A green CI run and a ready Vercel alias are verified separately.
+
+## What remains after these four milestones
+
+Live restricted worker login/Render deployment, provider approvals and cost ledger,
+live AI safety evaluation, Android device/auth/push checks, broader session/MFA and
+account operations, reviewed resources/translations, backups and restoration drills.
+Documents/media/voice/Drive, rich goals and external channels remain phased features.
+Branding and pricing are still deferred. No real payments or provider calls are enabled.

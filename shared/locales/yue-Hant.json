@@ -153,5 +153,16 @@
   "sharingReadOnly": "只限閱讀",
   "sharingRevoke": "撤銷存取權",
   "sharingEmpty": "暫時冇同你分享嘅內容。",
-  "sharingOpen": "開啟分享副本"
+  "sharingOpen": "開啟分享副本",
+  "scheduleTitle": "雲端問候時間表",
+  "workerReady": "模擬工作程序可用",
+  "workerUnavailable": "工作程序未能使用，自動問候等候部署。",
+  "scheduleNotice": "預設關閉。只建立私人模擬問候，唔會呼叫 AI 或向其他人發訊息。儲存會取消之前嘅排程工作。",
+  "scheduleEnabled": "啟用呢個時間表",
+  "schedulePaused": "暫停所有時間表",
+  "quietStart": "靜音開始時間",
+  "quietEnd": "靜音結束時間",
+  "cloudJobs": "雲端工作",
+  "queueCheckin": "將私人問候加入佇列",
+  "draftReady": "草稿已準備好審閱"
 }

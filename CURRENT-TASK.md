@@ -1,17 +1,19 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: explicit reflection sharing, read-only recipient permissions and
-revocation. Private originals stay owner-only. Explicit immutable snapshots use
-named grants; pairwise blocks revoke only the affected pair. See
-[SHARING.md](docs/implementation/SHARING.md) and
-[MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md).
+Active slice: four durable-cloud milestones implemented — queue/leases, scheduling
+rules, restricted Frankfurt-worker runtime, and recovery plus cloud controls.
+Four migrations and the one-minute cron are installed in Frankfurt. The hosted
+synthetic SQL smoke passed with rollback; local SQL and worker/browser tests passed.
+Render compute is not provisioned: the restricted login and actual
+hosting budget remain activation gates. Instant private preview remains available.
+See [CLOUD-SCHEDULING](docs/implementation/CLOUD-SCHEDULING.md).
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (155 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (166 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -55,7 +57,7 @@ Do not enter real sensitive information: this preview is a local test adapter.
   Supabase/hosted worker parity and scheduling UI controls remain integration work.
 - M2 private Supabase tables/RLS and core web Google/email auth are verified for the
   admitted tester. Broader signup/delivery, native auth, membership, unanimous invites,
-  pairwise blocks and sharing/revocation remain incomplete.
+  pairwise blocks and reflection sharing/revocation were completed in later milestones below.
 - M3 durable Postgres worker/scheduler integration and outward decision/delivery gates.
 - M4 live provider consent/data-term checks, real usage reservations/reconciliation.
 - M5 actual Android project/build/device validation and native push.
@@ -271,3 +273,31 @@ Added restricted mock worker process, heartbeat, Render Frankfurt blueprint and
 secure deployment runbook. Subprocess/restart and seven-locale tests verify real SQL
 publication. Live Render activation is not claimed without hosting credentials and
 a dedicated restricted database login. No paid compute or external AI was started.
+
+
+## Durable cloud execution — milestone 4
+
+Added Settings controls for opt-in per-scope scheduling, quiet hours, cap/pause,
+worker readiness and queued/cancelled job visibility. Defaults stay off. Cron runs
+once per minute, performs expiry/boundary maintenance and dispatches only with a
+fresh worker heartbeat. Snoozed work cannot revive after pause/archive/leave.
+Manual preview remains separate, with no provider/network AI or external delivery.
+
+34 real PostgreSQL tests passed, including restarted worker processes in seven
+locales. The browser test passed schedule save/reload/pause with real SQL, plus all
+prior membership/sharing/revocation flows. Auth client smoke passed. Hosted synthetic
+smoke passed via admin invocation of narrow worker functions; restricted-role
+execution is local evidence, not a claimed live Render connection. All synthetic
+hosted rows rolled back. The Render YAML passed the current official JSON schema.
+
+Documentation audited: root status/README/PLAN/SOUL/agent guides and auth/membership/
+sharing/scheduling/phase guides; added folder READMEs for client, backend, shared,
+scripts, SQL, tests and CI. Historical milestones retain their original evidence.
+
+- Render dashboard GitHub sign-in succeeded and the app repository is available.
+  Paid worker provisioning and the restricted DB secret remain pending.
+
+Render dashboard quote verified: $7/month for 0.5 CPU / 512 MB. No service
+was created; restricted database-login provisioning and the separate infrastructure
+budget gate still apply. Existing security-advisor leaked-password WARN remains;
+new private tables have deliberate RLS/no-client-policy INFO notices (11 total).

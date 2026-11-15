@@ -151,13 +151,21 @@ Sources checked: [Supabase Google setup](https://supabase.com/docs/guides/auth/s
 Google's [OAuth client guidance](https://support.google.com/cloud/answer/15549257)
 requires separating standard user features from Google agent/MCP workflows.
 
-## Cloud sync scope
+## Current cloud scope and remaining activation
 
-The current cloud client synchronizes private profile preferences, relationship
-labels, manual mock check-ins and approved reflection entries. It does not yet
-provide sharing, relationship membership, full account deletion/export, offline
-conflict resolution, live AI, automatic cloud scheduling or remote notifications.
-Those remain explicit Phase 0/1 milestones; do not use sensitive real content yet.
+Web Google/email sign-in, the admitted tester's recovery and private sync have live
+evidence above. Membership, unanimous invitations, pairwise blocking and explicit
+reflection snapshot sharing/revocation are now implemented and tested separately;
+see MEMBERSHIP.md and SHARING.md. New membership never grants private content.
 
-The local scheduling engine is a tested SQLite adapter. Its worker must be ported
-to leased Supabase jobs and deployed in Frankfurt before claiming hosted scheduling.
+Durable Postgres jobs, schedule settings, leases, one-minute cron and a restricted
+mock worker runtime are implemented. Settings includes off-by-default schedules and
+worker readiness. See CLOUD-SCHEDULING.md for local/hosted evidence and the Render
+activation boundary. The worker is not claimed as running on Render merely because
+its schema and blueprint exist. Instant private mock preview remains usable.
+
+Remaining: broader signup/email delivery, session/MFA/reauthentication, account
+export/deletion and offline conflict resolution; restricted live worker credentials
+and hosting verification; provider consent/data-term/cost controls; native Android
+callbacks/build/device/push; reviewed safety resources and recovery/backup drills.
+The overall Phase 0/1 and beta-readiness checklists remain open.

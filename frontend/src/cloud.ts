@@ -16,6 +16,9 @@ export async function cloudRequest(path:string,method:string,body:any){
  const {data:{user},error}=await cloud.auth.getUser();if(error||!user)throw new Error('Sign in required');
  assertCurrent(); if(user.id!==expectedOwner)throw new Error('Account changed');
  const checked=async (operation:()=>PromiseLike<any>)=>{assertCurrent();const result=await operation();assertCurrent();if(result.error)throw new Error('Cloud request failed');return result.data;};
+ if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:body.action,p_args:body.args??{}}));
+ if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
+ if(path==='/cloud/queue')return checked(()=>cloud!.rpc('cloud_queue',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/sharing')return checked(()=>cloud!.rpc('reflection_sharing',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/relationships/workspace')return checked(()=>cloud!.rpc('relationship_workspace'));
  if(path==='/relationships/action')return checked(()=>cloud!.rpc('relationship_action',{p_action:body.action,p_args:body.args}));
@@ -25,7 +28,8 @@ export async function cloudRequest(path:string,method:string,body:any){
   if(method==='PATCH')await checked(()=>cloud!.from('companion_profiles').upsert({owner:user.id,locale:body.locale,timezone:body.timezone}));
   let rows=await checked(()=>cloud!.from('companion_profiles').select('*').eq('owner',user.id));
   if(!rows.length){await checked(()=>cloud!.from('companion_profiles').upsert({owner:user.id,locale:i18n.language,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone},{onConflict:'owner',ignoreDuplicates:true}));rows=await checked(()=>cloud!.from('companion_profiles').select('*').eq('owner',user.id));}
-  return {...rows[0],cadence_hours:6,quiet_start:'22:00',quiet_end:'08:00',daily_nudge_cap:3};
+  const schedule=await checked(()=>cloud!.rpc('cloud_schedule',{p_action:'get',p_args:{}}));
+  return {...rows[0],cadence_hours:schedule.scopes.find((s:any)=>s.scope==='')?.cadence_hours??6,quiet_start:schedule.quiet_start,quiet_end:schedule.quiet_end,daily_nudge_cap:schedule.daily_cap};
  }
  if(path==='/relationships'){
   if(method==='POST')return checked(()=>cloud!.rpc('relationship_action',{p_action:'create',p_args:{label:body.label,alias:'Member'}}));

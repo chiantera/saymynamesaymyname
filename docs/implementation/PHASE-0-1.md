@@ -121,8 +121,8 @@ HTTP initial local contracts:
 
 ### M3 — production durable check-in loop
 
-- [ ] Supabase jobs/check-ins/entries/decisions with claims, leases and deadline indexes.
-- [ ] Transactional due-scan creates one job per actor/scope/due-slot; worker owns
+- [x] Supabase jobs/check-ins/entries/decisions with claims, leases and deadline indexes.
+- [x] Transactional due-scan creates one current job per actor/scope; worker owns
   execution. No API-process background task is the durable source of truth.
 - [ ] Recheck source consent, item grants, blocks, archive/leave, pause and expiry before
   each attempt. One winning decision; distinct skipped/cancelled/failed/uncertain.
@@ -198,6 +198,10 @@ foundations passed their respective tests. Broader signup/delivery, session/MFA
 management remain open. Explicit reflection snapshots, read-only named grants and
 revocation are implemented; sharing for other content types remains open. Native
 auth remains M5. See SHARING.md.
-The scheduling dispatcher still needs a Postgres/hosted-worker port in M3. See
+The Postgres dispatcher, restricted worker runtime and cloud controls are implemented;
+Render activation and live-worker evidence remain open. See CLOUD-SCHEDULING.md and
 CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
 The local FastAPI adapter remains development-only and fails closed in production.
+
+Four durable-cloud code milestones are recorded in CLOUD-SCHEDULING.md. Installed
+cron/schema and local worker proofs do not close live Render activation or M4–M6.

@@ -153,5 +153,16 @@
   "sharingReadOnly": "Read only",
   "sharingRevoke": "Revoke access",
   "sharingEmpty": "Nothing shared with you.",
-  "sharingOpen": "Open shared copy"
+  "sharingOpen": "Open shared copy",
+  "scheduleTitle": "Cloud check-in schedule",
+  "workerReady": "Mock worker is available",
+  "workerUnavailable": "Worker unavailable — automatic check-ins are waiting for deployment.",
+  "scheduleNotice": "Off by default. Schedules create private mock check-ins only; no AI calls or messages to others. Saving cancels old scheduled work.",
+  "scheduleEnabled": "Enable this schedule",
+  "schedulePaused": "Pause all schedules",
+  "quietStart": "Quiet hours start",
+  "quietEnd": "Quiet hours end",
+  "cloudJobs": "Cloud jobs",
+  "queueCheckin": "Queue a private check-in",
+  "draftReady": "Draft ready for review"
 }

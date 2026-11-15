@@ -78,6 +78,7 @@ def handle(route):
     if path=='/auth/v1/authorize':
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
+    if path=='/rest/v1/rpc/cloud_schedule': return reply({'revision':0,'paused':False,'paused_until':None,'quiet_start':'22:00','quiet_end':'08:00','daily_cap':3,'scopes':[]})
     if path=='/rest/v1/rpc/relationship_workspace': return reply({'relationships':[],'blocks':[]})
     if path=='/rest/v1/rpc/reflection_sharing':
         assert body['p_action']=='workspace','Auth fixture must not perform real sharing'

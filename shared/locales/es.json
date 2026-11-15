@@ -153,5 +153,16 @@
   "sharingReadOnly": "Solo lectura",
   "sharingRevoke": "Revocar acceso",
   "sharingEmpty": "No hay contenido compartido contigo.",
-  "sharingOpen": "Abrir copia compartida"
+  "sharingOpen": "Abrir copia compartida",
+  "scheduleTitle": "Programación de check-ins en la nube",
+  "workerReady": "Worker simulado disponible",
+  "workerUnavailable": "Worker no disponible — los check-ins automáticos esperan el despliegue.",
+  "scheduleNotice": "Desactivado por defecto. Solo check-ins privados simulados, sin llamadas de IA ni mensajes a otras personas. Guardar cancela el trabajo programado anterior.",
+  "scheduleEnabled": "Activar esta programación",
+  "schedulePaused": "Pausar todas las programaciones",
+  "quietStart": "Inicio del horario de silencio",
+  "quietEnd": "Fin del horario de silencio",
+  "cloudJobs": "Tareas en la nube",
+  "queueCheckin": "Encolar un check-in privado",
+  "draftReady": "Borrador listo para revisar"
 }

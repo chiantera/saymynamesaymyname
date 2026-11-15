@@ -45,7 +45,11 @@ def test_membership_browser(state):
         request=route.request
         path=urlparse(request.url).path
         body=json.loads(request.post_data or '{}')
+        conn=None
         def reply(value,status=200):
+            # PostgREST commits before delivering its response. Avoid reentrant UI
+            # requests waiting on this fixture's still-open transaction.
+            if conn is not None and not conn.closed:conn.commit()
             route.fulfill(status=status,content_type='application/json',body=json.dumps(value,default=lambda value:value.isoformat() if isinstance(value,(datetime.datetime,datetime.date)) else str(value)),headers={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Headers':'*','Access-Control-Allow-Methods':'GET,POST,PUT,OPTIONS'})
         if request.method=='OPTIONS': return reply({})
         if path=='/auth/v1/token':
@@ -57,6 +61,9 @@ def test_membership_browser(state):
         if path=='/auth/v1/logout':return reply({})
         try:
             with state.client(actor) as conn:
+                if path=='/rest/v1/rpc/cloud_schedule':return reply(conn.execute('select public.cloud_schedule(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
+                if path=='/rest/v1/rpc/cloud_queue':return reply(conn.execute('select public.cloud_queue(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
+                if path=='/rest/v1/rpc/cloud_worker_status':return reply(conn.execute('select public.cloud_worker_status()').fetchone()[0])
                 if path=='/rest/v1/rpc/has_beta_access':return reply(conn.execute('select public.has_beta_access()').fetchone()[0])
                 if path=='/rest/v1/rpc/relationship_workspace':
                     value=conn.execute('select public.relationship_workspace()').fetchone()[0]
@@ -228,6 +235,22 @@ def test_membership_browser(state):
             expect(a.locator('.entry')).to_contain_text('Private fictional A history')
             refresh(b)
             expect(space(b).locator('.member-row').filter(has_text='Casey')).to_contain_text(en['contactAvailable'])
+            a.get_by_role('button',name=en['settings'],exact=True).click()
+            schedule_panel=a.get_by_role('region',name=en['scheduleTitle'],exact=True)
+            expect(schedule_panel).to_contain_text(en['workerUnavailable'])
+            expect(schedule_panel.get_by_role('button',name=en['queueCheckin'],exact=True)).to_be_disabled()
+            expect(schedule_panel.get_by_label(en['scheduleEnabled'],exact=True)).not_to_be_checked()
+            schedule_panel.get_by_label(en['scheduleEnabled'],exact=True).check()
+            schedule_panel.get_by_label(en['cadence'],exact=True).fill('8')
+            schedule_panel.get_by_role('button',name=en['save'],exact=True).click()
+            expect(schedule_panel.get_by_role('button',name=en['save'],exact=True)).to_be_enabled()
+            a.reload()
+            a.get_by_role('button',name=en['settings'],exact=True).click()
+            expect(schedule_panel.get_by_label(en['scheduleEnabled'],exact=True)).to_be_checked()
+            expect(schedule_panel.get_by_label(en['cadence'],exact=True)).to_have_value('8')
+            schedule_panel.get_by_label(en['schedulePaused'],exact=True).check()
+            schedule_panel.get_by_role('button',name=en['save'],exact=True).click()
+            expect(schedule_panel.get_by_role('button',name=en['save'],exact=True)).to_be_enabled()
             assert not errors,errors
             for context in contexts:context.close()
             browser.close()

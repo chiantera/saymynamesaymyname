@@ -153,5 +153,16 @@
   "sharingReadOnly": "Sola lettura",
   "sharingRevoke": "Revoca accesso",
   "sharingEmpty": "Nessun contenuto condiviso con te.",
-  "sharingOpen": "Apri copia condivisa"
+  "sharingOpen": "Apri copia condivisa",
+  "scheduleTitle": "Programmazione check-in cloud",
+  "workerReady": "Worker simulato disponibile",
+  "workerUnavailable": "Worker non disponibile — i check-in automatici attendono il deployment.",
+  "scheduleNotice": "Disattivato per impostazione predefinita. Solo check-in privati simulati, senza chiamate IA o messaggi ad altri. Il salvataggio annulla il lavoro programmato precedente.",
+  "scheduleEnabled": "Attiva questa programmazione",
+  "schedulePaused": "Sospendi tutte le programmazioni",
+  "quietStart": "Inizio ore di silenzio",
+  "quietEnd": "Fine ore di silenzio",
+  "cloudJobs": "Attività cloud",
+  "queueCheckin": "Accoda un check-in privato",
+  "draftReady": "Bozza pronta da rivedere"
 }

@@ -60,3 +60,9 @@ The fictional local preview does not simulate cloud sharing.
 Remaining work includes shared documents/media, deletion UI, source-aware derived
 artifact cleanup before adding shared search/export/AI, hosted scheduling and native
 Android verification. M2 and Phase 0/1 as a whole remain incomplete.
+
+## Scheduling integration
+
+Private relationship-scoped jobs bind to current membership generations and recheck
+archive/mute/leave before publication. They never create recipient content grants.
+Cloud infrastructure and live Render activation status: [CLOUD-SCHEDULING](CLOUD-SCHEDULING.md).

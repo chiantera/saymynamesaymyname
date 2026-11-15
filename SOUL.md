@@ -84,3 +84,10 @@ Before building a feature, ask:
 
 If 1, 2, 4, 5 aren't a clear "yes" — or 3 is a "yes" we can't fully mitigate — don't
 build it.
+
+## Reliability in practice
+
+A schedule is a promise to respect boundaries, not a reason to send more. Pauses,
+quiet hours and revoked access win over stale work. A prepared draft is never called
+a completed connection. An unavailable worker is stated plainly; missed slots do
+not become a flood when service returns.

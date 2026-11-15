@@ -153,5 +153,16 @@
   "sharingReadOnly": "읽기 전용",
   "sharingRevoke": "접근 취소",
   "sharingEmpty": "공유받은 내용이 없습니다.",
-  "sharingOpen": "공유 사본 열기"
+  "sharingOpen": "공유 사본 열기",
+  "scheduleTitle": "클라우드 체크인 일정",
+  "workerReady": "모의 작업자 사용 가능",
+  "workerUnavailable": "작업자를 사용할 수 없습니다. 자동 체크인은 배포를 기다리고 있습니다.",
+  "scheduleNotice": "기본적으로 꺼져 있습니다. 비공개 모의 체크인만 만들며 AI 호출이나 다른 사람에게 메시지를 보내지 않습니다. 저장하면 이전 예약 작업이 취소됩니다.",
+  "scheduleEnabled": "이 일정 활성화",
+  "schedulePaused": "모든 일정 일시 중지",
+  "quietStart": "방해 금지 시작",
+  "quietEnd": "방해 금지 종료",
+  "cloudJobs": "클라우드 작업",
+  "queueCheckin": "비공개 체크인 대기열에 추가",
+  "draftReady": "검토할 초안 준비됨"
 }

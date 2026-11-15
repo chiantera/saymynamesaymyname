@@ -153,5 +153,16 @@
   "sharingReadOnly": "只读",
   "sharingRevoke": "撤销访问",
   "sharingEmpty": "暂无与你分享的内容。",
-  "sharingOpen": "打开分享副本"
+  "sharingOpen": "打开分享副本",
+  "scheduleTitle": "云端问候计划",
+  "workerReady": "模拟工作进程可用",
+  "workerUnavailable": "工作进程不可用，自动问候正在等待部署。",
+  "scheduleNotice": "默认关闭。仅创建私密的模拟问候，不调用 AI，也不向他人发送消息。保存会取消之前的计划任务。",
+  "scheduleEnabled": "启用此计划",
+  "schedulePaused": "暂停所有计划",
+  "quietStart": "免打扰开始时间",
+  "quietEnd": "免打扰结束时间",
+  "cloudJobs": "云端任务",
+  "queueCheckin": "将私密问候加入队列",
+  "draftReady": "草稿已准备好审核"
 }

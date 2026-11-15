@@ -153,5 +153,16 @@
   "sharingReadOnly": "Nur Leserechte",
   "sharingRevoke": "Zugriff widerrufen",
   "sharingEmpty": "Keine Inhalte mit dir geteilt.",
-  "sharingOpen": "Geteilte Kopie öffnen"
+  "sharingOpen": "Geteilte Kopie öffnen",
+  "scheduleTitle": "Cloud-Check-ins planen",
+  "workerReady": "Simulierter Worker verfügbar",
+  "workerUnavailable": "Worker nicht verfügbar — automatische Check-ins warten auf die Bereitstellung.",
+  "scheduleNotice": "Standardmäßig aus. Nur private simulierte Check-ins, keine KI-Aufrufe oder Nachrichten an andere. Speichern bricht alte geplante Arbeit ab.",
+  "scheduleEnabled": "Diesen Zeitplan aktivieren",
+  "schedulePaused": "Alle Zeitpläne pausieren",
+  "quietStart": "Beginn der Ruhezeit",
+  "quietEnd": "Ende der Ruhezeit",
+  "cloudJobs": "Cloud-Aufträge",
+  "queueCheckin": "Privaten Check-in einreihen",
+  "draftReady": "Entwurf zur Prüfung bereit"
 }

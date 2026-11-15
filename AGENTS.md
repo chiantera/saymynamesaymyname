@@ -291,3 +291,15 @@ fixture and refuse hosted test DSNs. Never turn them toward real beta data.
 User requests committing and pushing every tested change milestone to the existing
 GitHub repo, configuring Vercel Git auto-deployment and continuing Supabase integration.
 No repeat permission prompts for these authorized tasks. Never publish secrets or local data.
+
+
+## Durable cloud implementation status
+
+Cloud queue/leases, schedules, worker heartbeat, one-minute hosted cron and Settings
+controls are implemented. The restricted Python worker reads only a job's ID,
+lease and locale, then fixed mock catalog text. No journal access or live providers.
+See docs/implementation/CLOUD-SCHEDULING.md for deployment/recovery evidence.
+Render activation is pending a restricted database login and actual hosting quote;
+never imply the blueprint is a running worker. Keep schedules off until explicit
+user activation. SQL fixture tests must remain loopback-only and browser builds
+must run sequentially. Root and folder READMEs describe the current boundaries.

@@ -91,3 +91,9 @@ existing private-label flow; shared memberships require a cloud account.
 Actual outward messages, content sharing and queued-send cancellation are not
 implemented by this milestone. Future delivery paths must use the same group,
 generation, archive/mute and pair gates immediately before acting.
+
+## Scheduling integration
+
+Private relationship-scoped jobs bind to current membership generations and recheck
+archive/mute/leave before publication. They never create recipient content grants.
+Cloud infrastructure and live Render activation status: [CLOUD-SCHEDULING](CLOUD-SCHEDULING.md).

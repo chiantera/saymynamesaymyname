@@ -1936,3 +1936,18 @@ Backend denial is immediate. Already rendered text clears on refresh/visibility
 changes and the 15-second polling cycle; external copies cannot be recalled.
 
 Scope/evidence and remaining cross-content work: docs/implementation/SHARING.md.
+
+
+## Durable cloud implementation checkpoint — 2026-11-15
+
+Four code milestones now cover private queue leases/idempotency; opt-in schedule
+settings with quiet hours/DST/local caps/fair due scans; the restricted Frankfurt
+worker runtime; and recovery, one-minute hosted cron, readiness and Settings UI.
+Mock-only composition remains deliberate. All schedules start disabled. Queue
+completion creates a private draft; only explicit user approval creates an entry.
+No provider access, shared recipient grant or outward send is implied.
+
+Hosted migrations/cron and rolled-back synthetic smoke are verified. Actual Render
+compute/credentials and production restricted-login connection remain unverified.
+The instant preview path stays usable during this activation boundary. See
+CURRENT-TASK.md and docs/implementation/CLOUD-SCHEDULING.md for tests and gates.

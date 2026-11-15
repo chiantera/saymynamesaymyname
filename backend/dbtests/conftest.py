@@ -96,4 +96,12 @@ class State:
         return rid
 
 @pytest.fixture
-def state(database_url): return State(database_url)
+def state(database_url):
+    fixture=State(database_url)
+    try:yield fixture
+    finally:
+        with psycopg.connect(database_url) as conn:
+            for table,column in [('invitation_approvals','member_id'),('invitations','proposer'),('memberships','user_id')]:
+                conn.execute(sql.SQL('delete from companion_private.{} where {}=any(%s::uuid[])').format(sql.Identifier(table),sql.Identifier(column)),(list(fixture.people.values()),))
+            conn.execute('delete from auth.users where id=any(%s::uuid[])',(list(fixture.people.values()),))
+            conn.execute('delete from companion_private.worker_health')

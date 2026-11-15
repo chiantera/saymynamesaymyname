@@ -277,3 +277,15 @@ requiring evidence, not unanswered preference questions. Implementation is autho
 - Working directory contains `anto-e-anna.webp` (an image — possibly the couple).
 - Treat this CLAUDE.md as the living source of truth for project context; update it
   as decisions are made, and move items out of "provisional/open" as they're settled.
+
+
+## Durable cloud implementation status
+
+Cloud queue/leases, schedules, worker heartbeat, one-minute hosted cron and Settings
+controls are implemented. The restricted Python worker reads only a job's ID,
+lease and locale, then fixed mock catalog text. No journal access or live providers.
+See docs/implementation/CLOUD-SCHEDULING.md for deployment/recovery evidence.
+Render activation is pending a restricted database login and actual hosting quote;
+never imply the blueprint is a running worker. Keep schedules off until explicit
+user activation. SQL fixture tests must remain loopback-only and browser builds
+must run sequentially. Root and folder READMEs describe the current boundaries.

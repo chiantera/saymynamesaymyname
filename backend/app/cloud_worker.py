@@ -22,6 +22,8 @@ def connection_options(env):
     hosts={'db.chxlkmmkoadgcaomkznd.supabase.co','aws-0-eu-central-1.pooler.supabase.com','aws-1-eu-central-1.pooler.supabase.com'}
     if host not in hosts or env.get('WORKER_REGION')!='frankfurt' or not info.get('password') or not info.get('user'):
         raise ValueError('worker_configuration_required')
+    if host.endswith('.pooler.supabase.com') and not info['user'].endswith('.chxlkmmkoadgcaomkznd'):
+        raise ValueError('worker_project_mismatch')
     if info['user'].split('.')[0] in ('postgres','service_role','supabase_admin'):
         raise ValueError('restricted_worker_login_required')
     return dsn,{'sslmode':'verify-full'}
@@ -39,7 +41,7 @@ def run_once(conn):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--once',action='store_true');args=parser.parse_args()
     try:dsn,options=connection_options(os.environ)
-    except (ValueError,TypeError):print('worker_configuration_required',flush=True);return 2
+    except (ValueError,TypeError,psycopg.Error):print('worker_configuration_required',flush=True);return 2
     for sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,lambda *_:STOP.set())
     delay=1
     while not STOP.is_set():
