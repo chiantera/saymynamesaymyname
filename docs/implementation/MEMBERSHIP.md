@@ -76,7 +76,12 @@ fresh-generation rejoin, direct-write/helper bypass denial, and private history 
 ## Current implementation boundary
 
 The migration is applied to the dedicated Frankfurt project; the cloud UI is wired
-to its RPCs. Links use `/join#invite=...`; their fragments are removed from history
+to its RPCs and deployed. A live authenticated smoke test created an owner-only
+fictional relationship and personally archived it; no invitation was created/sent.
+That space is retained under Show archived relationships. The three-person flow is
+the isolated SQL-backed browser test described above, not three live OAuth accounts.
+
+Links use `/join#invite=...`; their fragments are removed from history
 and kept temporarily in sessionStorage in the same tab through login. This avoids
 putting invitation secrets in server URLs or persistent cross-account local storage.
 If registration/email verification opens another tab, reopen the original link after

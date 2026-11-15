@@ -2,8 +2,8 @@
 
 Active slice: relationship membership, unanimous invitations and pairwise blocking.
 Backend migration, frontend integration and isolated PostgreSQL/browser tests are
-implemented. The migration and rolled-back smoke test passed in the hosted Frankfurt
-project; frontend deployment follows this milestone's push. See
+implemented and deployed. The migration and rolled-back smoke test passed in the
+hosted Frankfurt project; the deployed UI passed live owner creation/archive. See
 [MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md).
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
@@ -209,3 +209,8 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
 - Actual messaging, explicit content sharing/grants, historical shared snapshots,
   queued-send cancellation, cloud scheduling and native Android remain later work.
+- Published backend milestone 665735b and UI milestone 8e0d10b to main; Vercel's
+  production deployment of 8e0d10b is READY. Live authenticated UI successfully created
+  one owner-only `Fictional membership test` space, then personally archived it.
+  It remains available under Show archived relationships; no invitation was proposed
+  or sent. Screenshot: `.local/screenshots/live-membership.jpg` (ignored).
