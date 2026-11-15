@@ -1,12 +1,10 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: four durable-cloud milestones implemented — queue/leases, scheduling
-rules, restricted Frankfurt-worker runtime, and recovery plus cloud controls.
-Four migrations and the one-minute cron are installed in Frankfurt. The hosted
-synthetic SQL smoke passed with rollback; local SQL and worker/browser tests passed.
-Render compute is not provisioned: the restricted login and actual
-hosting budget remain activation gates. Instant private preview remains available.
-See [CLOUD-SCHEDULING](docs/implementation/CLOUD-SCHEDULING.md).
+Active slice: free interim cloud worker. The existing Frankfurt Supabase cron now
+executes a bounded Postgres mock consumer, using the same durable queue, leases and
+authorization gates. No extra hosting subscription or new secret is needed. Render
+Python runtime/blueprint remain intact for later. User schedules stay off until the
+owner enables them; provider calls and external messages remain disabled.
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
@@ -306,3 +304,23 @@ new private tables have deliberate RLS/no-client-policy INFO notices (11 total).
   shows unavailable worker and private/off defaults. Corrected an old local-demo
   footer shown to cloud accounts; production build passed before the follow-up push.
   The last three hosted cron runs succeeded; synthetic smoke user count is zero.
+
+
+## Free interim execution — 2026-11-15
+
+User chose a free alternative and to retain Render for later. The Supabase organization
+is confirmed on Free. Added `20261115103004_free_postgres_mock_worker.sql`: seven
+private catalog rows, admin/cron-only bounded consumer, and replacement of the same
+named one-minute cron command. Installed in Frankfurt; an explicit first tick
+completed with zero unintended work. `supabase/tests/free_worker.sql` passed and
+rolled back its synthetic user/check-in. No real member content was shared.
+
+Four new local tests plus the browser ready/queue/tick/draft flow pass. The latter
+uses real SQL with simulated Auth/HTTP transport. Render files were not changed.
+The existing worker-role and queue contracts remain usable for a later runtime.
+
+- Full rerun: 38 PostgreSQL tests passed; unit/build/catalog checks and the browser
+  queue-to-draft flow passed. Live cron command is postgres_mock_tick; its last three
+  runs succeeded and readiness is true. Synthetic smoke user count is zero.
+- Security advisor: new static catalog is deliberately private with RLS/no client
+  policies; 12 INFO notices now. Existing leaked-password protection WARN unchanged.

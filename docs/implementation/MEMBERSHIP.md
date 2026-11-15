@@ -97,3 +97,9 @@ generation, archive/mute and pair gates immediately before acting.
 Private relationship-scoped jobs bind to current membership generations and recheck
 archive/mute/leave before publication. They never create recipient content grants.
 Cloud infrastructure and live Render activation status: [CLOUD-SCHEDULING](CLOUD-SCHEDULING.md).
+
+
+Current hosting update: the included Frankfurt Postgres mock consumer is live,
+with the same durable authorization/lease checks. Render remains a later option.
+See [cloud scheduling](CLOUD-SCHEDULING.md) for scope and evidence; no real AI or
+external messages are enabled by this interim adapter.

@@ -251,6 +251,23 @@ def test_membership_browser(state):
             schedule_panel.get_by_label(en['schedulePaused'],exact=True).check()
             schedule_panel.get_by_role('button',name=en['save'],exact=True).click()
             expect(schedule_panel.get_by_role('button',name=en['save'],exact=True)).to_be_enabled()
+            # The included Postgres mock executor makes the same durable queue work
+            # without a Render process, and does not enable schedules implicitly.
+            schedule_panel.get_by_label(en['scheduleEnabled'],exact=True).uncheck()
+            schedule_panel.get_by_label(en['schedulePaused'],exact=True).uncheck()
+            schedule_panel.get_by_role('button',name=en['save'],exact=True).click()
+            expect(schedule_panel.get_by_role('button',name=en['save'],exact=True)).to_be_enabled()
+            with psycopg.connect(state.dsn) as conn:assert conn.execute('select companion_private.postgres_mock_tick()').fetchone()[0]==0
+            schedule_panel.get_by_role('button',name=en['sharingRefresh'],exact=True).click()
+            expect(schedule_panel).to_contain_text(en['workerReady'])
+            schedule_panel.get_by_role('button',name=en['queueCheckin'],exact=True).click()
+            expect(schedule_panel).to_contain_text(en['queued'])
+            with psycopg.connect(state.dsn) as conn:assert conn.execute('select companion_private.postgres_mock_tick()').fetchone()[0]==1
+            schedule_panel.get_by_role('button',name=en['sharingRefresh'],exact=True).click()
+            expect(schedule_panel).to_contain_text(en['draftReady'])
+            a.get_by_role('button',name=en['home'],exact=True).click()
+            expect(a.get_by_role('heading',name=en['mockPrompt'],exact=True)).to_be_visible()
+            expect(a.locator('.draft-card textarea')).to_have_value(en['mockDraft'])
             assert not errors,errors
             for context in contexts:context.close()
             browser.close()

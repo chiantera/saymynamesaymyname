@@ -1,5 +1,7 @@
 # Durable scheduling and Frankfurt worker
 
+**Current mode: free Postgres mock worker is live; Render is retained for later.**
+
 
 
 ## Milestone 1 — durable queue
@@ -215,3 +217,44 @@ Render dashboard quote verified: $7/month for 0.5 CPU / 512 MB. No service
 was created; restricted database-login provisioning and the separate infrastructure
 budget gate still apply. Existing security-advisor leaked-password WARN remains;
 new private tables have deliberate RLS/no-client-policy INFO notices (11 total).
+
+
+## Current execution mode — free interim worker
+
+The active mock executor is now `companion_private.postgres_mock_tick()` in the
+existing Frankfurt Supabase database. The same one-minute cron calls it; there is
+no second scheduler, paid service, new credential or external processor. It runs
+maintenance/dispatch, then claims and finishes at most ten jobs using the existing
+leases, membership, pause and cap checks. Enabling the backend never enables a
+user's schedules. All results remain private drafts pending explicit approval.
+
+This only composes fixed mock text, not AI or OCR. It must never grow into a database
+HTTP/AI processor. SQL catalog parity is tested for all seven locales; copy changes
+require a new migration. Queue latency is normally up to the next minute; missed
+slots are not replayed. Shared-CPU/database quotas, project availability and free
+plan pauses still apply. This adds no hosting subscription, not unlimited capacity.
+
+The Render Python worker and `render.yaml` are retained for later. To switch back,
+first deploy and verify the restricted external worker and its fresh heartbeat,
+then replace the existing cron command (do not add a second job):
+
+```sql
+select cron.schedule('companion-cloud-tick','* * * * *',
+                     'select companion_private.cloud_tick()');
+```
+
+To restore the free executor, use `select companion_private.postgres_mock_tick()`
+as that same named cron's command. Existing job IDs/leases are preserved. Concurrent
+consumers are fenced, but avoid intentionally running both. AI/provider activation
+still needs capability consent, costs, safety gates and an appropriate runtime.
+
+Verified: organization plan is Free; hosted transactional free-worker smoke passed;
+four new SQL tests cover seven-language parity, private ownership, duplicate and
+competing ticks, membership revocation, paused schedules and the ten-job bound.
+The browser fixture verifies ready status, queued job, completion and private draft.
+Render's setup is preserved without provisioning its $7/month service.
+
+Sources checked 2026-11-15: https://supabase.com/docs/guides/cron and
+https://supabase.com/pricing. Supabase Edge Functions remain a possible later
+short-task runtime (https://supabase.com/docs/guides/functions/limits); they are not
+needed or deployed for static mock composition.

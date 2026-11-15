@@ -14,3 +14,8 @@ execution permissions needed for job claims/completion, never general table acce
 and ends with ROLLBACK. `backend/dbtests/` creates a disposable loopback database;
 its DSN guard deliberately refuses hosted targets. See the cloud scheduling runbook
 for migration, cron and worker activation evidence.
+
+Current mock execution: the same hosted cron now calls a bounded Postgres consumer
+inside the existing Frankfurt project. It uses private static catalogs and the
+existing leased queue. Render/Python remain available for later; no paid service
+or external AI is needed for this interim mode.

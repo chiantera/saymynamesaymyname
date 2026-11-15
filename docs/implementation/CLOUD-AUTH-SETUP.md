@@ -169,3 +169,9 @@ export/deletion and offline conflict resolution; restricted live worker credenti
 and hosting verification; provider consent/data-term/cost controls; native Android
 callbacks/build/device/push; reviewed safety resources and recovery/backup drills.
 The overall Phase 0/1 and beta-readiness checklists remain open.
+
+
+Current hosting update: the included Frankfurt Postgres mock consumer is live,
+with the same durable authorization/lease checks. Render remains a later option.
+See [cloud scheduling](CLOUD-SCHEDULING.md) for scope and evidence; no real AI or
+external messages are enabled by this interim adapter.

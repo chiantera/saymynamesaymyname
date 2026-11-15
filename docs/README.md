@@ -14,3 +14,8 @@ Implementation guides:
 
 Historical verification remains historical; do not rewrite old evidence as though
 later capabilities were already deployed. Plans are not proof of live activation.
+
+Current mock execution: the same hosted cron now calls a bounded Postgres consumer
+inside the existing Frankfurt project. It uses private static catalogs and the
+existing leased queue. Render/Python remain available for later; no paid service
+or external AI is needed for this interim mode.

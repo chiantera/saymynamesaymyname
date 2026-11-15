@@ -12,3 +12,8 @@ instructions are tracked in [CLOUD-SCHEDULING](../docs/implementation/CLOUD-SCHE
 Tests: `npm run test:backend` for local behavior; `npm run test:database` for real
 PostgreSQL authorization/concurrency; `npm run test:membership` for browser plus SQL.
 No production credentials belong in source or test fixtures.
+
+Current mock execution: the same hosted cron now calls a bounded Postgres consumer
+inside the existing Frankfurt project. It uses private static catalogs and the
+existing leased queue. Render/Python remain available for later; no paid service
+or external AI is needed for this interim mode.

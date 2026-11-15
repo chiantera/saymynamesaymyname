@@ -14,3 +14,8 @@ and is disabled when the worker heartbeat is stale. No live AI or outward messag
 Commands from root: `npm run build`, `npm test`, `npm run test:auth`,
 `npm run test:membership`. Browser suites rebuild dist and must run sequentially.
 Catalog translations are drafts; Android/device/push verification remains pending.
+
+Current mock execution: the same hosted cron now calls a bounded Postgres consumer
+inside the existing Frankfurt project. It uses private static catalogs and the
+existing leased queue. Render/Python remain available for later; no paid service
+or external AI is needed for this interim mode.

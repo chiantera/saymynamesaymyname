@@ -289,3 +289,12 @@ Render activation is pending a restricted database login and actual hosting quot
 never imply the blueprint is a running worker. Keep schedules off until explicit
 user activation. SQL fixture tests must remain loopback-only and browser builds
 must run sequentially. Root and folder READMEs describe the current boundaries.
+
+
+## Free interim executor — current default
+
+Use the existing Frankfurt Postgres cron's bounded mock consumer for now. It calls
+maintenance/dispatch then the same claim/finish functions, with static catalog text
+only. No extra paid host, user-data exposure, network AI or implicit schedule opt-in.
+Render runtime/blueprint stay intact for later. Do not add duplicate schedulers or
+put slow/network AI work into Postgres. See CLOUD-SCHEDULING.md for switching modes.

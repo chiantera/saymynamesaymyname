@@ -1951,3 +1951,13 @@ Hosted migrations/cron and rolled-back synthetic smoke are verified. Actual Rend
 compute/credentials and production restricted-login connection remain unverified.
 The instant preview path stays usable during this activation boundary. See
 CURRENT-TASK.md and docs/implementation/CLOUD-SCHEDULING.md for tests and gates.
+
+
+## Interim hosting decision — 2026-11-15
+
+Use included Frankfurt Supabase Postgres execution for the current static mock
+worker. A single bounded cron consumer reuses durable claims, leases and all access
+checks. This is a temporary no-extra-hosting-cost adapter, not a replacement for
+external AI/OCR processing. Keep FastAPI/Python and the Render blueprint for later.
+No user schedule is enabled by the hosting change. Before real AI, choose a suitable
+runtime under existing consent, data-region, cost and safety requirements.

@@ -6,7 +6,8 @@
 > Core web Google/email sign-in, recovery and private reflection sync are verified
 > for the admitted tester. Cloud relationship membership, unanimous invite links and
 > pairwise block controls are implemented and tested. Explicit saved-reflection sharing and revocation are tested. Broader signup,
-> live AI, hosted-worker activation and native Android remain incomplete.
+> live AI and native Android remain incomplete. A free, database-hosted mock worker
+> now runs the durable queue; Render is retained for later.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
 
@@ -336,8 +337,8 @@ See [cloud scheduling runbook](docs/implementation/CLOUD-SCHEDULING.md).
 ## Running and operating the cloud worker
 
 The queue, schedule RPCs, heartbeat and one-minute Supabase cron are installed in
-Frankfurt. **The Render worker is not yet provisioned.** Settings accurately shows
-it unavailable and disables queued generation. Schedules are off until explicitly
+Frankfurt. **The free Postgres mock worker is active.** Settings reports readiness and allows
+queued mock generation; the Render service stays unprovisioned. Schedules are off until explicitly
 enabled by their owner; private instant preview stays available independently.
 
 The validated [Render blueprint](render.yaml) uses Frankfurt, checks-passed deploys
@@ -348,7 +349,7 @@ provisioning, TLS, heartbeat, cancellation, recovery and activation checks.
 | Check | What it proves |
 |---|---|
 | `npm run check` | Catalogs, domain/API tests, TypeScript and production build |
-| `npm run test:database` | 34 real PostgreSQL authorization, concurrency, scheduling and subprocess tests |
+| `npm run test:database` | 38 real PostgreSQL authorization, concurrency, scheduling and worker tests |
 | `npm run test:auth` | Isolated client auth/recovery/account boundaries; Auth endpoints simulated |
 | `npm run test:membership` | Real browser plus SQL for membership, sharing, revocation and schedule persistence |
 | `supabase/tests/cloud_worker.sql` | Hosted synthetic queue workflow with rollback; admin invocation, not a Render process |
@@ -359,8 +360,23 @@ remains open. A green CI run and a ready Vercel alias are verified separately.
 
 ## What remains after these four milestones
 
-Live restricted worker login/Render deployment, provider approvals and cost ledger,
+Later external-worker credentials/Render deployment when needed, provider approvals and cost ledger,
 live AI safety evaluation, Android device/auth/push checks, broader session/MFA and
 account operations, reviewed resources/translations, backups and restoration drills.
 Documents/media/voice/Drive, rich goals and external channels remain phased features.
 Branding and pricing are still deferred. No real payments or provider calls are enabled.
+
+
+## Free hosting for the current mock phase
+
+The one-minute Supabase cron runs a private, bounded SQL consumer in our existing
+Frankfurt database: no additional account, subscription or database password in a
+worker host. It uses the same leases and completion checks as the retained Python
+worker. Static drafts become reviewable; saving a reflection still requires approval.
+Schedules remain opt-in. This is mock-only and must not make network AI calls.
+
+The organization is on Supabase Free. Work counts against its shared database
+capacity and normal availability limits; free projects can pause. There is no
+additional worker-hosting subscription. The [runbook](docs/implementation/CLOUD-SCHEDULING.md)
+records tests, limitations and the switch back to Render. `render.yaml` remains
+unchanged for that later step.
