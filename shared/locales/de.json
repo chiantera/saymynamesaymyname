@@ -137,5 +137,21 @@
   "leaveExplanation": "Verlassen beendet zukünftigen Kontakt in dieser Beziehung. Deine privaten Reflexionen bleiben. Für eine Rückkehr ist eine neue einstimmig genehmigte Einladung nötig.",
   "confirmLeave": "Verlassen bestätigen",
   "confirmBlock": "Blockieren bestätigen",
-  "cancelAction": "Abbrechen"
+  "cancelAction": "Abbrechen",
+  "sharingTitle": "Eine Reflexion teilen",
+  "sharingPolicy": "Standardmäßig privat. Teile eine unveränderliche Kopie nur mit ausgewählten Personen. Nur Leserechte; keine Weiterleitung in der App oder KI-Freigabe. Zukünftigen Zugriff kannst du widerrufen. Screenshots und externe Kopien lassen sich nicht zurückholen.",
+  "sharingRefresh": "Zugriff aktualisieren",
+  "sharingError": "Zugriff geändert oder Anfrage fehlgeschlagen. Aktualisieren und erneut versuchen.",
+  "sharingReflection": "Gespeicherte Reflexion",
+  "sharingRecipients": "Genaue Empfänger",
+  "sharingNoRecipients": "Keine berechtigten Empfänger in dieser Beziehung.",
+  "sharingReview": "Freigabe prüfen",
+  "sharingConfirm": "Diese Kopie teilen",
+  "sharingSent": "Von dir geteilte Kopien",
+  "sharingReceived": "Mit dir geteilt",
+  "sharingRevoked": "Widerrufen",
+  "sharingReadOnly": "Nur Leserechte",
+  "sharingRevoke": "Zugriff widerrufen",
+  "sharingEmpty": "Keine Inhalte mit dir geteilt.",
+  "sharingOpen": "Geteilte Kopie öffnen"
 }

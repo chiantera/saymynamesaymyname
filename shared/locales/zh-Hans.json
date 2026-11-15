@@ -137,5 +137,21 @@
   "leaveExplanation": "退出会停止此关系中的后续联系。你的私人记录会保留。重新加入需要新的邀请及所有成员批准。",
   "confirmLeave": "确认退出",
   "confirmBlock": "确认屏蔽",
-  "cancelAction": "取消"
+  "cancelAction": "取消",
+  "sharingTitle": "分享感想",
+  "sharingPolicy": "默认保密。仅向选定的人分享固定副本。只读，不允许在应用内转发，也不授予 AI 使用权限。可随时撤销今后的访问权限。截图和外部副本无法收回。",
+  "sharingRefresh": "刷新访问权限",
+  "sharingError": "访问权限已改变或请求失败。请刷新后重试。",
+  "sharingReflection": "已保存的感想",
+  "sharingRecipients": "指定接收者",
+  "sharingNoRecipients": "此关系中没有符合条件的接收者。",
+  "sharingReview": "检查分享内容",
+  "sharingConfirm": "分享此副本",
+  "sharingSent": "你分享的副本",
+  "sharingReceived": "与你分享",
+  "sharingRevoked": "已撤销",
+  "sharingReadOnly": "只读",
+  "sharingRevoke": "撤销访问",
+  "sharingEmpty": "暂无与你分享的内容。",
+  "sharingOpen": "打开分享副本"
 }

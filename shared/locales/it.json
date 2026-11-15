@@ -137,5 +137,21 @@
   "leaveExplanation": "Uscire interrompe i contatti futuri in questa relazione. Le tue riflessioni private restano. Per rientrare serve un nuovo invito approvato all’unanimità.",
   "confirmLeave": "Conferma uscita",
   "confirmBlock": "Conferma blocco",
-  "cancelAction": "Annulla"
+  "cancelAction": "Annulla",
+  "sharingTitle": "Condividi una riflessione",
+  "sharingPolicy": "Privato per impostazione predefinita. Condividi una copia fissa solo con le persone selezionate. Sola lettura; nessun inoltro tramite app o consenso IA. Puoi revocare gli accessi futuri. Screenshot e copie esterne non possono essere ritirati.",
+  "sharingRefresh": "Aggiorna accessi",
+  "sharingError": "Accesso modificato o richiesta non riuscita. Aggiorna e riprova.",
+  "sharingReflection": "Riflessione salvata",
+  "sharingRecipients": "Destinatari esatti",
+  "sharingNoRecipients": "Nessun destinatario idoneo in questa relazione.",
+  "sharingReview": "Rivedi condivisione",
+  "sharingConfirm": "Condividi questa copia",
+  "sharingSent": "Copie condivise da te",
+  "sharingReceived": "Condiviso con te",
+  "sharingRevoked": "Revocato",
+  "sharingReadOnly": "Sola lettura",
+  "sharingRevoke": "Revoca accesso",
+  "sharingEmpty": "Nessun contenuto condiviso con te.",
+  "sharingOpen": "Apri copia condivisa"
 }

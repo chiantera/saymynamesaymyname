@@ -298,3 +298,11 @@ EUR 20/month, tracked centrally; hosting/storage costs are separate. See `PLAN.m
 ## License
 
 MIT © 2026 — see [`LICENSE`](./LICENSE).
+
+### Explicit reflection sharing
+
+Saved reflections stay private. Cloud users can review a fixed copy and its exact
+recipients before sharing, read received copies and revoke access individually.
+Pairwise blocks cancel only that pair’s grants. This does not enable AI use or
+external delivery. See [sharing implementation](docs/implementation/SHARING.md) for
+the access model, tests and limits.

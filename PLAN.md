@@ -1917,3 +1917,22 @@ O2/O3 recommended attribution/translation defaults are adopted for now. O4 actua
 hosting budget and O6 actual processor data terms remain configuration/activation gates,
 not blockers to local implementation. Earlier planning-only stage instructions are
 superseded by this explicit user request. Record actual progress in CURRENT-TASK.md.
+
+
+## Phase 0/1 implementation: explicit reflection grants
+
+Saved reflections remain private originals. The first sharing slice exposes only
+immutable copies to an owner-selected, previewed list of recipients. Permission is
+read-only; it grants neither delegation nor AI processing. The live server checks
+membership version, reachability and pairwise blocks before creating any grants.
+A failed recipient check rejects the entire proposed audience.
+
+Previously received snapshots survive leaving/personal archive/mute; they never
+follow later private edits. Explicit revocation removes future server access even
+after departure. A pairwise block terminates that pair's existing snapshot grants
+across spaces, with no effect on other pairs; unblocking requires a fresh explicit
+share to grant access again. Source deletion cascades through its snapshots/grants.
+Backend denial is immediate. Already rendered text clears on refresh/visibility
+changes and the 15-second polling cycle; external copies cannot be recalled.
+
+Scope/evidence and remaining cross-content work: docs/implementation/SHARING.md.

@@ -1,9 +1,9 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: relationship membership, unanimous invitations and pairwise blocking.
-Backend migration, frontend integration and isolated PostgreSQL/browser tests are
-implemented and deployed. The migration and rolled-back smoke test passed in the
-hosted Frankfurt project; the deployed UI passed live owner creation/archive. See
+Active slice: explicit reflection sharing, read-only recipient permissions and
+revocation. Private originals stay owner-only. Explicit immutable snapshots use
+named grants; pairwise blocks revoke only the affected pair. See
+[SHARING.md](docs/implementation/SHARING.md) and
 [MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md).
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
@@ -11,13 +11,13 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (139 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (155 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
 - Edit/save a private mock reflection, skip without an artifact, snooze one hour,
   30-minute default expiry, atomic versioned decisions and stale-worker rejection.
-- Optional privately tracked relationship labels; no invitations or sharing yet.
+- Optional privately tracked relationship labels; cloud membership and explicit reflection sharing are separate from the demo.
 - External AI, outbound messages and paid provider calls remain disabled. The hosted
   fictional preview and private Supabase foundation are described below.
 
@@ -214,3 +214,22 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   one owner-only `Fictional membership test` space, then personally archived it.
   It remains available under Show archived relationships; no invitation was proposed
   or sent. Screenshot: `.local/screenshots/live-membership.jpg` (ignored).
+
+
+## Explicit sharing milestone — 2026-11-15
+
+- Migration `20261115044505_explicit_reflection_sharing.sql` applied to Frankfurt.
+- 23 local real-PostgreSQL tests (17 membership + 6 sharing) passed, including a
+  concurrent share/block race. Hosted `supabase/tests/sharing.sql` passed with
+  synthetic data rolled back; no real content was shared.
+- Production browser fixture passed exact-audience review, B-only access, C
+  exclusion, individual revocation and 390px confirmation; Auth/HTTP simulated,
+  SQL/RLS real. Existing isolated auth smoke also passed.
+- `npm run check` passed: 8 frontend tests, 24 backend tests, TypeScript/build,
+  seven draft catalogs with 155 keys. Native language review is still pending.
+- Security advisor: two new private tables intentionally have RLS and no client
+  policies/grants (deny by default); seven INFO notices now include these tables.
+  Existing leaked-password-protection WARN remains unchanged; see
+  https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection.
+- Shared text is not wired into AI, search, offline cache or exports. Those future
+  paths must use source-aware authorization and revocation before enablement.

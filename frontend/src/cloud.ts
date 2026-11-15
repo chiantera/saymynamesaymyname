@@ -16,6 +16,7 @@ export async function cloudRequest(path:string,method:string,body:any){
  const {data:{user},error}=await cloud.auth.getUser();if(error||!user)throw new Error('Sign in required');
  assertCurrent(); if(user.id!==expectedOwner)throw new Error('Account changed');
  const checked=async (operation:()=>PromiseLike<any>)=>{assertCurrent();const result=await operation();assertCurrent();if(result.error)throw new Error('Cloud request failed');return result.data;};
+ if(path==='/sharing')return checked(()=>cloud!.rpc('reflection_sharing',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/relationships/workspace')return checked(()=>cloud!.rpc('relationship_workspace'));
  if(path==='/relationships/action')return checked(()=>cloud!.rpc('relationship_action',{p_action:body.action,p_args:body.args}));
  if(path==='/relationships/preview')return checked(()=>cloud!.rpc('relationship_invite_preview',{p_token:body.token}));

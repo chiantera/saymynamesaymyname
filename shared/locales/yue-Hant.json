@@ -137,5 +137,21 @@
   "leaveExplanation": "離開會停止呢段關係之後嘅聯絡。你嘅私人記錄會保留。重新加入需要新邀請同所有成員批准。",
   "confirmLeave": "確認離開",
   "confirmBlock": "確認封鎖",
-  "cancelAction": "取消"
+  "cancelAction": "取消",
+  "sharingTitle": "分享感想",
+  "sharingPolicy": "預設保密。只向你揀選嘅人分享固定副本。只限閱讀，唔可以喺應用程式內轉發，亦唔會授予 AI 使用權限。你可以隨時撤銷日後存取權。截圖同外部副本無法收回。",
+  "sharingRefresh": "更新存取權",
+  "sharingError": "存取權已變更或請求失敗。請更新後再試。",
+  "sharingReflection": "已儲存嘅感想",
+  "sharingRecipients": "指定收件人",
+  "sharingNoRecipients": "呢段關係冇合資格嘅收件人。",
+  "sharingReview": "檢查分享內容",
+  "sharingConfirm": "分享呢個副本",
+  "sharingSent": "你分享嘅副本",
+  "sharingReceived": "同你分享",
+  "sharingRevoked": "已撤銷",
+  "sharingReadOnly": "只限閱讀",
+  "sharingRevoke": "撤銷存取權",
+  "sharingEmpty": "暫時冇同你分享嘅內容。",
+  "sharingOpen": "開啟分享副本"
 }

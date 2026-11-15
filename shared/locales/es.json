@@ -137,5 +137,21 @@
   "leaveExplanation": "Salir detiene el contacto futuro en esta relación. Tus reflexiones privadas permanecen. Para volver se necesita una nueva invitación aprobada por unanimidad.",
   "confirmLeave": "Confirmar salida",
   "confirmBlock": "Confirmar bloqueo",
-  "cancelAction": "Cancelar"
+  "cancelAction": "Cancelar",
+  "sharingTitle": "Compartir una reflexión",
+  "sharingPolicy": "Privado por defecto. Comparte una copia fija solo con las personas seleccionadas. Solo lectura; sin reenvío en la app ni permiso de IA. Puedes revocar el acceso futuro. No se pueden retirar capturas ni copias externas.",
+  "sharingRefresh": "Actualizar acceso",
+  "sharingError": "El acceso cambió o la solicitud falló. Actualiza e inténtalo de nuevo.",
+  "sharingReflection": "Reflexión guardada",
+  "sharingRecipients": "Destinatarios exactos",
+  "sharingNoRecipients": "No hay destinatarios disponibles en esta relación.",
+  "sharingReview": "Revisar contenido compartido",
+  "sharingConfirm": "Compartir esta copia",
+  "sharingSent": "Copias que compartiste",
+  "sharingReceived": "Compartido contigo",
+  "sharingRevoked": "Revocado",
+  "sharingReadOnly": "Solo lectura",
+  "sharingRevoke": "Revocar acceso",
+  "sharingEmpty": "No hay contenido compartido contigo.",
+  "sharingOpen": "Abrir copia compartida"
 }

@@ -195,7 +195,9 @@ The hosted preview uses browser-local fictional data; a dedicated Frankfurt Supa
 project now holds the private-sync foundation. Git pushes to main deploy to Vercel.
 M2 is partial: core web auth/private reflection sync and membership/invitation/block
 foundations passed their respective tests. Broader signup/delivery, session/MFA
-management and explicit content-sharing grants remain open; native auth remains M5.
+management remain open. Explicit reflection snapshots, read-only named grants and
+revocation are implemented; sharing for other content types remains open. Native
+auth remains M5. See SHARING.md.
 The scheduling dispatcher still needs a Postgres/hosted-worker port in M3. See
 CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
 The local FastAPI adapter remains development-only and fails closed in production.

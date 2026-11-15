@@ -78,6 +78,10 @@ def handle(route):
     if path=='/auth/v1/authorize':
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
+    if path=='/rest/v1/rpc/relationship_workspace': return reply({'relationships':[],'blocks':[]})
+    if path=='/rest/v1/rpc/reflection_sharing':
+        assert body['p_action']=='workspace','Auth fixture must not perform real sharing'
+        return reply({'sent':[],'received':[]})
     if path=='/rest/v1/rpc/refresh_private_checkins': return reply(None)
     if path=='/rest/v1/companion_profiles':
         if req.method=='POST':

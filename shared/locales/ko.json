@@ -137,5 +137,21 @@
   "leaveExplanation": "나가면 이 관계의 향후 연락이 중단됩니다. 비공개 기록은 유지됩니다. 다시 참여하려면 새 초대와 전원 승인이 필요합니다.",
   "confirmLeave": "나가기 확인",
   "confirmBlock": "차단 확인",
-  "cancelAction": "취소"
+  "cancelAction": "취소",
+  "sharingTitle": "기록 공유",
+  "sharingPolicy": "기본 설정은 비공개입니다. 선택한 사람에게만 고정된 사본을 공유합니다. 읽기 전용이며 앱 내 전달이나 AI 사용 권한은 부여하지 않습니다. 이후 접근을 언제든 취소할 수 있습니다. 스크린샷이나 외부 사본은 회수할 수 없습니다.",
+  "sharingRefresh": "접근 권한 새로고침",
+  "sharingError": "접근 권한이 변경되었거나 요청에 실패했습니다. 새로고침 후 다시 시도하세요.",
+  "sharingReflection": "저장된 기록",
+  "sharingRecipients": "선택한 수신자",
+  "sharingNoRecipients": "이 관계에 공유 가능한 수신자가 없습니다.",
+  "sharingReview": "공유 검토",
+  "sharingConfirm": "이 사본 공유",
+  "sharingSent": "내가 공유한 사본",
+  "sharingReceived": "나에게 공유됨",
+  "sharingRevoked": "취소됨",
+  "sharingReadOnly": "읽기 전용",
+  "sharingRevoke": "접근 취소",
+  "sharingEmpty": "공유받은 내용이 없습니다.",
+  "sharingOpen": "공유 사본 열기"
 }

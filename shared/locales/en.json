@@ -137,5 +137,21 @@
   "leaveExplanation": "Leaving stops future contact in this relationship. Your private reflections remain. Rejoining needs a fresh, unanimously approved invitation.",
   "confirmLeave": "Confirm leaving",
   "confirmBlock": "Confirm block",
-  "cancelAction": "Cancel"
+  "cancelAction": "Cancel",
+  "sharingTitle": "Share a reflection",
+  "sharingPolicy": "Private by default. Share a fixed copy with only the people you select. Read only; no app forwarding or AI permission. Revoke future access at any time. Saved screenshots and external copies cannot be recalled.",
+  "sharingRefresh": "Refresh access",
+  "sharingError": "Access changed or the request failed. Refresh and try again.",
+  "sharingReflection": "Saved reflection",
+  "sharingRecipients": "Exact recipients",
+  "sharingNoRecipients": "No eligible recipients in this relationship.",
+  "sharingReview": "Review sharing",
+  "sharingConfirm": "Share this copy",
+  "sharingSent": "Copies you shared",
+  "sharingReceived": "Shared with you",
+  "sharingRevoked": "Revoked",
+  "sharingReadOnly": "Read only",
+  "sharingRevoke": "Revoke access",
+  "sharingEmpty": "Nothing shared with you.",
+  "sharingOpen": "Open shared copy"
 }

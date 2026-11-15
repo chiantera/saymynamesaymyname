@@ -22,3 +22,10 @@
 .confirmation { border: 2px solid var(--accent); border-radius: 12px; padding: 1.5rem; background: var(--surface); color: var(--ink); width: min(32rem,calc(100% - 2rem)); max-height: 85vh; overflow: auto; }
 .confirmation::backdrop { background: #0008; }
 .invitation-review { margin: 1rem 0; }
+
+.sharing { margin-top: 1.5rem; }
+.sharing fieldset { min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 1rem; width: 100%; }
+.sharing .check-label { flex-direction: row; }
+.sharing .check-label input { width: auto; }
+.sharing article { border-top: 1px solid var(--line); padding-block: 1rem; overflow-wrap: anywhere; }
+.received-text { white-space: pre-wrap; }
