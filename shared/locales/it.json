@@ -58,7 +58,7 @@
   "errorConflict": "Questo check-in è cambiato o scaduto. Ora vedi la versione aggiornata.",
   "retry": "Riconnetti",
   "cloudAccount": "Account cloud",
-  "cloudSetup": "L’accesso al cloud privato richiede un’email verificata e l’ammissione alla beta. Google richiede la configurazione del provider.",
+  "cloudSetup": "L’accesso al cloud privato richiede un’email verificata e l’ammissione alla beta.",
   "email": "Email",
   "password": "Password",
   "signIn": "Accedi",

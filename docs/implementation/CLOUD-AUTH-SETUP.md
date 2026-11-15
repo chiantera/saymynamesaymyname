@@ -10,19 +10,23 @@
 - Private records require both operator beta admission and a current verified Auth
   email. Owner RLS and guarded RPCs enforce this independently of the UI.
 - Web client supports signup, email/password login, PKCE confirmation/recovery,
-  password update, Google OAuth start and sign-out. Live provider acceptance is pending.
+  password update, Google OAuth start and sign-out. Live web Google sign-in passed.
 - User completed Supabase dashboard login on 2026-11-15; Site URL and four exact
-  callbacks below were visibly verified saved. Dedicated Google project selected.
+  callbacks below were visibly verified saved. Dedicated Google project/client,
+  three basic scopes and Supabase Google provider are configured; secret entered
+  directly by the user. One explicitly authorized verified tester is admitted.
 - Live transactional SQL tests cover approved/duplicate decisions, owner isolation,
   unadmitted users and admitted users whose email is still unverified. All synthetic
-  data is rolled back. These tests do not certify actual email delivery or OAuth.
+  data is rolled back. These tests do not certify actual email delivery. Separate
+  live Google/PKCE acceptance and owned reflection save/reload passed on 2026-11-15.
 
 ## Current external boundary
 
 Connected Supabase tools can manage database migrations but do not expose Auth
 configuration here. The local CLI has no management login. The user has now signed
-into the dashboard in the built-in browser. Google consent/client configuration and
-real test-account admission are still in progress. No sibling credentials were copied.
+into the dashboard in the built-in browser. Google configuration and the first
+verified tester admission are complete. Independent-device and email recovery checks
+are separate acceptance steps. No sibling credentials were copied.
 
 ## Dashboard walkthrough and exact values
 
@@ -87,12 +91,24 @@ real test-account admission are still in progress. No sibling credentials were c
 
 ## Test evidence and remaining scope
 
+Live browser acceptance passed for Google consent → PKCE return → admission denial
+→ authorized admission → private app load → fictional reflection save → full reload.
+A database count independently confirmed one matching owned reflection and fulfilled
+check-in, with no duplicate artifact. No personal journal text was used in this test.
+An independent second browser/device check and real email recovery are still pending.
+
 `npm run test:auth` builds the production frontend with a fictional auth host and
 intercepts every auth/data request. It covers signup, PKCE recovery/password update,
 pending admission, two-client reflection synchronization, account isolation, Google
 basic scopes and failed callback cleanup. It creates no actual accounts or emails.
 The live SQL suite separately verifies Supabase ownership/admission rules. Neither
-test replaces real email/Google acceptance or real two-device testing.
+test replaces real email acceptance or real two-device testing. Google acceptance
+has now also been performed separately as described above.
+
+For `invalid_client`, verify that Supabase holds the full Client Secret value from
+the same Google client as its Client ID; a Secret ID or masked value is insufficient.
+Correct it directly in the provider form, then start a fresh app sign-in flow.
+Never reload or manually navigate to an old provider callback URL to test OAuth.
 
 This is web auth. A native Android build/system-browser return path remains M5 work;
 do not add unimplemented custom-scheme callbacks or claim Android OAuth is complete.

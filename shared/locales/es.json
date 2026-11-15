@@ -58,7 +58,7 @@
   "errorConflict": "Este check-in cambió o caducó. Se muestra la última versión.",
   "retry": "Reconectar",
   "cloudAccount": "Cuenta en la nube",
-  "cloudSetup": "El acceso a la nube privada requiere un correo verificado y admisión a la beta. Google requiere configurar el proveedor.",
+  "cloudSetup": "El acceso a la nube privada requiere un correo verificado y admisión a la beta.",
   "email": "Correo",
   "password": "Contraseña",
   "signIn": "Entrar",

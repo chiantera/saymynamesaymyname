@@ -58,7 +58,7 @@
   "errorConflict": "問候已更改或者到期，依家顯示最新版本。",
   "retry": "重新連接",
   "cloudAccount": "雲端帳戶",
-  "cloudSetup": "使用私人雲端需要已驗證電郵同測試版批准。Google 登入需要先設定供應商。",
+  "cloudSetup": "使用私人雲端需要已驗證電郵同測試版批准。",
   "email": "電郵",
   "password": "密碼",
   "signIn": "登入",

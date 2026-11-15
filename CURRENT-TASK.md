@@ -78,9 +78,9 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   account-keyed remount on session changes, private record synchronization and sign-out.
 - Hosted unauthenticated preview uses browser-local fictional data, never a shared
   server SQLite database. Cloud mode uses only publishable configuration and RLS.
-- Registration/recovery redirects are now configured and the web client flows exist.
-  Google OAuth credentials, real email delivery and actual verified tester admission
-  still require activation/acceptance. No claim of completed live Google/email auth.
+- Registration/recovery redirects are configured and the web client flows exist.
+  Live web Google sign-in, verified beta admission and cloud persistence passed.
+  Real email delivery/recovery and independent-device acceptance remain separate checks.
 - Cloud worker/automatic scheduling is NOT enabled by this private manual-check-in
   foundation; local scheduling rules still need a Postgres dispatcher/worker port.
 - Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
@@ -98,10 +98,11 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   the security advisor reports this as INFO, not an exposed-table permission.
 - User signed into the Supabase dashboard; Site URL and all four exact production/local
   callback/recovery URLs were visibly verified saved on 2026-11-15. Dedicated Google
-  project selected; consent-screen/provider activation is in progress. The CLI still
+  project selected; consent screen/basic scopes/provider are configured. The CLI still
   has no management credential. No keys were copied from another project.
-- No real beta account was created by this agent. Operator admission must follow a
-  verified sign-up; the deployed prototype explicitly explains these current limits.
+- The user completed Google sign-in and explicitly authorized first-tester admission.
+  The operator admitted only that verified account. No credentials were handled by
+  this agent or added to GitHub/Vercel source; the user transferred the secret directly.
 - Concrete activation and validation steps: [Cloud auth setup](docs/implementation/CLOUD-AUTH-SETUP.md).
 
 ## Web auth client milestone — 2026-11-15
@@ -123,3 +124,19 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   insert-if-absent semantics. Concurrent setup preserves existing cloud preferences.
 - Google standard sign-in client remains separate from future Google agent/MCP
   credentials; the setup guide records the AI-agent checkbox choice and its source.
+
+## Live Google and persistence milestone — 2026-11-15
+
+- Google initially rejected the configured secret with `invalid_client`. The user
+  corrected the matching client credentials directly in Supabase, then completed a
+  fresh Google consent/PKCE return. No secret value was read or published by the agent.
+- Before admission, the live app displayed only the admission-pending screen. The
+  verified Google identity was checked and explicitly authorized admission applied.
+- After reloading, the app loaded the private cloud space and created one profile.
+- A fictional check-in was composed/approved in the live browser. After a full page
+  reload, its saved reflection remained visible. Independent SQL verification found
+  one matching owned reflection and one fulfilled check-in; no duplicate artifact.
+- Screenshot: `.local/screenshots/live-private-sync.jpg` (ignored; fictional content).
+- Removed obsolete provider-setup wording from all seven sign-in catalogs.
+- Second independent browser/device validation and real email recovery remain pending;
+  Android auth remains M5. Cloud auto-scheduling and live AI are still disabled.

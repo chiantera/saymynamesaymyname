@@ -58,7 +58,7 @@
   "errorConflict": "Dieser Check-in wurde geändert oder ist abgelaufen. Der aktuelle Stand wird angezeigt.",
   "retry": "Neu verbinden",
   "cloudAccount": "Cloud-Konto",
-  "cloudSetup": "Für die private Cloud sind eine bestätigte E-Mail-Adresse und Beta-Zulassung erforderlich. Google erfordert die Einrichtung des Anbieters.",
+  "cloudSetup": "Für die private Cloud sind eine bestätigte E-Mail-Adresse und Beta-Zulassung erforderlich.",
   "email": "E-Mail",
   "password": "Passwort",
   "signIn": "Anmelden",

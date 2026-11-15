@@ -58,7 +58,7 @@
   "errorConflict": "问候已更改或过期，现已显示最新版本。",
   "retry": "重新连接",
   "cloudAccount": "云端账户",
-  "cloudSetup": "私有云访问需要已验证的邮箱和测试版准入批准。Google 登录需要配置提供方。",
+  "cloudSetup": "私有云访问需要已验证的邮箱和测试版准入批准。",
   "email": "电子邮箱",
   "password": "密码",
   "signIn": "登录",

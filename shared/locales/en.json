@@ -58,7 +58,7 @@
   "errorConflict": "This check-in changed or expired. The latest version is now shown.",
   "retry": "Reconnect",
   "cloudAccount": "Cloud account",
-  "cloudSetup": "Private cloud access requires a verified email and beta admission. Google sign-in needs provider setup.",
+  "cloudSetup": "Private cloud access requires a verified email and beta admission.",
   "email": "Email",
   "password": "Password",
   "signIn": "Sign in",
