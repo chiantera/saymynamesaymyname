@@ -3,7 +3,7 @@
 > A personal growth & relationship companion — built around a timely, AI-drafted check-in loop.
 > **Status: implementation started.** A runnable local fictional-data check-in demo
 > is available locally and on [Vercel](https://saymynamesaymyname.vercel.app).
-> Supabase private-sync foundation and sign-in client are connected; account setup,
+> Supabase private-sync foundation and web auth flows are connected; provider setup,
 > live processors, cloud scheduling and Android push remain incomplete.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
@@ -24,8 +24,10 @@ skip or snooze a private check-in; try all seven languages and optional private
 relationship labels. Local SQLite is a demo adapter, not the production database.
 No provider keys or paid APIs are used. Do not enter real sensitive data.
 
-Validation: `npm run check` and `npm run test:browser`. Browser tests use isolated
+Validation: `npm run check`, `npm run test:browser` and `npm run test:auth`. Browser tests use isolated
 fictional state. Details and limitations are in [CURRENT-TASK.md](CURRENT-TASK.md).
+The auth client test uses a production build with intercepted endpoints: it never
+creates a real account or sends an email. Live Google/email acceptance remains separate.
 
 ---
 

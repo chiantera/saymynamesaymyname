@@ -5,7 +5,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (69 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (87 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -17,7 +17,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Validation
 
-- `npm run check`: seven-catalog parity/encoding checks, 2 frontend domain tests,
+- `npm run check`: seven-catalog parity/encoding checks, 4 frontend domain/link tests,
   24 backend tests, TypeScript and Vite production build.
 - `npm run test:browser`: isolated temporary demo database and dedicated ports;
   edit/save, skip, reload persistence, all locales, relationship creation, snooze,
@@ -78,8 +78,9 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   account-keyed remount on session changes, private record synchronization and sign-out.
 - Hosted unauthenticated preview uses browser-local fictional data, never a shared
   server SQLite database. Cloud mode uses only publishable configuration and RLS.
-- Registration/recovery redirects, Google OAuth credentials and actual verified tester
-  admission are not configured. Those flows are not represented as working yet.
+- Registration/recovery redirects are now configured and the web client flows exist.
+  Google OAuth credentials, real email delivery and actual verified tester admission
+  still require activation/acceptance. No claim of completed live Google/email auth.
 - Cloud worker/automatic scheduling is NOT enabled by this private manual-check-in
   foundation; local scheduling rules still need a Postgres dispatcher/worker port.
 - Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
@@ -95,10 +96,26 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   scheduled jobs/snoozed prompts on pause/disable; 24 backend tests pass locally.
 - Beta-access table intentionally has RLS with no read policy and no client grants;
   the security advisor reports this as INFO, not an exposed-table permission.
-- Email signup/recovery callbacks and Google credentials require Auth dashboard setup;
-  no management credential is available through the local Supabase CLI, and the
-  built-in browser reached the Supabase sign-in page. No keys were requested or copied
-  from another project. Real account sign-in is not E2E-certified.
+- User signed into the Supabase dashboard; Site URL and all four exact production/local
+  callback/recovery URLs were visibly verified saved on 2026-11-15. Dedicated Google
+  project selected; consent-screen/provider activation is in progress. The CLI still
+  has no management credential. No keys were copied from another project.
 - No real beta account was created by this agent. Operator admission must follow a
   verified sign-up; the deployed prototype explicitly explains these current limits.
 - Concrete activation and validation steps: [Cloud auth setup](docs/implementation/CLOUD-AUTH-SETUP.md).
+
+## Web auth client milestone — 2026-11-15
+
+- Signup/confirmation, recovery/password update, email login, Google OAuth start and
+  explicit PKCE callback handling added. Fixed same-origin callbacks; no arbitrary
+  `next` navigation or reflected provider errors. Secrets stay out of URLs after exchange.
+- Auth checks hide private UI until admission succeeds; late session events cannot
+  erase callback errors. Logout/account switches unmount previous account views.
+- Cloud requests bind to the account/generation that started them; follow-up operations
+  stop when the account changes. Existing cloud locale wins over stale device settings.
+- Production assets now use root paths so direct `/auth/*` navigation loads correctly.
+- `npm run test:auth` passed with intercepted auth/data endpoints: signup, recovery,
+  mismatched passwords, admission denial, two-client private reflection sync, account
+  isolation, Google basic scopes/PKCE and rejected callbacks. This is client evidence;
+  real Supabase RLS is covered separately by transactional SQL tests. No real emails sent.
+- CI now runs the isolated auth browser test in addition to check/build.

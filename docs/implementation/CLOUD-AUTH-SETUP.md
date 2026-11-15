@@ -9,8 +9,10 @@
   role key is needed for browser sign-in or private synchronization.
 - Private records require both operator beta admission and a current verified Auth
   email. Owner RLS and guarded RPCs enforce this independently of the UI.
-- Email/password sign-in and sign-out clients exist. Registration, recovery and
-  Google sign-in are not yet exposed as working flows.
+- Web client supports signup, email/password login, PKCE confirmation/recovery,
+  password update, Google OAuth start and sign-out. Live provider acceptance is pending.
+- User completed Supabase dashboard login on 2026-11-15; Site URL and four exact
+  callbacks below were visibly verified saved. Dedicated Google project selected.
 - Live transactional SQL tests cover approved/duplicate decisions, owner isolation,
   unadmitted users and admitted users whose email is still unverified. All synthetic
   data is rolled back. These tests do not certify actual email delivery or OAuth.
@@ -18,30 +20,84 @@
 ## Current external boundary
 
 Connected Supabase tools can manage database migrations but do not expose Auth
-configuration here. The local CLI has no management login. The built-in browser
-reaches Supabase's sign-in page. Vercel authorization does not authorize that dashboard.
-No existing project credentials were copied, and no real tester account was created.
+configuration here. The local CLI has no management login. The user has now signed
+into the dashboard in the built-in browser. Google consent/client configuration and
+real test-account admission are still in progress. No sibling credentials were copied.
 
-## Resume after authenticated dashboard access exists
+## Dashboard walkthrough and exact values
 
 1. In this project's Auth URL configuration, set Site URL to
-   `https://saymynamesaymyname.vercel.app`. Allow the exact production callback URL
-   and `http://127.0.0.1:5174` for local development. Match the eventual callback
-   path explicitly when implementing it; do not broadly allow arbitrary previews.
+   `https://saymynamesaymyname.vercel.app`. Save these four Redirect URLs:
+
+   ```text
+   https://saymynamesaymyname.vercel.app/auth/callback
+   https://saymynamesaymyname.vercel.app/auth/recovery
+   http://127.0.0.1:5174/auth/callback
+   http://127.0.0.1:5174/auth/recovery
+   ```
+
+   No wildcard previews. These values are saved and verified.
 2. Keep email confirmation enabled. Verify email delivery configuration, rate limits
    and recovery templates using current dashboard settings before promising signup.
-3. Implement the email signup/confirmation and recovery screens, exact callback
-   handling and session cleanup. Show admission-pending state after verification;
-   signing up must never grant beta admission automatically.
-4. Configure a dedicated Google OAuth client in the appropriate Google project and
-   Supabase provider settings. Keep its secret server-side. Google sign-in consent
-   is separate from Drive access. Add web/Android callback handling and test each.
-5. Admit only a verified, explicitly selected tester by their Auth user UUID through
+3. In Google Cloud, select the dedicated `saymynamesaymyname` project. Under Google
+   Auth Platform → Overview → Get started, use the temporary app name, the operator's
+   support/contact emails and External audience. The user reviews/accepts Google's
+   policy. Keep Testing while setting up; add explicitly authorized test users when
+   the Test users section is offered. Do not add people to Supabase organization
+   membership just to make auth email delivery work.
+4. Under Google Auth Platform → Data Access, select only `openid`,
+   `https://www.googleapis.com/auth/userinfo.email` and
+   `https://www.googleapis.com/auth/userinfo.profile`. No Drive/Calendar scopes.
+5. Under Clients → Create client, choose **Web application**, name it `Web beta`.
+   Authorized JavaScript origins:
+
+   ```text
+   https://saymynamesaymyname.vercel.app
+   http://127.0.0.1:5174
+   ```
+
+   Authorized redirect URI (Google returns to Supabase, not directly to Vercel):
+
+   ```text
+   https://chxlkmmkoadgcaomkznd.supabase.co/auth/v1/callback
+   ```
+
+6. Create the client, then transfer Client ID and Client Secret directly into this
+   project's Supabase Authentication → Sign In / Providers → Google settings. Enable
+   the provider and save. The secret belongs only there: never in GitHub, Vercel
+   frontend variables, screenshots, app code or chat. Do not skip nonce checks or
+   enable unverified-email sign-in. Keep the Google secret securely; it may only be
+   displayed once. Save before leaving Google's creation dialog.
+7. Web callback code is implemented. Confirm email templates use Supabase's
+   `{{ .ConfirmationURL }}` links with the intended redirect, or adapt deliberately
+   to a verified token-hash flow; do not change templates to unsupported routes.
+   Email links in this PKCE browser flow must be opened in the initiating browser.
+   The built-in SMTP service only sends to the project's authorized team addresses
+   and is rate limited; configure dedicated SMTP before inviting other email testers.
+   Google sign-in does not depend on our SMTP delivery. Keep email verification on.
+8. Admit only a verified, explicitly selected tester by their Auth user UUID through
    an operator-only database action. Never derive admission from client metadata or
    self-service profile fields; the beta table has no client access policy.
-6. Run real browser acceptance checks with approved test accounts: confirmation,
+9. Run real browser acceptance checks with approved test accounts: confirmation,
    login/logout, reload, two-device private sync, unadmitted rejection, recovery,
    token expiration and account switching. Then test native Android callbacks.
+
+## Test evidence and remaining scope
+
+`npm run test:auth` builds the production frontend with a fictional auth host and
+intercepts every auth/data request. It covers signup, PKCE recovery/password update,
+pending admission, two-client reflection synchronization, account isolation, Google
+basic scopes and failed callback cleanup. It creates no actual accounts or emails.
+The live SQL suite separately verifies Supabase ownership/admission rules. Neither
+test replaces real email/Google acceptance or real two-device testing.
+
+This is web auth. A native Android build/system-browser return path remains M5 work;
+do not add unimplemented custom-scheme callbacks or claim Android OAuth is complete.
+
+Sources checked: [Supabase Google setup](https://supabase.com/docs/guides/auth/social-sign-in/auth-google),
+[password auth](https://supabase.com/docs/guides/auth/passwords),
+[SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and
+[Google consent setup](https://developers.google.com/workspace/guides/configure-oauth-consent).
 
 ## Cloud sync scope
 

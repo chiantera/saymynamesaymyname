@@ -12,7 +12,7 @@ for (const locale of locales) {
 console.log(`Seven catalogs checked: ${expected.length} non-empty keys each. Human review still required.`);
 
 // Guard against accidental Windows cp1252/UTF-8 round trips in UI source.
-for (const file of ['App.tsx', 'domain.ts', 'i18n.ts']) {
+for (const file of ['App.tsx', 'AuthGate.tsx', 'auth-bootstrap.ts', 'domain.ts', 'i18n.ts']) {
   const source = await readFile(new URL(`../frontend/src/${file}`, import.meta.url), 'utf8');
   assert.ok(!/\u00e2[\u20ac\u2014\u0152\u0161]/.test(source), `${file}: mojibake in UI source`);
   assert.ok(!source.includes('\ufffd'), `${file}: replacement character`);

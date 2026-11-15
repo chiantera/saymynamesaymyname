@@ -41,7 +41,7 @@ export default function App() {
       await api.connect();
       let settings = await api.preferences();
       const preferred = resolveLocale(readSetting('locale') ?? i18n.language);
-      if (settings.locale !== preferred) settings = await api.savePreferences(preferred, settings.timezone);
+      if (!isCloudActive() && settings.locale !== preferred) settings = await api.savePreferences(preferred, settings.timezone);
       setPrefs(settings); setTimezone(settings.timezone);
       await i18n.changeLanguage(settings.locale);
       setRelationships(await api.relationships()); await refresh();
