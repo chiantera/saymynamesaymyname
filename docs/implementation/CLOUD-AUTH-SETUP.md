@@ -10,7 +10,9 @@
 - Private records require both operator beta admission and a current verified Auth
   email. Owner RLS and guarded RPCs enforce this independently of the UI.
 - Web client supports signup, email/password login, PKCE confirmation/recovery,
-  password update, Google OAuth start and sign-out. Live web Google sign-in passed.
+  password update, Google OAuth start and sign-out. Live web Google sign-in passed;
+  the user also confirmed recovery/password update and email/password sign-in for
+  the admitted account, with the existing cloud reflection preserved.
 - User completed Supabase dashboard login on 2026-11-15; Site URL and four exact
   callbacks below were visibly verified saved. Dedicated Google project/client,
   three basic scopes and Supabase Google provider are configured; secret entered
@@ -26,7 +28,8 @@ Connected Supabase tools can manage database migrations but do not expose Auth
 configuration here. The local CLI has no management login. The user has now signed
 into the dashboard in the built-in browser. Google configuration and the first
 verified tester admission are complete. The user confirmed the reflection in a second
-independent browser/device. Email recovery is the remaining immediate acceptance step.
+independent browser/device. The fresh-link email recovery/password sign-in retry also
+passed after deployment of e02c062, completing this core web walkthrough.
 No sibling credentials were copied.
 
 ## Dashboard walkthrough and exact values
@@ -98,17 +101,20 @@ A database count independently confirmed one matching owned reflection and fulfi
 check-in, with no duplicate artifact. No personal journal text was used in this test.
 The user additionally confirmed that the same reflection appears after Google sign-in
 in a second independent browser/device. The exact hardware/browser was not recorded;
-this does not certify the native Android wrapper. Real email recovery remains pending.
-The recovery email was received, but the first return produced `flow_state_expired`;
-this is not a successful password-reset acceptance test.
+this does not certify the native Android wrapper. The first recovery attempt expired
+with `flow_state_expired`. After e02c062 deployed, the user confirmed that a fresh link
+completed password setup, email/password sign-in worked, and the same reflection
+remained visible. Credentials and recovery links stayed with the user throughout.
 
 `npm run test:auth` builds the production frontend with a fictional auth host and
 intercepts every auth/data request. It covers signup, PKCE recovery/password update,
 pending admission, two-client reflection synchronization, account isolation, Google
 basic scopes and failed callback cleanup. It creates no actual accounts or emails.
 The live SQL suite separately verifies Supabase ownership/admission rules. Neither
-test replaces real email acceptance or real two-device testing. Google acceptance
-has now also been performed separately as described above.
+test replaces real email acceptance or real two-device testing. Google, owner-account
+email recovery/sign-in and independent-browser/device acceptance have now also been
+performed separately as described above. Fresh signup for additional accounts and
+broader SMTP delivery remain unverified.
 
 ### Email/password acceptance for a Google-first account
 

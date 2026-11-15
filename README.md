@@ -3,8 +3,8 @@
 > A personal growth & relationship companion — built around a timely, AI-drafted check-in loop.
 > **Status: implementation started.** A runnable local fictional-data check-in demo
 > is available locally and on [Vercel](https://saymynamesaymyname.vercel.app).
-> Live web Google sign-in and private reflection save/reload are verified. Email auth acceptance,
-> live processors, cloud scheduling and Android push remain incomplete.
+> Core web Google/email sign-in, recovery and private reflection sync are verified
+> for the admitted tester. Broader signup, live AI, cloud scheduling and native Android remain incomplete.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
 
@@ -27,7 +27,9 @@ No provider keys or paid APIs are used. Do not enter real sensitive data.
 Validation: `npm run check`, `npm run test:browser` and `npm run test:auth`. Browser tests use isolated
 fictional state. Details and limitations are in [CURRENT-TASK.md](CURRENT-TASK.md).
 The auth client test uses a production build with intercepted endpoints: it never
-creates a real account or sends an email. Live Google/email acceptance remains separate.
+creates a real account or sends an email. Separate live Google login, owner-account
+email recovery/sign-in, save/reload and independent-browser/device sync passed;
+details and evidence limits are recorded in the setup guide.
 
 ---
 

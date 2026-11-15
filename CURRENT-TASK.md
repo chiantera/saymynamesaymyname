@@ -47,9 +47,9 @@ Do not enter real sensitive information: this preview is a local test adapter.
   timed pause, quiet hours, DST-safe local-day caps, fair scope selection, presentation
   revalidation and deferred snooze. PATCH /api/schedule configures the local adapter.
   Supabase/hosted worker parity and scheduling UI controls remain integration work.
-- M2 private Supabase tables/RLS and email sign-in client are implemented; full
-  email/Google auth activation, membership, unanimous invites, pairwise blocks and
-  sharing/revocation remain incomplete.
+- M2 private Supabase tables/RLS and core web Google/email auth are verified for the
+  admitted tester. Broader signup/delivery, native auth, membership, unanimous invites,
+  pairwise blocks and sharing/revocation remain incomplete.
 - M3 durable Postgres worker/scheduler integration and outward decision/delivery gates.
 - M4 live provider consent/data-term checks, real usage reservations/reconciliation.
 - M5 actual Android project/build/device validation and native push.
@@ -80,8 +80,8 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
   server SQLite database. Cloud mode uses only publishable configuration and RLS.
 - Registration/recovery redirects are configured and the web client flows exist.
   Live web Google sign-in, verified beta admission and cloud persistence passed.
-  Independent-browser/device sync was confirmed by the user. Real email delivery/
-  recovery remains a separate acceptance check.
+  Independent-browser/device sync and live email recovery/password sign-in were
+  confirmed by the user for the same admitted account.
 - Cloud worker/automatic scheduling is NOT enabled by this private manual-check-in
   foundation; local scheduling rules still need a Postgres dispatcher/worker port.
 - Vercel project prj_AaO8GYUztVykULAArfzI8tCyb3Fq, production alias
@@ -141,15 +141,14 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - Removed obsolete provider-setup wording from all seven sign-in catalogs.
 - User confirmed the same saved reflection in a second independent browser/device.
   This is live web sync evidence, not an Android wrapper/device certification.
-- Real email recovery is the next acceptance check. Android auth remains M5.
+- Real email recovery subsequently passed as recorded below. Android auth remains M5.
   Cloud auto-scheduling and live AI are still disabled.
 
 ## Recovery callback follow-up — 2026-11-15
 
 - User confirmed receipt of the recovery email. The attempted return failed; live
-  auth logs identified `flow_state_expired`. Email/password completion is not yet
-  verified. Request a fresh link only after the callback build is deployed, then
-  open/complete it promptly in the initiating browser/profile.
+  auth logs identified `flow_state_expired`. The later fresh-link retry passed after
+  the callback build deployed; complete recovery promptly in the initiating profile.
 - Callback handling now preserves explicit `sb_flow_id` before URL cleanup and
   passes it to the SDK. An invalid/missing slot cannot borrow another tab's verifier.
 - Static localized guidance distinguishes expired/used links and missing browser
@@ -157,3 +156,16 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - Regression coverage: recovery succeeds from its explicit slot without the legacy
   verifier; server expiry and an explicit nonexistent slot both deny private UI.
   No expiry/verification limits were relaxed.
+
+## Core web auth acceptance complete — 2026-11-15
+
+- After deployment of e02c062, the user confirmed a fresh recovery link allowed an
+  app password to be set, email/password sign-in succeeded, and the existing fictional
+  cloud reflection remained visible. This is user-confirmed live acceptance; no
+  password or recovery link was read by the agent.
+- Together with live Google consent/PKCE login, admission denial/authorized admission,
+  save/reload and independent-browser/device sync, this completes the immediate core
+  web auth/private-reflection sync walkthrough for the admitted tester.
+- This does not certify fresh email signup/confirmation for additional accounts,
+  wider SMTP delivery, full session/MFA management or native Android callbacks.
+  Sharing/membership, cloud worker scheduling and live AI remain later work.

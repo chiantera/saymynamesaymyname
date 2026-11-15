@@ -101,7 +101,11 @@ HTTP initial local contracts:
 - [x] Deploy private profile/relationship-label/check-in/entry tables in the dedicated
   Frankfurt project with RLS, explicit verified-email beta admission and atomic
   versioned check-in RPCs. Transactional multi-actor SQL tests pass. This is a private
-  foundation, not the full shared relationship schema or a certified login flow.
+  foundation, not the full shared relationship schema.
+- [x] Verify the admitted tester's live web Google/PKCE sign-in, recovery/password
+  update, email/password login and private reflection save/reload. User confirmed the
+  reflection in an independent browser/device and after email/password sign-in.
+  Fresh signup/confirmation for other accounts and native callbacks are not certified.
 - [ ] Profiles/preferences, relationships/membership/archives, user_blocks, recipient
   grants, versioned invites/approvals and revocation state. RLS/Storage policies on
   exposed data; no authorization from editable user metadata.
@@ -186,7 +190,9 @@ React localization: https://react.i18next.com/latest/using-with-hooks
 M0/M1 are complete as a **local fictional-data demo** with tested scheduling rules.
 The hosted preview uses browser-local fictional data; a dedicated Frankfurt Supabase
 project now holds the private-sync foundation. Git pushes to main deploy to Vercel.
-M2 is partial: real email/Google setup, shared membership and consent remain open.
+M2 is partial: core web Google/email recovery/sign-in and private reflection sync
+passed for the admitted tester. Broader signup/delivery, session/MFA management,
+shared membership and consent remain open; native auth remains M5.
 The scheduling dispatcher still needs a Postgres/hosted-worker port in M3. See
 CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
 The local FastAPI adapter remains development-only and fails closed in production.
