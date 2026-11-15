@@ -264,3 +264,10 @@ stale leases, cancellation and membership rechecks. Runtime/hosting remain separ
 Added opt-in schedules, revision-guarded settings, quiet-window/local-day/gap/cap
 checks, fair dispatch and stale-work cancellation. Synthetic DST, competing scans,
 pause-after-claim, privacy and invalid-timezone tests run in disposable Postgres.
+
+## Durable cloud execution — milestone 3
+
+Added restricted mock worker process, heartbeat, Render Frankfurt blueprint and
+secure deployment runbook. Subprocess/restart and seven-locale tests verify real SQL
+publication. Live Render activation is not claimed without hosting credentials and
+a dedicated restricted database login. No paid compute or external AI was started.

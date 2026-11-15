@@ -1,0 +1,18 @@
+services:
+  - type: worker
+    name: companion-frankfurt-worker
+    runtime: python
+    region: frankfurt
+    plan: starter
+    buildCommand: pip install uv==0.12.16 && uv sync --directory backend --locked --no-dev
+    startCommand: uv run --directory backend --no-dev python -m app.cloud_worker
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.14
+      - key: APP_ENV
+        value: production
+      - key: WORKER_REGION
+        value: frankfurt
+      - key: WORKER_DATABASE_URL
+        sync: false
