@@ -7,3 +7,18 @@
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation:none!important; transition:none!important; } }
 .auth-panel { margin: 3rem auto; padding: 1rem; max-width: 600px; }
 .account-bar { padding: 8px 4%; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.membership-panel .relationship-card { display: block; margin-top: 1.5rem; }
+.members-list { padding: 0; list-style: none; }
+.member-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+.member-row button { max-width: 100%; overflow-wrap: anywhere; }
+.member-row span { overflow-wrap: anywhere; }
+.member-row small { display: block; opacity: .75; }
+.invitation-item { border-top: 1px solid var(--line); margin-top: 1rem; padding: 1rem 0; overflow-wrap: anywhere; }
+.check-label { display: flex; align-items: center; gap: .6rem; }
+.check-label input { width: auto; }
+.form .check-label { flex-direction: row; align-items: center; }
+.form .check-label input { width: auto; flex: none; }
+.membership-controls { margin-top: 1.4rem; }
+.confirmation { border: 2px solid var(--accent); border-radius: 12px; padding: 1.5rem; background: var(--surface); color: var(--ink); width: min(32rem,calc(100% - 2rem)); max-height: 85vh; overflow: auto; }
+.confirmation::backdrop { background: #0008; }
+.invitation-review { margin: 1rem 0; }

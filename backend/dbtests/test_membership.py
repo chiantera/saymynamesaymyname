@@ -58,6 +58,11 @@ def test_existing_private_sync_regressions(database_url):
     query=(Path(__file__).resolve().parents[2]/'supabase/tests/private_sync.sql').read_text(encoding='utf-8')
     with psycopg.connect(database_url,autocommit=True) as conn: conn.execute(query)
 
+def test_hosted_membership_transaction_script(database_url):
+    from pathlib import Path
+    query=(Path(__file__).resolve().parents[2]/'supabase/tests/membership.sql').read_text(encoding='utf-8')
+    with psycopg.connect(database_url,autocommit=True) as conn: conn.execute(query)
+
 def test_simultaneous_redemption_is_single_use(state):
     rid=state.create(); iid=state.propose('A',rid,'B'); token=state.issue('A',iid)
     results=simultaneous(lambda:state.act('B','accept',token=token,alias='B'),lambda:state.act('B','accept',token=token,alias='B'))
@@ -139,6 +144,26 @@ def test_archive_and_mute_are_personal(state):
     state.act('A','mute',relationship_id=rid,generation=1,value=True)
     assert state.relationship('A',rid)['mine']['muted']
     assert not state.relationship('C',rid)['mine']['muted']
+
+def test_block_labels_do_not_leak_later_edits_to_departed_members(state):
+    rid=state.group()
+    state.act('A','block',user_id=state.people['B'],value=True)
+    state.act('A','leave',relationship_id=rid,generation=1)
+    state.act('B','alias',relationship_id=rid,generation=1,alias='Changed after A left')
+    workspace=state.workspace('A')
+    assert workspace['blocks'][0]['alias']=='B'
+    assert not workspace['relationships']
+    state.act('A','block',user_id=state.people['B'],value=False)
+    state.act('A','block',user_id=state.people['B'],value=True)
+    assert state.workspace('A')['blocks'][0]['alias']=='Member'
+
+def test_new_member_cannot_learn_former_member_alias_via_block_list(state):
+    rid=state.group()
+    state.act('B','leave',relationship_id=rid,generation=1)
+    iid=state.propose('A',rid,'D');state.act('C','approve',invitation_id=iid)
+    state.act('D','accept',token=state.issue('A',iid),alias='D')
+    state.act('D','block',user_id=state.people['B'],value=True)
+    assert state.workspace('D')['blocks'][0]['alias']=='Member'
 
 def test_creator_can_leave_and_rejoin_requires_fresh_generation(state):
     rid=state.group(); iid=state.propose('B',rid,'D')

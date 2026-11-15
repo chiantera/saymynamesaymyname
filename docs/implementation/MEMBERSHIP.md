@@ -31,6 +31,9 @@ content. Explicit item-recipient grants remain a later feature.
   membership, or block B/C contact eligibility. Each recipient is checked separately.
   Unblocking never revives a revoked token. Members can stop a group invitation through
   the normal unanimity rules; blocking is not a veto over unrelated B/C spaces.
+  Block-list labels are private snapshots of currently accessible aliases, not live
+  lookups that could disclose later edits after departure or historical member names
+  to someone who joined later.
 
 Writes use `public.relationship_action`, an invoker wrapper around guarded private
 commands. Workspace/recipient preview are similarly scoped wrappers. Private tables
@@ -49,6 +52,15 @@ it with ordered group/pair locks before scaling, while retaining the same guaran
 creates a new disposable database, applies all migrations, and models authenticated
 SQL roles with a minimal local Auth fixture. Concurrent clients exercise real locks.
 Hosted JWT/email/OAuth behavior is covered by separate acceptance evidence.
+Seventeen integration tests passed, including true concurrent client transactions.
+`supabase/tests/membership.sql` also passed in the hosted project; it rolls back all
+synthetic users, memberships, approvals and tokens, leaving no test accounts behind.
+
+`npm run test:membership` builds the production client and drives three separate
+browser contexts against the real SQL/RLS functions. Auth and HTTP transport are
+local fixtures. It tests proposal → unanimous approval → explicit join through login,
+private-history isolation, A/B/C blocking, archive and creator leave. Mobile 390px
+layout and confirmation dialogs are included. No real invitations/emails are sent.
 
 The test DSN must use loopback and the `companion_test` base database. The generated
 `membership_fixture_*` database is the only database dropped. No hosted target is
@@ -63,8 +75,14 @@ fresh-generation rejoin, direct-write/helper bypass denial, and private history 
 
 ## Current implementation boundary
 
-The migration and tests are ready for frontend integration. Apply to the dedicated
-Frankfurt project with that integration; the current hosted UI still tracks private
-labels. Actual outward messages, content sharing and queued-send cancellation are
-not implemented by this milestone. Future delivery paths must use the same group,
+The migration is applied to the dedicated Frankfurt project; the cloud UI is wired
+to its RPCs. Links use `/join#invite=...`; their fragments are removed from history
+and kept temporarily in sessionStorage in the same tab through login. This avoids
+putting invitation secrets in server URLs or persistent cross-account local storage.
+If registration/email verification opens another tab, reopen the original link after
+verification. Beta admission remains separate. Fictional local previews keep their
+existing private-label flow; shared memberships require a cloud account.
+
+Actual outward messages, content sharing and queued-send cancellation are not
+implemented by this milestone. Future delivery paths must use the same group,
 generation, archive/mute and pair gates immediately before acting.

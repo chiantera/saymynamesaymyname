@@ -280,6 +280,14 @@ requiring evidence, not unanswered preference questions. Implementation is autho
 
 ## Publishing workflow
 
+Membership is implemented through guarded Supabase RPCs; see
+`docs/implementation/MEMBERSHIP.md`. Preserve digest-only recipient-bound tokens,
+unanimity by current membership revision, explicit joins, generation-bound membership
+commands and pairwise blocks. Block-list aliases are snapshots, never later-name
+lookups for departed/new members. Private content still requires separate grants.
+`npm run test:database` and `npm run test:membership` use an isolated local PostgreSQL
+fixture and refuse hosted test DSNs. Never turn them toward real beta data.
+
 User requests committing and pushing every tested change milestone to the existing
 GitHub repo, configuring Vercel Git auto-deployment and continuing Supabase integration.
 No repeat permission prompts for these authorized tasks. Never publish secrets or local data.

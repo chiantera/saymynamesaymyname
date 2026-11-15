@@ -1,17 +1,17 @@
 # Current task — Phase 0/1 implementation started
 
 Active slice: relationship membership, unanimous invitations and pairwise blocking.
-Backend migration and isolated PostgreSQL integration tests are implemented; frontend
-integration and application to the hosted project are next. See
-[MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md). The hosted app still uses private
-relationship labels until that integration is deployed.
+Backend migration, frontend integration and isolated PostgreSQL/browser tests are
+implemented. The migration and rolled-back smoke test passed in the hosted Frankfurt
+project; frontend deployment follows this milestone's push. See
+[MEMBERSHIP.md](docs/implementation/MEMBERSHIP.md).
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (89 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (139 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -23,7 +23,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Validation
 
-- `npm run check`: seven-catalog parity/encoding checks, 6 frontend domain/link tests,
+- `npm run check`: seven-catalog parity/encoding checks, 8 frontend domain/link tests,
   24 backend tests, TypeScript and Vite production build.
 - `npm run test:browser`: isolated temporary demo database and dedicated ports;
   edit/save, skip, reload persistence, all locales, relationship creation, snooze,
@@ -175,3 +175,37 @@ The first local milestone is complete; the overall Phase 0/1 plan is not complet
 - This does not certify fresh email signup/confirmation for additional accounts,
   wider SMTP delivery, full session/MFA management or native Android callbacks.
   Sharing/membership, cloud worker scheduling and live AI remain later work.
+
+## Membership and invitation milestone — 2026-11-15
+
+- Hosted migration adds current memberships/generations, unanimous recipient-bound
+  proposals, digest-only single-use seven-day links, guarded redemption/reissue,
+  personal archive/mute, immediate leave and global user-pair block edges.
+- Public relationship metadata is readable only by current admitted members; direct
+  writes and private table/helper bypasses are denied. Private reflection RLS is
+  unchanged. Joining never grants private history or previously shared audiences.
+- Membership changes revoke pending invitations; block/unblock affects only the pair.
+  Block labels are snapshots so later edits cannot leak to former/new members.
+- Cloud Relationships UI supports own aliases, proposal/approval/cancel, deliberate
+  link creation/copy/replacement, preview and explicit recipient join/decline, personal
+  archive/mute/leave and block controls. The recipient must have separate beta admission.
+  Join fragments are cleared from URLs and held only in sessionStorage in that tab;
+  same-tab OAuth/password login preserves them. Reopen the original invite if email
+  verification opens another tab. No invitation email or other message is auto-sent.
+- 17 real PostgreSQL integration tests passed, including concurrent approvals, competing
+  joins/redemption and private history checks. Hosted transactional smoke passed and
+  rolled back every synthetic account/row/token; the existing private reflection remains.
+- Three isolated browser accounts passed creation, joining through login, unanimity,
+  A/B/C blocking, personal archive/leave and private history preservation against real
+  SQL/RLS. Auth/HTTP transport was simulated; this is not a multi-account live OAuth test.
+  Mobile 390px overflow and native confirmation dialogs checked. Local fictional
+  screenshots: `.local/screenshots/membership-desktop.png`, `membership-mobile.png`.
+- Existing 24 backend tests, 8 frontend tests, TypeScript/build and auth browser suite
+  passed. CI now runs database and membership browser tests with a disposable Postgres
+  service. No hosted DSN or database password is used by those tests.
+- Advisor INFO notices for private deny-by-default tables are intentional. Existing
+  Auth warning: leaked-password protection is disabled; follow up in Auth settings
+  after checking availability/cost. No new database security warning was introduced.
+  https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
+- Actual messaging, explicit content sharing/grants, historical shared snapshots,
+  queued-send cancellation, cloud scheduling and native Android remain later work.

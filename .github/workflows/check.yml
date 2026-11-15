@@ -30,3 +30,6 @@ jobs:
           MEMBERSHIP_TEST_DSN: postgresql://postgres:fixture-only@127.0.0.1:5432/companion_test
       - run: uv run --directory backend playwright install --with-deps chromium
       - run: npm run test:auth
+      - run: npm run test:membership
+        env:
+          MEMBERSHIP_TEST_DSN: postgresql://postgres:fixture-only@127.0.0.1:5432/companion_test

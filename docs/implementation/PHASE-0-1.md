@@ -106,13 +106,16 @@ HTTP initial local contracts:
   update, email/password login and private reflection save/reload. User confirmed the
   reflection in an independent browser/device and after email/password sign-in.
   Fresh signup/confirmation for other accounts and native callbacks are not certified.
-- [ ] Profiles/preferences, relationships/membership/archives, user_blocks, recipient
-  grants, versioned invites/approvals and revocation state. RLS/Storage policies on
-  exposed data; no authorization from editable user metadata.
+- [x] Current memberships/generations, own aliases/archive/mute, immediate leave,
+  pairwise blocks and versioned unanimous invitations/approval/explicit redemption.
+  Private tables and current-member metadata RLS; no authorization from user metadata.
+- [ ] Explicit item-recipient grants, received-version history and sharing/revocation
+  across content, Storage, AI context, search and exports.
 - [ ] Email/password, verified email, recovery and Google sign-in, explicit invite join,
   session revocation and reauthentication. Validate exact MFA/account-linking behavior.
-- [ ] Isolated tests with two/three actors, including A blocks B while B/C still work.
-  Local demo passing is not evidence RLS or OAuth is complete.
+- [x] Isolated real PostgreSQL tests with multiple concurrent actors and A/B/C gates,
+  plus the three-browser membership workflow backed by real SQL/RLS. Hosted smoke
+  rolled back all synthetic records. Live multi-person OAuth/native delivery is separate.
 - [ ] Support verified project/keys through secure configuration. No production keys
   in source, frontend secrets, tests, docs or logs. Missing config fails closed.
 
@@ -190,9 +193,9 @@ React localization: https://react.i18next.com/latest/using-with-hooks
 M0/M1 are complete as a **local fictional-data demo** with tested scheduling rules.
 The hosted preview uses browser-local fictional data; a dedicated Frankfurt Supabase
 project now holds the private-sync foundation. Git pushes to main deploy to Vercel.
-M2 is partial: core web Google/email recovery/sign-in and private reflection sync
-passed for the admitted tester. Broader signup/delivery, session/MFA management,
-shared membership and consent remain open; native auth remains M5.
+M2 is partial: core web auth/private reflection sync and membership/invitation/block
+foundations passed their respective tests. Broader signup/delivery, session/MFA
+management and explicit content-sharing grants remain open; native auth remains M5.
 The scheduling dispatcher still needs a Postgres/hosted-worker port in M3. See
 CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
 The local FastAPI adapter remains development-only and fails closed in production.

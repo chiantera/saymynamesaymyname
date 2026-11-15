@@ -3,6 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {cloud, setCloudActive} from './cloud';
 import {initializeAuth} from './auth-bootstrap';
 import {authRedirect} from './auth-links';
+import {pendingInvitation} from './invitation-links';
 
 type Screen = 'checking' | 'preview' | 'login' | 'signup' | 'reset' | 'password' | 'pending' | 'cloud';
 
@@ -31,7 +32,7 @@ export default function AuthGate({children}: {children: ReactNode}) {
         const session = await cloud?.auth.getSession();
         if (stopped || ticket !== sequence.current) return;
         if (!session?.data.session) {
-          setSessionKey('preview'); setScreen(signedOutDestination.current); return;
+          setSessionKey('preview'); setScreen(pendingInvitation() ? 'login' : signedOutDestination.current); return;
         }
         const user = session.data.session.user;
         if (recovery.current) {

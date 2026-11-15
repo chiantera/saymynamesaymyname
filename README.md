@@ -4,7 +4,9 @@
 > **Status: implementation started.** A runnable local fictional-data check-in demo
 > is available locally and on [Vercel](https://saymynamesaymyname.vercel.app).
 > Core web Google/email sign-in, recovery and private reflection sync are verified
-> for the admitted tester. Broader signup, live AI, cloud scheduling and native Android remain incomplete.
+> for the admitted tester. Cloud relationship membership, unanimous invite links and
+> pairwise block controls are implemented and tested. Broader signup, content sharing,
+> live AI, cloud scheduling and native Android remain incomplete.
 > Execution plan: [Phase 0/1](docs/implementation/PHASE-0-1.md).
 > Verified progress and remaining gates: [CURRENT-TASK.md](CURRENT-TASK.md).
 
@@ -30,6 +32,14 @@ The auth client test uses a production build with intercepted endpoints: it neve
 creates a real account or sends an email. Separate live Google login, owner-account
 email recovery/sign-in, save/reload and independent-browser/device sync passed;
 details and evidence limits are recorded in the setup guide.
+
+Cloud accounts can create a relationship, choose a shared alias, propose a named
+recipient and collect unanimous approval before creating a seven-day invite link.
+The recipient signs in with the matching verified email and explicitly joins; beta
+admission is separate. Links are shared manually; no invitation emails are sent.
+Members can archive/mute personally, leave, or block another person without removing
+them or restricting unrelated members. Private reflections remain private.
+See [membership implementation and tests](docs/implementation/MEMBERSHIP.md).
 
 ---
 

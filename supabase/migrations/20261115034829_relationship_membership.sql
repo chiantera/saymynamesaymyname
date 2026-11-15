@@ -18,6 +18,7 @@ insert into companion_private.memberships(relationship_id,user_id,alias)
 create table companion_private.user_blocks (
  blocker uuid not null references auth.users(id) on delete cascade,
  blocked uuid not null references auth.users(id) on delete cascade,
+ display_alias text not null check(length(btrim(display_alias)) between 1 and 80),
  primary key(blocker,blocked), check(blocker<>blocked)
 );
 create index user_blocks_target on companion_private.user_blocks(blocked,blocker);
@@ -32,11 +33,13 @@ create table companion_private.invitations (
  check(status<>'issued' or (token_digest is not null and issued_at is not null and expires_at is not null and expires_at>issued_at))
 );
 create index invitations_relationship on companion_private.invitations(relationship_id);
+create index invitations_proposer on companion_private.invitations(proposer);
 create table companion_private.invitation_approvals (
  invitation_id uuid not null references companion_private.invitations(id) on delete cascade,
  member_id uuid not null references auth.users(id), member_generation bigint not null,
  primary key(invitation_id,member_id)
 );
+create index invitation_approvals_member on companion_private.invitation_approvals(member_id);
 alter table companion_private.memberships enable row level security;
 alter table companion_private.user_blocks enable row level security;
 alter table companion_private.invitations enable row level security;
@@ -143,7 +146,13 @@ begin
    then raise exception 'member_unavailable'; end if;
   flag:=(p_args->>'value')::boolean;
   if flag then
-   insert into companion_private.user_blocks values(actor,other_user) on conflict do nothing;
+   -- Snapshot a currently accessible name, never follow future edits after leaving.
+   select m.alias into alias_value from companion_private.memberships m
+    join companion_private.memberships mine on mine.relationship_id=m.relationship_id
+    where mine.user_id=actor and mine.status<>'left' and m.user_id=other_user and m.status<>'left'
+    order by m.joined_at desc,m.relationship_id limit 1;
+   insert into companion_private.user_blocks(blocker,blocked,display_alias)
+    values(actor,other_user,coalesce(alias_value,'Member')) on conflict do nothing;
    -- Only invitations that would introduce contact across this specific pair.
    update companion_private.invitations i set status='revoked',version=version+1
    where i.status in ('proposed','issued') and (
@@ -262,8 +271,7 @@ begin
  from public.companion_relationships r join companion_private.memberships me on me.relationship_id=r.id
  where me.user_id=actor and me.status<>'left';
  return result || jsonb_build_object('blocks',coalesce((select jsonb_agg(jsonb_build_object('user_id',b.blocked,
-  'alias',coalesce((select m.alias from companion_private.memberships m join companion_private.memberships mine
-   on mine.relationship_id=m.relationship_id and mine.user_id=actor where m.user_id=b.blocked order by m.joined_at desc limit 1),'Member')))
+  'alias',b.display_alias))
   from companion_private.user_blocks b where b.blocker=actor),'[]'::jsonb));
 end $$;
 
