@@ -6,7 +6,7 @@ its synthetic actors; no hosted beta data is used. Credentials stay in ignored l
 configuration or CI service environment, never in tracked fixtures.
 
 `npm run test:database` covers membership, sharing, queue leases, scheduling and
-worker subprocess restarts (38 tests). `npm run test:membership` builds the real
+worker subprocess restarts (43 tests). `npm run test:membership` builds the real
 client with fake Auth/HTTP endpoints backed by real SQL/RLS. Its transport commits
 before returning a response, matching PostgREST transaction ordering. Browser builds
 share dist: do not run auth/membership/browser suites concurrently.
@@ -15,3 +15,8 @@ Current mock execution: the same hosted cron now calls a bounded Postgres consum
 inside the existing Frankfurt project. It uses private static catalogs and the
 existing leased queue. Render/Python remain available for later; no paid service
 or external AI is needed for this interim mode.
+
+AI consent foundation: Settings and guarded SQL persist private source preferences,
+reflection exclusions and versioned provider/capability/fallback approval. Real
+provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
+at repository root. No mock-worker journal access or external AI activation.

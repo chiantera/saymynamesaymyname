@@ -19,3 +19,8 @@ Current mock execution: the same hosted cron now calls a bounded Postgres consum
 inside the existing Frankfurt project. It uses private static catalogs and the
 existing leased queue. Render/Python remain available for later; no paid service
 or external AI is needed for this interim mode.
+
+AI consent foundation: Settings and guarded SQL persist private source preferences,
+reflection exclusions and versioned provider/capability/fallback approval. Real
+provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
+at repository root. No mock-worker journal access or external AI activation.

@@ -349,13 +349,13 @@ provisioning, TLS, heartbeat, cancellation, recovery and activation checks.
 | Check | What it proves |
 |---|---|
 | `npm run check` | Catalogs, domain/API tests, TypeScript and production build |
-| `npm run test:database` | 38 real PostgreSQL authorization, concurrency, scheduling and worker tests |
+| `npm run test:database` | 43 real PostgreSQL authorization, consent, concurrency and worker tests |
 | `npm run test:auth` | Isolated client auth/recovery/account boundaries; Auth endpoints simulated |
 | `npm run test:membership` | Real browser plus SQL for membership, sharing, revocation and schedule persistence |
 | `supabase/tests/cloud_worker.sql` | Hosted synthetic queue workflow with rollback; admin invocation, not a Render process |
 
 Run browser suites sequentially because each builds frontend/dist. SQL tests refuse
-hosted DSNs. Static catalogs have 166 draft keys per locale; native/safety review
+hosted DSNs. Static catalogs have 183 draft keys per locale; native/safety review
 remains open. A green CI run and a ready Vercel alias are verified separately.
 
 ## What remains after these four milestones
@@ -380,3 +380,16 @@ capacity and normal availability limits; free projects can pause. There is no
 additional worker-hosting subscription. The [runbook](docs/implementation/CLOUD-SCHEDULING.md)
 records tests, limitations and the switch back to Render. `render.yaml` remains
 unchanged for that later step.
+
+
+## Private AI preferences
+
+Settings now supports off-by-default saved-reflection context preferences and
+persistent individual exclusions. Sharing remains a separate permission. Provider
+approval is per capability, with separate fallback approval and review versions;
+provider controls are unavailable until reviewed. **All live AI remains disabled.**
+See [AI consent](docs/implementation/AI-CONSENT.md) for behavior and remaining gates.
+
+The free interim hosting choice is recorded in
+[decision 0001](docs/decisions/0001-free-interim-executor.md): use the existing
+Frankfurt database for bounded static mocks and retain Render for later.

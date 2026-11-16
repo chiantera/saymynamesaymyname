@@ -312,3 +312,13 @@ maintenance/dispatch then the same claim/finish functions, with static catalog t
 only. No extra paid host, user-data exposure, network AI or implicit schedule opt-in.
 Render runtime/blueprint stay intact for later. Do not add duplicate schedulers or
 put slow/network AI work into Postgres. See CLOUD-SCHEDULING.md for switching modes.
+
+
+## AI consent foundation — current status
+
+Settings stores private future-context opt-in and per-reflection exclusions. Provider
+and capability approval/fallback are separate and review-version-bound. All deployed
+provider reviews/processing remain disabled, so no real processor consent is offered
+prematurely. Do not connect these preferences directly to a network request. Future
+calls need execution-time authorization, cost reservation and safety checks. The mock
+worker must retain no journal access. See docs/implementation/AI-CONSENT.md.

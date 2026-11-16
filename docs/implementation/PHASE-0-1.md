@@ -211,3 +211,9 @@ Current hosting update: the included Frankfurt Postgres mock consumer is live,
 with the same durable authorization/lease checks. Render remains a later option.
 See [cloud scheduling](CLOUD-SCHEDULING.md) for scope and evidence; no real AI or
 external messages are enabled by this interim adapter.
+
+
+M4 progress 2026-11-16: saved-reflection category permission and per-item exclusions,
+review-version-bound per-capability approval and separate fallback are implemented.
+See AI-CONSENT.md. Document/chat sources, actual context builders, live processors,
+safety evaluations and cost reservations remain open; this does not close all M4.

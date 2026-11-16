@@ -1961,3 +1961,9 @@ checks. This is a temporary no-extra-hosting-cost adapter, not a replacement for
 external AI/OCR processing. Keep FastAPI/Python and the Render blueprint for later.
 No user schedule is enabled by the hosting change. Before real AI, choose a suitable
 runtime under existing consent, data-region, cost and safety requirements.
+
+
+M4 checkpoint 2026-11-16: private AI consent foundations are implemented, including
+review-bound capability/fallback gates and persistent reflection exclusions. Live
+providers and actual context retrieval are not activated. Implementation evidence:
+docs/implementation/AI-CONSENT.md. Free-worker choice: docs/decisions/0001-free-interim-executor.md.

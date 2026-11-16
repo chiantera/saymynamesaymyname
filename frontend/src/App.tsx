@@ -1,3 +1,4 @@
+import AIConsent from './AIConsent';
 import Scheduling from './Scheduling';
 import Sharing from './Sharing';
 import {isCloudActive} from './cloud';
@@ -110,6 +111,7 @@ export default function App() {
         </section><aside className="side-cards"><section className="card small-card"><span className="eyebrow">{t('budget')}</span><strong className="big-number">{new Intl.NumberFormat(language, { style: 'currency', currency: 'EUR' }).format(0)}</strong><p>{t('zeroCost')}</p></section><section className="card small-card"><span className="eyebrow">{t('quietHours')}</span><strong className="hours">22:00–08:00</strong><p>{prefs?.timezone ?? timezone}</p></section></aside></div>
         <section className="card reflections"><h2>{t('entries')}</h2>{entries.length === 0 ? <p className="empty-state">{t('emptyEntries')}</p> : entries.map(e => <article className="entry" key={e.id}><time dateTime={e.created_at}>{date(e.created_at)}</time><p>{e.text}</p><span className="pill">{t('privateLabel')}</span></article>)}</section>
       </>}
+      {tab === 'settings' && isCloudActive() && <AIConsent entries={entries}/>}
       {tab === 'settings' && isCloudActive() && <Scheduling/>}
       {tab === 'home' && isCloudActive() && <Sharing entries={entries}/>}
       {tab === 'relationships' && (isCloudActive() ? <Relationships/> : <section className="page-panel"><span className="eyebrow">{t('relationships')}</span><h1>{t('emptyRelationships')}</h1><p>{t('relationshipScope')}</p><form className="card form" onSubmit={e => { e.preventDefault(); void perform(async () => { await api.addRelationship(label); setLabel(''); setRelationships(await api.relationships()); }); }}><label>{t('relationshipLabel')}<input value={label} required maxLength={80} onChange={e => setLabel(e.target.value)} /></label><button className="primary" disabled={busy || !prefs || !label.trim()}>{t('addRelationship')}</button></form>{relationships.map(r => <article className="card relationship-card" key={r.id}><h2>{r.label}</h2><span className="pill">{t('privateLabel')}</span></article>)}</section>)}

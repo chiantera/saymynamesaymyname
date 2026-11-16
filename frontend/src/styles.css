@@ -29,3 +29,6 @@
 .sharing .check-label input { width: auto; }
 .sharing article { border-top: 1px solid var(--line); padding-block: 1rem; overflow-wrap: anywhere; }
 .received-text { white-space: pre-wrap; }
+
+.form fieldset { min-width: 0; width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 1rem; }
+.form article { width: 100%; overflow-wrap: anywhere; }

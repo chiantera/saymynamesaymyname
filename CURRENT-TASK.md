@@ -1,17 +1,17 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: free interim cloud worker. The existing Frankfurt Supabase cron now
-executes a bounded Postgres mock consumer, using the same durable queue, leases and
-authorization gates. No extra hosting subscription or new secret is needed. Render
-Python runtime/blueprint remain intact for later. User schedules stay off until the
-owner enables them; provider calls and external messages remain disabled.
+Active slice: M4 private AI consent foundation. Saved-reflection context preferences
+and per-item exclusions now persist privately. Provider/capability approval and
+fallback are separately versioned; every real provider remains unavailable pending
+review and runtime/cost/safety activation. The free Frankfurt Postgres mock executor
+continues unchanged. Hosting decision recorded in docs/decisions/0001-free-interim-executor.md.
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (166 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (183 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -324,3 +324,24 @@ The existing worker-role and queue contracts remain usable for a later runtime.
   runs succeeded and readiness is true. Synthetic smoke user count is zero.
 - Security advisor: new static catalog is deliberately private with RLS/no client
   policies; 12 INFO notices now. Existing leaked-password protection WARN unchanged.
+
+
+## AI consent foundation — 2026-11-16
+
+Added private consent preferences, item exclusions, per-capability provider grants,
+review-version invalidation and bounded 90-day receipt cleanup. Installed migration
+20261116143354_private_ai_consent.sql in Frankfurt. Hosted synthetic smoke passed
+and rolled back; all provider catalog reviews/runtime switches remain disabled.
+The mock worker has no journal permission and still uses only static catalog text.
+
+Validation: 43 PostgreSQL tests, browser category/exclusion persistence and provider
+disablement at desktop/390px, 8 frontend tests, 24 local backend tests, TypeScript/
+Vite build and 183-key draft-catalog parity. User preference changes require current
+revision; stale writes fail. No provider credentials/calls or paid resources used.
+Security advisor has 17 intentional RLS/no-client-policy INFO notices and the prior
+leaked-password-protection WARN, unchanged. See AI-CONSENT.md for limits and evidence.
+
+Follow-up review constraint migration 20261116144525 enforces complete non-null
+provider review data. Policy URL changes revoke earlier consent even if the version
+label is unchanged; restoring the old URL cannot restore approval. Five consent
+tests pass, including this regression. The overall database suite now has 43 tests.
