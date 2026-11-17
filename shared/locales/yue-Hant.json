@@ -335,5 +335,8 @@
   "supportService_fire": "消防",
   "supportDirectory_emotional": "Find A Helpline — 情緒支援",
   "supportDirectory_abuse": "Lila.help — 暴力及虐待支援",
-  "supportDirectory_device": "NNEDV Safety Net — 裝置安全"
+  "supportDirectory_device": "NNEDV Safety Net — 裝置安全",
+  "recoveredDraftLabel": "已復原嘅未傳送修改",
+  "recoveredDraftHint": "呢項暫存修改可能會因為頁面或登入工作階段改變而被清除。請即刻複製。",
+  "recoveredDraftDismiss": "關閉修改"
 }

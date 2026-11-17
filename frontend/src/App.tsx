@@ -28,7 +28,7 @@ import Growth from './screens/Growth';
 import Home, { type Decision } from './screens/Home';
 import LocalRelationships from './screens/LocalRelationships';
 import SettingsScreen from './screens/SettingsScreen';
-import { Button, Notice } from './ui';
+import { Button, Field, Notice } from './ui';
 import { SupportNotices } from './Support';
 import { pollDelay, startPolling } from './polling';
 
@@ -43,6 +43,7 @@ export default function App() {
   const [label, setLabel] = useState('');
   const [timezone, setTimezone] = useState('Europe/Berlin');
   const [draft, setDraft] = useState('');
+  const [recoveredDrafts, setRecoveredDrafts] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<'errorMessage' | 'errorConflict' | null>(null);
   const [notice, setNotice] = useState(false);
@@ -53,6 +54,10 @@ export default function App() {
   pollSnapshot.current = snapshot;
   const ready = prefs !== null;
   const active = snapshot.checkins.find((checkin) => checkin.status === 'pending');
+  const previousActive = useRef<Checkin | undefined>(undefined);
+  const latestDraft = useRef(draft);
+  const approvedHere = useRef<string | null>(null);
+  latestDraft.current = draft;
   const language = resolveLocale(i18n.language);
   const cloud = isCloudActive();
   const formatDate = (value: string) =>
@@ -121,6 +126,13 @@ export default function App() {
   }, [ready, cloud, refresh]);
 
   useEffect(() => {
+    const previous = previousActive.current;
+    if (previous && approvedHere.current !== previous.id && latestDraft.current !== previous.draft) {
+      const text = latestDraft.current;
+      setRecoveredDrafts(items => [...items, text]);
+    }
+    approvedHere.current = null;
+    previousActive.current = active;
     setDraft(active?.draft ?? '');
   }, [active?.id, active?.version]);
 
@@ -174,9 +186,11 @@ export default function App() {
 
   function decide(checkin: Checkin, decision: Decision) {
     // Only approval carries text; the check-in version guards against stale decisions.
-    void perform(() =>
-      decision === 'approve' ? api.decide(checkin, 'approve', draft) : api.decide(checkin, decision),
-    );
+    void perform(async () => {
+      const result = await (decision === 'approve' ? api.decide(checkin, 'approve', draft) : api.decide(checkin, decision));
+      if (decision === 'approve') approvedHere.current = checkin.id;
+      return result;
+    });
   }
 
   function addRelationship() {
@@ -205,6 +219,17 @@ export default function App() {
     >
       <JoinInvitation onJoined={() => setTab('relationships')} />
       {cloud && <SupportNotices />}
+      {recoveredDrafts.map((text, index) => (
+        <Notice key={index} tone="warning">
+          <Field label={t('recoveredDraftLabel')} hint={t('recoveredDraftHint')}>
+            <textarea readOnly value={text} rows={4} dir="auto" />
+          </Field>
+          <Button onClick={() => setRecoveredDrafts(items => items.filter((_, i) => i !== index))}
+            aria-label={`${t('recoveredDraftDismiss')} ${index + 1}`}>
+            {t('recoveredDraftDismiss')}
+          </Button>
+        </Notice>
+      ))}
       {error && (
         <Notice
           tone="error"

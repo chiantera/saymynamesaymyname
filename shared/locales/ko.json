@@ -335,5 +335,8 @@
   "supportService_fire": "소방",
   "supportDirectory_emotional": "Find A Helpline — 정서적 지원",
   "supportDirectory_abuse": "Lila.help — 폭력 및 학대 지원",
-  "supportDirectory_device": "NNEDV Safety Net — 기기 안전"
+  "supportDirectory_device": "NNEDV Safety Net — 기기 안전",
+  "recoveredDraftLabel": "복구된 미전송 수정 내용",
+  "recoveredDraftHint": "이 임시 수정 내용은 페이지나 세션이 바뀌면 지워질 수 있습니다. 지금 복사하세요.",
+  "recoveredDraftDismiss": "수정 내용 닫기"
 }

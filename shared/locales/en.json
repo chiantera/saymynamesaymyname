@@ -335,5 +335,8 @@
   "supportService_fire": "Fire",
   "supportDirectory_emotional": "Find A Helpline — emotional support",
   "supportDirectory_abuse": "Lila.help — violence and abuse support",
-  "supportDirectory_device": "NNEDV Safety Net — device safety"
+  "supportDirectory_device": "NNEDV Safety Net — device safety",
+  "recoveredDraftLabel": "Recovered unsent edit",
+  "recoveredDraftHint": "This temporary edit can be cleared by a page or session change. Copy it now.",
+  "recoveredDraftDismiss": "Dismiss edit"
 }

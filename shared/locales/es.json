@@ -335,5 +335,8 @@
   "supportService_fire": "Bomberos",
   "supportDirectory_emotional": "Find A Helpline — apoyo emocional",
   "supportDirectory_abuse": "Lila.help — apoyo ante violencia y abuso",
-  "supportDirectory_device": "NNEDV Safety Net — seguridad del dispositivo"
+  "supportDirectory_device": "NNEDV Safety Net — seguridad del dispositivo",
+  "recoveredDraftLabel": "Edición no enviada recuperada",
+  "recoveredDraftHint": "Esta edición temporal puede borrarse al cambiar de página o de sesión. Cópiala ahora.",
+  "recoveredDraftDismiss": "Descartar edición"
 }

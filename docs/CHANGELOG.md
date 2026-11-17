@@ -8,7 +8,9 @@ asset checks and real user/device acceptance prove different things.
 
 - Tightened cloud request input/result typing and mapped only the exact server
   stale-decision error to the existing conflict message. Raw diagnostics remain
-  hidden; account-generation checks and the user’s edited draft are preserved.
+  hidden. Unsent edits displaced by a refreshed version are available privately
+  temporarily; page changes, sign-out or session revalidation can clear them. They
+  are not automatically sent or saved.
 
 - Reduced cloud reads with idle/active cadence, bounded failure backoff, hidden-tab
   pause, one fresh read on return and one identity check per refresh batch. The

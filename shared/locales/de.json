@@ -335,5 +335,8 @@
   "supportService_fire": "Feuerwehr",
   "supportDirectory_emotional": "Find A Helpline — seelische Unterstützung",
   "supportDirectory_abuse": "Lila.help — Hilfe bei Gewalt und Missbrauch",
-  "supportDirectory_device": "NNEDV Safety Net — Gerätesicherheit"
+  "supportDirectory_device": "NNEDV Safety Net — Gerätesicherheit",
+  "recoveredDraftLabel": "Wiederhergestellte ungesendete Änderung",
+  "recoveredDraftHint": "Diese vorübergehende Änderung kann bei einem Seiten- oder Sitzungswechsel verloren gehen. Kopiere sie jetzt.",
+  "recoveredDraftDismiss": "Änderung verwerfen"
 }

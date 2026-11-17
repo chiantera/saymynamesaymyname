@@ -101,14 +101,18 @@ def handle(route):
     if path=='/rest/v1/companion_entries': return reply(records[actor])
     if path=='/rest/v1/companion_checkins': return reply(checkins[actor])
     if path=='/rest/v1/rpc/create_private_checkin':
-        item={'id':'20000000-0000-0000-0000-000000000001','status':'pending','version':0,
+        item={'id':f"20000000-0000-0000-0000-{len(checkins[actor])+1:012d}",'status':'pending','version':0,
               'prompt':body['p_prompt'],'draft':body['p_draft'],'created_at':'2026-11-15T00:00:00Z',
               'deadline':'2099-01-01T00:00:00Z','snoozed_until':None}
         checkins[actor].append(item)
         return reply(item)
     if path=='/rest/v1/rpc/decide_private_checkin':
-        if decision_errors: return reply(decision_errors.pop(0),400)
-        checkins[actor][0]['status']='fulfilled'
+        item=next(item for item in checkins[actor] if item['id']==body['p_id'])
+        if decision_errors:
+            failure=decision_errors.pop(0)
+            if failure.pop('fixture_remote_closed',False): item['status']='fulfilled'
+            return reply(failure,400)
+        item['status']='fulfilled'
         records[actor].append({'id':'fixture-entry','text':body['p_text'],'locale':'en','created_at':'2026-11-15T00:00:00Z'})
         return reply({'status':'fulfilled'})
     raise AssertionError('Unexpected mocked endpoint: '+path)
@@ -203,20 +207,48 @@ try:
         login(page)
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
-        decision_errors.append({'code':'P0001','message':'stale_decision','details':'fictional private diagnostic'})
+        # A refresh notices a decision made elsewhere before this tab submits.
+        checkins[actor_a][-1]['status']='fulfilled'
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private fictional reflection for actor A')
+        page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        page.get_by_role('button',name=en['generate']).click()
+        page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
+        decision_errors.append({'code':'P0001','message':'stale_decision','details':'fictional private diagnostic','fixture_remote_closed':True})
         page.get_by_role('button',name=en['approve'],exact=True).click()
         expect(page.get_by_text(en['errorConflict'],exact=True)).to_be_visible()
         expect(page.get_by_text('fictional private diagnostic')).to_have_count(0)
-        expect(page.get_by_role('textbox',name=en['review'])).to_have_value('Private fictional reflection for actor A')
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private fictional reflection for actor A')
         assert not records[actor_a]
+        page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        # An intentionally cleared draft is still an edit, even though it is empty.
+        page.get_by_role('button',name=en['generate']).click()
+        page.get_by_role('textbox',name=en['review']).clear()
+        checkins[actor_a][-1]['status']='fulfilled'
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('')
+        page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        page.get_by_role('button',name=en['generate']).click()
+        page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
         page.get_by_role('button',name=en['approve'],exact=True).click()
         expect(page.locator('.entry')).to_have_text(__import__('re').compile('Private fictional reflection for actor A'))
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        page.get_by_role('button',name=en['generate']).click()
+        page.get_by_role('textbox',name=en['review']).fill('Private unsent edit for actor A')
+        checkins[actor_a][-1]['status']='fulfilled'
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private unsent edit for actor A')
         other,second=new_page()
         second.goto(origin)
         login(second)
         expect(second.locator('.entry')).to_contain_text('Private fictional reflection for actor A')
+        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         page.get_by_role('button',name=en['signOut'],exact=True).click()
         expect(page.locator('.entry')).to_have_count(0)
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         login(page,'b@example.invalid')
         expect(page.get_by_role('button',name=en['signOut'],exact=True)).to_be_visible()
         expect(page.locator('.entry')).to_have_count(0)

@@ -21,3 +21,8 @@ untrusted text as text; do not introduce raw HTML or provider credentials.
 
 `request-errors.ts` maps only an exact stale check-in decision to a safe conflict
 message. Other cloud errors stay generic; server details are never rendered.
+
+If a refreshed check-in changes while its draft is edited, `App.tsx` keeps displaced
+unsent edits in an account-scoped, in-memory recovery area. Page changes, sign-out
+or session revalidation can clear it, so the UI asks the user to copy edits now.
+No automatic sharing, sending or cloud save occurs.

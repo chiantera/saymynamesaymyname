@@ -335,5 +335,8 @@
   "supportService_fire": "Vigili del fuoco",
   "supportDirectory_emotional": "Find A Helpline — supporto emotivo",
   "supportDirectory_abuse": "Lila.help — supporto contro violenza e abusi",
-  "supportDirectory_device": "NNEDV Safety Net — sicurezza del dispositivo"
+  "supportDirectory_device": "NNEDV Safety Net — sicurezza del dispositivo",
+  "recoveredDraftLabel": "Modifica non inviata recuperata",
+  "recoveredDraftHint": "Questa modifica temporanea può essere cancellata se cambia la pagina o la sessione. Copiala ora.",
+  "recoveredDraftDismiss": "Rimuovi modifica"
 }
