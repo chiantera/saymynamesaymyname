@@ -50,9 +50,9 @@ def test_exact_capability_consent_fallback_and_terms_revision(state):
     change(state,'provider',provider='deepseek',capability='chat',approved=True,allow_fallback=True,review_revision='fictional-v1')
     assert eligible(state,fallback=True)==[eid]
     assert eligible(state,capability='ocr')==[]
-    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set review_revision='fictional-v2' where provider='deepseek'")
+    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set review_revision='fictional-v2' where provider='deepseek' and capability='chat'")
     assert eligible(state)==[]
-    assert not next(p for p in consent(state)['providers'] if p['provider']=='deepseek')['approved']
+    assert not next(p for p in consent(state)['providers'] if p['provider']=='deepseek' and p['capability']=='chat')['approved']
     denied(lambda:grant(state),'provider_unavailable')
 
 
@@ -78,10 +78,10 @@ def test_per_item_exclusion_and_cross_member_privacy(state):
 def test_revocation_stale_requests_runtime_off_and_event_cleanup(state):
     eid=entry(state);reviewed(state);grant(state);change(state,'context',journals=True,documents=False,chats=False)
     denied(lambda:change(state,'context',revision=0,journals=False,documents=False,chats=False),'stale_consent')
-    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set enabled=false where provider='deepseek'")
+    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set enabled=false where provider='deepseek' and capability='chat'")
     assert eligible(state)==[]
     change(state,'provider',provider='deepseek',capability='chat',approved=False,allow_fallback=False)
-    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set enabled=true where provider='deepseek'")
+    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set enabled=true where provider='deepseek' and capability='chat'")
     assert eligible(state)==[]
     with psycopg.connect(state.dsn) as conn:
         conn.execute("update companion_private.ai_consent_events set created_at=now()-interval '91 days' where owner=%s",(state.people['A'],))
@@ -95,12 +95,12 @@ def test_incomplete_review_cannot_enable_and_url_changes_revoke(state):
     with psycopg.connect(state.dsn) as conn:
         try:
             with conn.transaction():
-                conn.execute("update companion_private.ai_provider_catalog set enabled=true,review_revision='fixture',reviewed_at=now(),policy_url=null where provider='deepseek'")
+                conn.execute("update companion_private.ai_provider_catalog set enabled=true,review_revision='fixture',reviewed_at=now(),policy_url=null where provider='deepseek' and capability='chat'")
         except psycopg.errors.CheckViolation:pass
         else:raise AssertionError('Missing policy URL enabled processing')
     eid=entry(state);reviewed(state);grant(state);change(state,'context',journals=True,documents=False,chats=False)
     assert eligible(state)==[eid]
-    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set policy_url='https://example.invalid/revised-policy' where provider='deepseek'")
+    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set policy_url='https://example.invalid/revised-policy' where provider='deepseek' and capability='chat'")
     assert eligible(state)==[]
-    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set policy_url='https://example.invalid/test-policy' where provider='deepseek'")
+    with psycopg.connect(state.dsn) as conn:conn.execute("update companion_private.ai_provider_catalog set policy_url='https://example.invalid/test-policy' where provider='deepseek' and capability='chat'")
     assert eligible(state)==[]

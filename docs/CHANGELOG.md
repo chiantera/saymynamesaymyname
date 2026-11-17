@@ -6,6 +6,10 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-17
 
+- Switched the database command to discover tests automatically while explicitly
+  excluding separately executed SQL-backed browser suites. Fixed a consent fixture
+  that assumed a provider had only one capability and depended on test order.
+
 - Added local active-edit checkpoints and revision-fenced private cloud copies,
   recovery after reload, explicit retry/restore and device-only removal. Browser
   storage and offline-start limitations remain. [Recovery](implementation/EDIT-RECOVERY.md).

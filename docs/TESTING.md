@@ -16,9 +16,9 @@ use fictional text, mocked HTTP and synthetic identities, never real provider ke
 | `npm run test:docs` | Relative Markdown targets/anchors and documentation authority contracts | Node |
 
 Counts come from commands, not copied prose. Collection is not execution. The
-membership browser case lives in `backend/dbtests` but runs separately; the database
-script's explicit list currently preserves that boundary. Do not blindly replace it
-with `pytest dbtests`, which would also launch the browser build/server.
+database command discovers the directory while excluding `*_browser.py` files.
+Those run separately because they build and start browser fixtures; name future
+SQL-backed browser files with that suffix and register their separate command.
 
 ## Local PostgreSQL fixture
 
