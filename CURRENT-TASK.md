@@ -426,3 +426,7 @@ price/usage rows, zero enabled processors, no client/mock-worker execute permiss
 Security advisor remains 22 intentional private RLS INFO and the existing password
 protection WARN. All live defaults stay off; unavailable safety is a hard stop.
 See docs/implementation/DEEPSEEK-ADAPTER.md for remaining activation requirements.
+
+Adapter transaction fence: every authorization/meter call checks that an autocommit
+connection is IDLE, rejecting explicit transaction blocks opened before or after
+gate construction. Real SQL regression coverage includes all three cases.

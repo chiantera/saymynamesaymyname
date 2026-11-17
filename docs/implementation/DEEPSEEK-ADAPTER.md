@@ -29,7 +29,8 @@ lease/expiry/job eligibility, solo scope, reviewed enabled DeepSeek chat model/p
 current exact-version provider approval and personal AI pause. It exposes only locale,
 model and review revision. It grants execution only to the existing NOLOGIN metering
 role; clients and the mock worker cannot call it. It grants no journal/table access.
-The connection bridge requires both autocommit and `current_user=companion_meter`.
+The connection bridge requires autocommit, an idle connection with no explicit
+transaction before each call, and `current_user=companion_meter`.
 
 The service accepts only job/lease/price IDs and attempt number; no caller-selected
 owner, context text, model URL, relationship audience or saved-source IDs. Consequently
@@ -117,3 +118,8 @@ a new attempt; this adapter implements neither automatically.
 
 API details/prices can change; configuration review and real provider safety/locale
 evaluation remain prerequisites for activation, not claims established by mocks.
+
+Transaction fence follow-up: regression checks reject both implicit transactions
+and explicit `connection.transaction()` blocks on an autocommit connection, including
+blocks opened after the gate object was constructed. No dispatch can depend on an
+uncommitted reservation.

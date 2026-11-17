@@ -106,3 +106,9 @@ def test_transaction_cannot_rollback_after_external_dispatch(state):
         with pytest.raises(Denied,match='autocommit_required'):PostgresGate(conn)
     with psycopg.connect(state.dsn,autocommit=True) as conn:
         with pytest.raises(Denied,match='restricted_meter_role_required'):PostgresGate(conn)
+        conn.execute('set role companion_meter')
+        gate=PostgresGate(conn)
+        with conn.transaction():
+            with pytest.raises(Denied,match='autocommit_required'):PostgresGate(conn)
+            with pytest.raises(Denied,match='autocommit_required'):gate.authorize(Task(*(str(uuid.uuid4()) for _ in range(3))))
+            with pytest.raises(Denied,match='autocommit_required'):gate.meter('unknown',id=str(uuid.uuid4()))

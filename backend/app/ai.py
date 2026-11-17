@@ -13,6 +13,7 @@ from uuid import UUID
 
 import httpx
 from psycopg.types.json import Jsonb
+from psycopg.pq import TransactionStatus
 
 
 class Denied(Exception):
@@ -49,8 +50,8 @@ class Deployment:
     region: str = ''
 
     def check(self):
-        if not (self.live_enabled and self.processor_terms_reviewed
-                and self.safety_evaluated and self.region == 'frankfurt'):
+        if not (self.live_enabled is True and self.processor_terms_reviewed is True
+                and self.safety_evaluated is True and self.region == 'frankfurt'):
             raise Denied('live_ai_disabled')
 
 
@@ -99,18 +100,25 @@ class PostgresGate:
     provider call in a transaction whose accounting can later be rolled back.
     """
     def __init__(self, connection):
-        if not connection.autocommit:
-            raise Denied('autocommit_required')
+        self.connection = connection
+        self._idle()
         if connection.execute('select current_user').fetchone()[0] != 'companion_meter':
             raise Denied('restricted_meter_role_required')
-        self.connection = connection
+
+    def _idle(self):
+        # autocommit=True still permits an explicit connection.transaction() block.
+        if (not self.connection.autocommit
+                or self.connection.info.transaction_status != TransactionStatus.IDLE):
+            raise Denied('autocommit_required')
 
     def authorize(self, task):
+        self._idle()
         return self.connection.execute(
             'select companion_private.deepseek_authorize(%s)',
             (Jsonb(task.args()),)).fetchone()[0]
 
     def meter(self, action, **args):
+        self._idle()
         return self.connection.execute('select companion_private.ai_meter(%s,%s)',
                                        (action, Jsonb(args))).fetchone()[0]
 
@@ -152,7 +160,7 @@ class DeepSeekHTTP:
 def environment_key():
     # Explicit call only, after authorization; does not read the private local file.
     value = os.environ.get('DEEPSEEK_API_KEY', '')
-    if not value or len(value) > 512 or any(c.isspace() for c in value):
+    if not value or len(value) > 512 or any(not 33 <= ord(c) <= 126 for c in value):
         raise Denied('credential_unavailable')
     return value
 

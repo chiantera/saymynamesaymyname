@@ -59,6 +59,9 @@ def test_default_live_off_never_reads_key_or_touches_transport():
     service=Composer(Gate(),credentials=forbidden)
     with pytest.raises(Denied,match='live_ai_disabled'):service.compose(TASK)
     with pytest.raises(Denied,match='network_disabled'):DeepSeekHTTP().send(b'{}','fictional-key')
+    for value in ('false',1,0,None):
+        with pytest.raises(Denied,match='live_ai_disabled'):
+            Deployment(value,True,True,'frankfurt').check()
 
 
 def test_composition_has_central_prompt_fixed_route_and_committed_meter_order():
