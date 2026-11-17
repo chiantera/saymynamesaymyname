@@ -42,6 +42,8 @@ queue_jobs = []
 decision_errors = []
 recovery_errors = []
 recoveries = {actor_a:{},actor_b:{}}
+checkpoints = {actor_a:{},actor_b:{}}
+checkpoint_errors = []
 
 def user(actor):
     return {'id':actor,'aud':'authenticated','role':'authenticated',
@@ -85,6 +87,18 @@ def handle(route):
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
     if path=='/rest/v1/rpc/support_notice': return reply({'id':None})
+    if path=='/rest/v1/rpc/active_edit_checkpoint':
+        action=body['p_action'];args=body['p_args'];store=checkpoints[actor]
+        if action=='list':return reply([row for row in store.values() if not row.get('deleted')])
+        rid=args['id']
+        if action=='save' and checkpoint_errors:
+            checkpoint_errors.pop(0);return reply({'code':'P0001','message':'fixture unavailable'},400)
+        if action=='dismiss':store[rid]={'id':rid,'deleted':True};return reply({'dismissed':True})
+        old=store.get(rid)
+        if old and (old.get('deleted') or old['revision']>args['revision']):
+            return reply({'code':'P0001','message':'checkpoint_unavailable'},400)
+        store[rid]=dict(args)
+        return reply({'id':rid,'revision':args['revision']})
     if path=='/rest/v1/rpc/edit_recovery':
         action=body['p_action'];args=body['p_args'];store=recoveries[actor]
         if action=='list':return reply([row for row in store.values() if not row.get('deleted')])
@@ -221,6 +235,48 @@ try:
         admitted=True
         login(page)
         page.get_by_role('button',name=en['generate']).click()
+        page.get_by_role('textbox',name=en['review']).fill('Active fictional edit survives a reload')
+        expect(page.get_by_text(en['checkpointLocal'],exact=True)).to_be_visible()
+        expect(page.get_by_text(en['checkpointCloud'],exact=True)).to_be_visible(timeout=10000)
+        checkpoint_context,checkpoint_page=new_page()
+        checkpoint_page.goto(origin)
+        login(checkpoint_page)
+        expect(checkpoint_page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_value('Active fictional edit survives a reload')
+        page.reload()
+        expect(page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_value('Active fictional edit survives a reload')
+        page.get_by_role('button',name=en['checkpointRestore']+' 1',exact=True).click()
+        expect(page.get_by_role('textbox',name=en['review'])).to_have_value('Active fictional edit survives a reload')
+        checkpoint_page.get_by_role('button',name=en['checkpointDismiss']+' 1',exact=True).click()
+        expect(checkpoint_page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_count(0)
+        page.get_by_role('button',name=en['checkpointRemoveDevice']+' 1',exact=True).click()
+        expect(page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_count(0)
+        checkpoint_context.close()
+        checkpoint_errors.append('save')
+        page.get_by_role('textbox',name=en['review']).fill('Offline fictional edit')
+        expect(page.get_by_text(en['checkpointLocal'],exact=True)).to_be_visible()
+        with page.expect_response(lambda response: response.url==fake+'/rest/v1/rpc/active_edit_checkpoint' and response.request.post_data_json.get('p_action')=='save'):
+            pass
+        expect(page.get_by_text(en['checkpointLocal'],exact=True)).to_be_visible()
+        page.reload()
+        expect(page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_value('Offline fictional edit')
+        page.get_by_role('button',name=en['checkpointRetry']+' 1',exact=True).click()
+        expect(page.get_by_text(en['checkpointCloud'],exact=True)).to_be_visible()
+        page.get_by_role('button',name=en['checkpointDismiss']+' 1',exact=True).click()
+        expect(page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_count(0)
+        page.evaluate("""() => { window.fixtureSetItem=Storage.prototype.setItem;
+          Storage.prototype.setItem=function(k,v){if(k.startsWith('companion:edit:')) throw new Error('fixture quota');
+          return window.fixtureSetItem.call(this,k,v)} }""")
+        page.get_by_role('textbox',name=en['review']).fill('Device storage unavailable')
+        expect(page.get_by_text(en['checkpointFailed'],exact=True)).to_be_visible()
+        expect(page.get_by_text(en['checkpointCloud'],exact=True)).to_be_visible(timeout=10000)
+        page.evaluate("() => { Storage.prototype.setItem=window.fixtureSetItem; }")
+        checkins[actor_a][-1]['status']='fulfilled'
+        page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
+        expect(page.get_by_role('button',name=en['generate'])).to_be_enabled()
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Device storage unavailable')
+        page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
         # A refresh notices a decision made elsewhere before this tab submits.
         checkins[actor_a][-1]['status']='fulfilled'
@@ -280,6 +336,7 @@ try:
         expect(page.get_by_role('button',name=en['signOut'],exact=True)).to_be_visible()
         expect(page.locator('.entry')).to_have_count(0)
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        expect(page.get_by_label(en['checkpointRecovered'],exact=True)).to_have_count(0)
         recovery_errors.append('dismiss')
         second.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
         expect(second.get_by_text(en['recoveryDeleteFailed'],exact=True)).to_be_visible()
@@ -338,9 +395,9 @@ try:
         assert observed.count('/rest/v1/rpc/refresh_private_checkins')==1,observed
         assert observed.count('/rest/v1/rpc/cloud_queue')==1,observed
         assert observed.count('/rest/v1/companion_entries')==1,observed
-        # One user verification per batch: main, Sharing and support.
-        assert observed.count('/auth/v1/user')<=4,observed
-        assert len(observed)<=12,observed
+        # One verification per batch: main, sharing, support and the two recovery lists.
+        assert observed.count('/auth/v1/user')<=5,observed
+        assert len(observed)<=14,observed
         expect(page.get_by_role('button',name=en['generate'],exact=True)).to_be_disabled()
         observed.clear()
         page.wait_for_timeout(6000)

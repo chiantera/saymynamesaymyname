@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "无法关闭此编辑，请重试。",
   "recoveryRetry": "重试保存",
   "recoveryLoadFailed": "无法加载已保存的编辑。",
-  "recoveryRefresh": "重试加载"
+  "recoveryRefresh": "重试加载",
+  "checkpointLocal": "私人编辑已保存在此设备上，等待云端同步。",
+  "checkpointCloud": "私人编辑已保存在云端。",
+  "checkpointFailed": "无法在此设备上保存编辑内容。请立即复制；云端同步仍可能成功。",
+  "checkpointRecovered": "已保存的私人编辑",
+  "checkpointRecoveredHint": "此副本是私人的，尚未发送或共享。",
+  "checkpointDismiss": "丢弃私人副本",
+  "checkpointRetry": "重试保存到云端",
+  "checkpointActionFailed": "无法更新此副本。请保持打开并重试；它可能已在其他位置被丢弃。",
+  "checkpointRemoveDevice": "仅从此设备移除",
+  "checkpointRestore": "恢复到编辑器",
+  "checkpointDevicePrivacy": "编辑内容会保存在此浏览器中；能够访问此浏览器配置文件的人可能会读到它们。",
+  "checkpointLoadFailed": "无法加载云端私人编辑。此设备上的副本可能仍会显示。"
 }

@@ -18,8 +18,8 @@ stale-decision conflict message and private cloud recovery of displaced edits,
 adaptive non-overlapping polling, hidden-tab pauses, immediate
 Home/visibility refresh and identity-checked read batches; enforced browser security
 headers with positive auth/sharing and negative script/connection/frame tests.
-Saved recovery copies sync privately after acknowledgement; active drafts and
-unacknowledged/offline edits are not yet durable. Seven locale catalogs are drafts. Static support contacts have verification/expiry
+Active edits checkpoint to account-scoped browser storage and sync privately after
+cloud acknowledgement; storage failure and offline startup remain limitations. Seven locale catalogs are drafts. Static support contacts have verification/expiry
 metadata; country is explicit and temporary. Topic advice and automatic crisis
 responses remain professionally review-gated.
 

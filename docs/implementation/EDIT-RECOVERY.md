@@ -31,19 +31,43 @@ be silently resurrected. Clients retain failed or unacknowledged copies in memor
 and do not hide a dismissal until the server confirms it. A failed deletion is
 retryable. Client account-generation checks apply before and after every operation.
 
+## Active edits
+
+Each editing session has its own random checkpoint id. Each input change synchronously
+updates that verified account's browser-local checkpoint, including empty text. The
+client reports whether the latest change was stored on this device, acknowledged by
+the cloud, or could not be stored locally. It sends a private cloud checkpoint after
+a two-second pause and retries a failed save while the editor remains open. Recovered
+copies offer an explicit cloud retry; a reload does not automatically publish, approve,
+share, or use the text as AI context. Other devices see acknowledged checkpoints as
+separate copies, not as replacements for their own active editors. A conservative extra
+copy may remain after approval or displacement until the owner discards it.
+For an unchanged matching editor, a recovered copy can be restored with a button;
+otherwise its text remains available to copy. Device-only removal leaves any cloud
+copy intact, so that copy may appear again on a later refresh.
+
+The checkpoint RPC requires the same verified admission and source ownership as edit
+recovery. Server-side revisions prevent an older response from replacing a newer edit;
+each editing session is independent. A content-free tombstone prevents a delayed save
+or retry from reviving a discarded cloud copy. Source/account deletion cascades on the
+server. Discard is acknowledged before the current browser removes its local copy.
+
 ## Limits
 
-This protects an edit **after displacement is detected and the server acknowledges
-the save**. The currently open editor is not continuously checkpointed. A tab crash,
-offline period, page change or authentication remount before acknowledgement can
-still lose an unsaved active edit. The interface tells users to copy an unconfirmed
-edit; retry requires a working signed-in connection. Full offline drafting, durable
-active-edit checkpointing, explicit version resolution and their account/deletion
-semantics remain Phase 0/1 work. No end-to-end encryption is claimed.
+Browser storage is account-scoped in the app but is **not encrypted**: anyone with
+access to the same browser profile or device may be able to inspect it. Browser
+eviction, storage denial or device loss can defeat local recovery. Until cloud
+acknowledgement, another device cannot recover the newest edit. A remote discard does
+not erase a copy already cached in another browser; discard it there too. If storage
+and the cloud both fail, copy the text before closing the editor. Offline startup and
+sign-in, full offline reading, conflict-resolution UX and a way to purge cached data
+on account deletion remain release work. No end-to-end encryption is claimed.
 
 The SQL fixtures cover owner isolation, verified admission, immutable idempotency,
 source deletion, tombstones, delayed and concurrent writes. Browser fixtures cover
 remote displacement, empty edits, save/delete failure and retry, second-device
 retrieval, reload, account separation and no false recovery after local approval.
-Browser transport is simulated; local PostgreSQL fixtures refuse hosted DSNs.
+The active checkpoint tests cover revision ordering, concurrent deletion, local reload,
+cross-device retrieval and failed cloud saves. Browser transport is simulated; local
+PostgreSQL fixtures refuse hosted DSNs.
 Live AI, provider permissions, schedules and outbound sending stay unchanged.

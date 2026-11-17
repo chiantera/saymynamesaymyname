@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "Die Änderung konnte nicht verworfen werden. Versuche es erneut.",
   "recoveryRetry": "Speichern erneut versuchen",
   "recoveryLoadFailed": "Gespeicherte Änderungen konnten nicht geladen werden.",
-  "recoveryRefresh": "Laden erneut versuchen"
+  "recoveryRefresh": "Laden erneut versuchen",
+  "checkpointLocal": "Private Änderung auf diesem Gerät gespeichert; Cloud-Synchronisierung ausstehend.",
+  "checkpointCloud": "Private Änderung in der Cloud gespeichert.",
+  "checkpointFailed": "Änderung konnte auf diesem Gerät nicht gespeichert werden. Kopiere sie jetzt; die Cloud-Synchronisierung kann noch gelingen.",
+  "checkpointRecovered": "Gespeicherte private Änderung",
+  "checkpointRecoveredHint": "Diese Kopie ist privat. Sie wurde weder gesendet noch geteilt.",
+  "checkpointDismiss": "Private Kopie verwerfen",
+  "checkpointRetry": "Cloud-Speicherung erneut versuchen",
+  "checkpointActionFailed": "Diese Kopie konnte nicht aktualisiert werden. Lass sie offen und versuche es erneut; sie wurde möglicherweise anderswo verworfen.",
+  "checkpointRemoveDevice": "Nur von diesem Gerät entfernen",
+  "checkpointRestore": "Im Editor wiederherstellen",
+  "checkpointDevicePrivacy": "Änderungen werden in diesem Browser gespeichert; Personen mit Zugriff auf das Browserprofil können sie möglicherweise lesen.",
+  "checkpointLoadFailed": "Private Cloud-Änderungen konnten nicht geladen werden. Kopien auf diesem Gerät werden möglicherweise weiterhin angezeigt."
 }

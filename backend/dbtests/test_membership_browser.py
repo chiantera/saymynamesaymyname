@@ -65,6 +65,7 @@ def test_membership_browser(state):
         try:
             with state.client(actor) as conn:
                 if path=='/rest/v1/rpc/edit_recovery':return reply(conn.execute('select public.edit_recovery(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
+                if path=='/rest/v1/rpc/active_edit_checkpoint':return reply(conn.execute('select public.active_edit_checkpoint(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/support_notice':return reply(conn.execute('select public.support_notice(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/ai_budget':return reply(conn.execute('select public.ai_budget(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/ai_consent':return reply(conn.execute('select public.ai_consent(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])

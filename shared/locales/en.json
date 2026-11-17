@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "Could not dismiss this edit. Try again.",
   "recoveryRetry": "Retry save",
   "recoveryLoadFailed": "Could not load saved edits.",
-  "recoveryRefresh": "Retry loading"
+  "recoveryRefresh": "Retry loading",
+  "checkpointLocal": "Private edit saved on this device; cloud sync pending.",
+  "checkpointCloud": "Private edit saved in the cloud.",
+  "checkpointFailed": "Could not save this edit on this device. Copy it now; cloud sync may still succeed.",
+  "checkpointRecovered": "Saved private edit",
+  "checkpointRecoveredHint": "This copy is private. It has not been sent or shared.",
+  "checkpointDismiss": "Discard private copy",
+  "checkpointRetry": "Retry cloud save",
+  "checkpointActionFailed": "Could not update this copy. Keep it open and retry; it may have been discarded elsewhere.",
+  "checkpointRemoveDevice": "Remove from this device only",
+  "checkpointRestore": "Restore to editor",
+  "checkpointDevicePrivacy": "Edits are stored in this browser; people with access to this browser profile may be able to read them.",
+  "checkpointLoadFailed": "Could not load private cloud edits. Copies on this device may still be shown."
 }

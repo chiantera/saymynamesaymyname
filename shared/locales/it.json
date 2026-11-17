@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "Impossibile rimuovere la modifica. Riprova.",
   "recoveryRetry": "Riprova salvataggio",
   "recoveryLoadFailed": "Impossibile caricare le modifiche salvate.",
-  "recoveryRefresh": "Riprova caricamento"
+  "recoveryRefresh": "Riprova caricamento",
+  "checkpointLocal": "Modifica privata salvata su questo dispositivo; sincronizzazione cloud in attesa.",
+  "checkpointCloud": "Modifica privata salvata nel cloud.",
+  "checkpointFailed": "Impossibile salvare la modifica su questo dispositivo. Copiala ora; la sincronizzazione cloud potrebbe ancora riuscire.",
+  "checkpointRecovered": "Modifica privata salvata",
+  "checkpointRecoveredHint": "Questa copia è privata. Non è stata inviata né condivisa.",
+  "checkpointDismiss": "Elimina la copia privata",
+  "checkpointRetry": "Riprova a salvare nel cloud",
+  "checkpointActionFailed": "Impossibile aggiornare questa copia. Tienila aperta e riprova; potrebbe essere stata eliminata altrove.",
+  "checkpointRemoveDevice": "Rimuovi solo da questo dispositivo",
+  "checkpointRestore": "Ripristina nell’editor",
+  "checkpointDevicePrivacy": "Le modifiche sono salvate in questo browser; chi può accedere al profilo del browser potrebbe leggerle.",
+  "checkpointLoadFailed": "Impossibile caricare le modifiche private dal cloud. Le copie su questo dispositivo potrebbero essere ancora visibili."
 }

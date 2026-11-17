@@ -6,9 +6,13 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-17
 
+- Added local active-edit checkpoints and revision-fenced private cloud copies,
+  recovery after reload, explicit retry/restore and device-only removal. Browser
+  storage and offline-start limitations remain. [Recovery](implementation/EDIT-RECOVERY.md).
+
 - Added owner-only cloud recovery for displaced edits with immutable retry IDs,
-  deletion tombstones and explicit save/retry status. Active editor checkpoints
-  and offline durability remain open. [Recovery](implementation/EDIT-RECOVERY.md).
+  deletion tombstones and explicit save/retry status. The checkpoint milestone
+  above extends this earlier protection. [Recovery](implementation/EDIT-RECOVERY.md).
 
 - Tightened cloud request input/result typing and mapped only the exact server
   stale-decision error to the existing conflict message. Raw diagnostics remain

@@ -48,6 +48,7 @@ export interface HomeProps {
   /** The editable draft text for the pending check-in. */
   draft: string;
   onDraft: (text: string) => void;
+  checkpointStatus: 'local' | 'cloud' | 'failed' | null;
   onGenerate: () => void;
   /** Sends the decision with the check-in's version; approve saves the current draft. */
   onDecide: (checkin: Checkin, decision: Decision) => void;
@@ -104,6 +105,7 @@ export default function Home({
   onScope,
   draft,
   onDraft,
+  checkpointStatus,
   onGenerate,
   onDecide,
   formatDate,
@@ -253,6 +255,8 @@ export default function Home({
               />
             </Field>
             <div className="home-draft__notes" id={draftNoteId}>
+              {cloud && <p>{t('checkpointDevicePrivacy')}</p>}
+              {checkpointStatus && <p role="status">{t(checkpointStatus === 'cloud' ? 'checkpointCloud' : checkpointStatus === 'local' ? 'checkpointLocal' : 'checkpointFailed')}</p>}
               {Number.isFinite(deadline) && (
                 <p>
                   {t('homeDeadline', { time: formatTime(active.deadline as string) })}{' '}

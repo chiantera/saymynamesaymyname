@@ -9,6 +9,8 @@ let owner: string | null = null;
 let generation=0;
 export function setCloudActive(value:boolean,userId?:string){active=value;owner=value?(userId??null):null;++generation;window.dispatchEvent(new Event('companion-account-change'));}
 export function isCloudActive(){return active;}
+/** Only the currently verified account may select its local draft namespace. */
+export function currentCloudOwner(){return active ? owner : null;}
 export async function cloudRequest(path:string,method:string,body:unknown){
  const payload:Record<string,unknown>=body!==null&&typeof body==='object'&&!Array.isArray(body)?body as Record<string,unknown>:{};
  if(!cloud)throw new Error('Cloud is not configured');
@@ -36,6 +38,7 @@ export async function cloudRequest(path:string,method:string,body:unknown){
  }
  if(path==='/support')return checked(()=>cloud!.rpc('support_notice',{p_action:payload.action,p_args:payload.args??{}}));
  if(path==='/edit-recovery')return checked(()=>cloud!.rpc('edit_recovery',{p_action:payload.action,p_args:payload.args??{}}));
+ if(path==='/active-edit-checkpoint')return checked(()=>cloud!.rpc('active_edit_checkpoint',{p_action:payload.action,p_args:payload.args??{}}));
  if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:payload.action,p_args:payload.args??{}}));
  if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
  if(path==='/cloud/queue')return checked(()=>cloud!.rpc('cloud_queue',{p_action:payload.action,p_args:payload.args??{}}));

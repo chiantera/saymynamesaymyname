@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "수정 내용을 삭제하지 못했습니다. 다시 시도하세요.",
   "recoveryRetry": "저장 재시도",
   "recoveryLoadFailed": "저장된 수정 내용을 불러오지 못했습니다.",
-  "recoveryRefresh": "다시 불러오기"
+  "recoveryRefresh": "다시 불러오기",
+  "checkpointLocal": "비공개 수정 내용이 이 기기에 저장되었습니다. 클라우드 동기화 대기 중.",
+  "checkpointCloud": "비공개 수정 내용이 클라우드에 저장되었습니다.",
+  "checkpointFailed": "이 기기에 수정 내용을 저장하지 못했습니다. 지금 복사해 두세요. 클라우드 동기화는 성공할 수 있습니다.",
+  "checkpointRecovered": "저장된 비공개 수정 내용",
+  "checkpointRecoveredHint": "이 사본은 비공개입니다. 전송하거나 공유하지 않았습니다.",
+  "checkpointDismiss": "비공개 사본 삭제",
+  "checkpointRetry": "클라우드 저장 다시 시도",
+  "checkpointActionFailed": "이 사본을 업데이트하지 못했습니다. 열어 둔 상태에서 다시 시도하세요. 다른 곳에서 삭제되었을 수 있습니다.",
+  "checkpointRemoveDevice": "이 기기에서만 삭제",
+  "checkpointRestore": "편집기에 복원",
+  "checkpointDevicePrivacy": "수정 내용은 이 브라우저에 저장되며, 이 브라우저 프로필에 접근할 수 있는 사람은 내용을 읽을 수 있습니다.",
+  "checkpointLoadFailed": "비공개 클라우드 수정 내용을 불러오지 못했습니다. 이 기기의 사본은 계속 표시될 수 있습니다."
 }

@@ -21,7 +21,7 @@ import {
   type Relationship,
   type Snapshot,
 } from './api';
-import { cloudRequest, isCloudActive } from './cloud';
+import { cloudRequest, currentCloudOwner, isCloudActive } from './cloud';
 import { canGenerate, readSetting, resolveLocale, saveSetting, type Locale } from './domain';
 import Bartender from './screens/Bartender';
 import Growth from './screens/Growth';
@@ -32,6 +32,7 @@ import { Button, Field, Notice } from './ui';
 import { SupportNotices } from './Support';
 import { pollDelay, startPolling } from './polling';
 import { parseRecoveryList } from './recovery-list';
+import { readLocalCheckpoints, removeLocalCheckpoint, saveLocalCheckpoint, validCheckpoint, type EditCheckpoint } from './edit-checkpoint';
 
 type RecoveredEdit = { id: string; text: string; checkin_id: string; base_version: number;
   sync: 'local' | 'saving' | 'saved' | 'failed' | 'deleting' | 'delete_failed' };
@@ -49,6 +50,11 @@ export default function App() {
   const [draft, setDraft] = useState('');
   const [recoveredDrafts, setRecoveredDrafts] = useState<RecoveredEdit[]>([]);
   const [recoveryLoadError, setRecoveryLoadError] = useState(false);
+  const [checkpoints, setCheckpoints] = useState<EditCheckpoint[]>([]);
+  const [checkpointStatus, setCheckpointStatus] = useState<'local' | 'cloud' | 'failed' | null>(null);
+  const [checkpointError, setCheckpointError] = useState(false);
+  const [checkpointLoadError, setCheckpointLoadError] = useState(false);
+  const [syncedCheckpoints, setSyncedCheckpoints] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<'errorMessage' | 'errorConflict' | null>(null);
   const [notice, setNotice] = useState(false);
@@ -64,9 +70,97 @@ export default function App() {
   const approvedHere = useRef<string | null>(null);
   const dismissedRecoveries = useRef(new Set<string>());
   const recoveryMutationVersion = useRef(0);
+  const checkpointMutationVersion = useRef(0);
+  const editingCheckpoint = useRef<EditCheckpoint | null>(null);
+  const checkpointTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const checkpointMounted = useRef(true);
+  const owner = useRef(currentCloudOwner()).current;
   latestDraft.current = draft;
   const language = resolveLocale(i18n.language);
   const cloud = isCloudActive();
+  const loadCheckpoints = useCallback(async () => {
+    if (!owner) return;
+    const version = checkpointMutationVersion.current;
+    const result:unknown = await cloudRequest('/active-edit-checkpoint','POST',{action:'list'});
+    if (!Array.isArray(result) || !result.every(validCheckpoint)) throw new Error('Checkpoint list unavailable');
+    const local = readLocalCheckpoints(owner);
+    setCheckpoints(current => {
+      const merged = new Map<string,EditCheckpoint>();
+      if (version !== checkpointMutationVersion.current) current.forEach(item => merged.set(item.id,item));
+      result.forEach(item => merged.set(item.id,item));
+      local.forEach(item => {
+        const existing=merged.get(item.id);
+        if (!existing || item.revision > existing.revision) merged.set(item.id,item);
+      });
+      return [...merged.values()].filter(item => item.id !== editingCheckpoint.current?.id);
+    });
+    setCheckpointLoadError(false);
+  }, [owner]);
+  useEffect(() => {
+    if (!cloud || !owner) return;
+    setCheckpoints(readLocalCheckpoints(owner));
+    return startPolling(loadCheckpoints, {delay: failures => pollDelay(true, false, failures),
+      onError: () => setCheckpointLoadError(true)});
+  }, [cloud, owner, loadCheckpoints]);
+  useEffect(() => {
+    checkpointMounted.current=true;
+    return () => { checkpointMounted.current=false; clearTimeout(checkpointTimer.current); };
+  }, []);
+
+  async function syncCheckpoint(item:EditCheckpoint) {
+    if (!owner || currentCloudOwner()!==owner || !checkpointMounted.current) return;
+    try {
+      const result=await cloudRequest('/active-edit-checkpoint','POST',{action:'save',args:item});
+      if (result.id!==item.id || result.revision!==item.revision) throw new Error('Checkpoint acknowledgement unavailable');
+      if (editingCheckpoint.current?.id===item.id && editingCheckpoint.current.revision===item.revision) setCheckpointStatus('cloud');
+    } catch {
+      if (editingCheckpoint.current?.id===item.id && editingCheckpoint.current.revision===item.revision) {
+        setCheckpointStatus(owner && saveLocalCheckpoint(owner,item) ? 'local' : 'failed');
+        if (checkpointMounted.current && currentCloudOwner()===owner) {
+          clearTimeout(checkpointTimer.current);
+          checkpointTimer.current=setTimeout(() => void syncCheckpoint(item),15000);
+        }
+      }
+    }
+  }
+  function changeDraft(text:string) {
+    setDraft(text);
+    if (!cloud || !owner || !active) return;
+    const previous=editingCheckpoint.current;
+    const item:EditCheckpoint = previous && previous.checkin_id===active.id && previous.base_version===active.version
+      ? {...previous,revision:previous.revision+1,text}
+      : {id:crypto.randomUUID(),checkin_id:active.id,base_version:active.version,revision:1,text};
+    editingCheckpoint.current=item;
+    ++checkpointMutationVersion.current;
+    setCheckpointStatus(saveLocalCheckpoint(owner,item) ? 'local' : 'failed');
+    clearTimeout(checkpointTimer.current);
+    checkpointTimer.current=setTimeout(() => void syncCheckpoint(item),2000);
+  }
+  async function dismissCheckpoint(item:EditCheckpoint) {
+    if (!owner) return;
+    ++checkpointMutationVersion.current;
+    try {
+      const result=await cloudRequest('/active-edit-checkpoint','POST',{action:'dismiss',args:{id:item.id,checkin_id:item.checkin_id,base_version:item.base_version}});
+      if (result.dismissed!==true || !removeLocalCheckpoint(owner,item.id)) throw new Error('Dismissal unavailable');
+      ++checkpointMutationVersion.current;
+      setCheckpoints(items => items.filter(row => row.id!==item.id));
+      setCheckpointError(false);
+    } catch { setCheckpointError(true); }
+  }
+  async function retryCheckpoint(item:EditCheckpoint) {
+    try {
+      const result=await cloudRequest('/active-edit-checkpoint','POST',{action:'save',args:item});
+      if (result.id!==item.id || result.revision!==item.revision) throw new Error('Checkpoint acknowledgement unavailable');
+      setSyncedCheckpoints(ids => new Set(ids).add(item.id));
+      setCheckpointError(false);
+    } catch { setCheckpointError(true); }
+  }
+  function removeDeviceCheckpoint(item:EditCheckpoint) {
+    if (!owner || !removeLocalCheckpoint(owner,item.id)) { setCheckpointError(true); return; }
+    ++checkpointMutationVersion.current;
+    setCheckpoints(items => items.filter(row => row.id!==item.id));
+    setCheckpointError(false);
+  }
   const loadRecoveries = useCallback(async () => {
     const version = recoveryMutationVersion.current;
     try {
@@ -192,6 +286,14 @@ export default function App() {
       if (cloud) void saveRecovery(item);
     }
     approvedHere.current = null;
+    clearTimeout(checkpointTimer.current);
+    if (editingCheckpoint.current) {
+      const item=editingCheckpoint.current;
+      setCheckpoints(items => [...items.filter(row => row.id!==item.id),item]);
+      void syncCheckpoint(item);
+    }
+    editingCheckpoint.current=null;
+    setCheckpointStatus(null);
     previousActive.current = active;
     setDraft(active?.draft ?? '');
   }, [active?.id, active?.version]);
@@ -281,6 +383,27 @@ export default function App() {
       {cloud && <SupportNotices />}
       {recoveryLoadError && <Notice tone="warning" actions={<Button onClick={() => void loadRecoveries().catch(() => undefined)}>{t('recoveryRefresh')}</Button>}>
         <p>{t('recoveryLoadFailed')}</p></Notice>}
+      {checkpointLoadError && <Notice tone="warning" actions={<Button onClick={() => void loadCheckpoints().catch(() => setCheckpointLoadError(true))}>{t('recoveryRefresh')}</Button>}>
+        <p>{t('checkpointLoadFailed')}</p></Notice>}
+      {checkpointError && <Notice tone="warning"><p role="status">{t('checkpointActionFailed')}</p></Notice>}
+      {checkpoints.map((item,index) => <Notice key={item.id} tone="warning">
+        <Field label={t('checkpointRecovered')} hint={t(syncedCheckpoints.has(item.id) ? 'checkpointCloud' : 'checkpointRecoveredHint')}>
+          <textarea readOnly value={item.text} rows={4} dir="auto" />
+        </Field>
+        {active?.id===item.checkin_id && active.version===item.base_version && draft===active.draft &&
+          <Button onClick={() => changeDraft(item.text)} aria-label={`${t('checkpointRestore')} ${index+1}`}>
+            {t('checkpointRestore')}
+          </Button>}
+        <Button onClick={() => void retryCheckpoint(item)} aria-label={`${t('checkpointRetry')} ${index+1}`}>
+          {t('checkpointRetry')}
+        </Button>
+        <Button onClick={() => removeDeviceCheckpoint(item)} aria-label={`${t('checkpointRemoveDevice')} ${index+1}`}>
+          {t('checkpointRemoveDevice')}
+        </Button>
+        <Button onClick={() => void dismissCheckpoint(item)} aria-label={`${t('checkpointDismiss')} ${index+1}`}>
+          {t('checkpointDismiss')}
+        </Button>
+      </Notice>)}
       {recoveredDrafts.map((item, index) => (
         <Notice key={item.id} tone="warning">
           <Field label={t('recoveredDraftLabel')} hint={t(item.sync === 'saved' ? 'recoverySaved' : 'recoveredDraftHint')}>
@@ -330,7 +453,8 @@ export default function App() {
           scope={scope}
           onScope={setScope}
           draft={draft}
-          onDraft={setDraft}
+          onDraft={changeDraft}
+          checkpointStatus={checkpointStatus}
           onGenerate={() => void perform(() => api.generate(scope || null))}
           onDecide={decide}
           formatDate={formatDate}

@@ -345,5 +345,17 @@
   "recoveryDeleteFailed": "未能關閉呢項修改，請重試。",
   "recoveryRetry": "重試儲存",
   "recoveryLoadFailed": "未能載入已儲存嘅修改。",
-  "recoveryRefresh": "重試載入"
+  "recoveryRefresh": "重試載入",
+  "checkpointLocal": "私人編輯已儲存喺呢部裝置，等候雲端同步。",
+  "checkpointCloud": "私人編輯已儲存喺雲端。",
+  "checkpointFailed": "無法喺呢部裝置儲存編輯內容。請即刻複製；雲端同步仍然可能成功。",
+  "checkpointRecovered": "已儲存嘅私人編輯",
+  "checkpointRecoveredHint": "呢個副本係私人嘅，未有傳送或分享。",
+  "checkpointDismiss": "捨棄私人副本",
+  "checkpointRetry": "重試儲存到雲端",
+  "checkpointActionFailed": "無法更新呢個副本。請保持開啟並重試；佢可能已經喺其他地方被捨棄。",
+  "checkpointRemoveDevice": "只從呢部裝置移除",
+  "checkpointRestore": "還原到編輯器",
+  "checkpointDevicePrivacy": "編輯內容會儲存喺呢個瀏覽器；可以存取呢個瀏覽器設定檔嘅人可能會睇到。",
+  "checkpointLoadFailed": "無法載入雲端私人編輯。呢部裝置上嘅副本可能仍然會顯示。"
 }
