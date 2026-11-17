@@ -1,177 +1,81 @@
-# Cloud auth activation
+# Cloud authentication setup
 
-## Verified state
+## Current scope and evidence
 
-- Web preview: https://saymynamesaymyname.vercel.app. Pushes to main automatically
-  deploy the frontend; GitHub CI runs the local behavioral checks/build.
-- Dedicated Supabase project: `chxlkmmkoadgcaomkznd`, Frankfurt (`eu-central-1`).
-- Client configuration contains only the project URL and publishable key. No service
-  role key is needed for browser sign-in or private synchronization.
-- Private records require both operator beta admission and a current verified Auth
-  email. Owner RLS and guarded RPCs enforce this independently of the UI.
-- Web client supports signup, email/password login, PKCE confirmation/recovery,
-  password update, Google OAuth start and sign-out. Live web Google sign-in passed;
-  the user also confirmed recovery/password update and email/password sign-in for
-  the admitted account, with the existing cloud reflection preserved.
-- User completed Supabase dashboard login on 2026-11-15; Site URL and four exact
-  callbacks below were visibly verified saved. Dedicated Google project/client,
-  three basic scopes and Supabase Google provider are configured; secret entered
-  directly by the user. One explicitly authorized verified tester is admitted.
-- Live transactional SQL tests cover approved/duplicate decisions, owner isolation,
-  unadmitted users and admitted users whose email is still unverified. All synthetic
-  data is rolled back. These tests do not certify actual email delivery. Separate
-  live Google/PKCE acceptance and owned reflection save/reload passed on 2026-11-15.
+Web email/password and Google identity, verified beta admission, PKCE recovery and
+private reflection sync are implemented. Bounded live acceptance previously verified
+core login/recovery and a second browser/device; current automated fixtures intercept
+Auth transport and do not re-prove live email/OAuth configuration. See
+[current status](../../CURRENT-TASK.md) and [milestones](../CHANGELOG.md).
 
-## Current external boundary
+Beta admission is operator-controlled and separate from relationship invitation.
+Owner RLS and guarded RPCs require current verified identity/admission. A Google
+identity grants no Drive or Calendar access. Native Android return paths, broader
+signup/email delivery, MFA/session recovery and lifecycle release testing remain open.
 
-Connected Supabase tools can manage database migrations but do not expose Auth
-configuration here. The local CLI has no management login. The user has now signed
-into the dashboard in the built-in browser. Google configuration and the first
-verified tester admission are complete. The user confirmed the reflection in a second
-independent browser/device. The fresh-link email recovery/password sign-in retry also
-passed after deployment of e02c062, completing this core web walkthrough.
-No sibling credentials were copied.
+## Client and callback configuration
 
-## Dashboard walkthrough and exact values
+The client receives only `VITE_SUPABASE_URL` and a publishable key. No service-role
+or provider secret belongs in the browser. Keep CSP's project connection origin in
+`vercel.json` aligned with the configured Supabase project; do not loosen it to a
+wildcard. [Header contract](SECURITY-HEADERS.md).
 
-1. In this project's Auth URL configuration, set Site URL to
-   `https://saymynamesaymyname.vercel.app`. Save these four Redirect URLs:
+For this web deployment, set Site URL to `https://saymynamesaymyname.vercel.app` and
+allow these exact redirects, without wildcards:
 
-   ```text
-   https://saymynamesaymyname.vercel.app/auth/callback
-   https://saymynamesaymyname.vercel.app/auth/recovery
-   http://127.0.0.1:5174/auth/callback
-   http://127.0.0.1:5174/auth/recovery
-   ```
+```text
+https://saymynamesaymyname.vercel.app/auth/callback
+https://saymynamesaymyname.vercel.app/auth/recovery
+http://127.0.0.1:5174/auth/callback
+http://127.0.0.1:5174/auth/recovery
+```
 
-   No wildcard previews. These values are saved and verified.
-2. Keep email confirmation enabled. Verify email delivery configuration, rate limits
-   and recovery templates using current dashboard settings before promising signup.
-3. In Google Cloud, select the dedicated `saymynamesaymyname` project. Under Google
-   Auth Platform → Overview → Get started, use the temporary app name, the operator's
-   support/contact emails and External audience. The user reviews/accepts Google's
-   policy. Keep Testing while setting up; add explicitly authorized test users when
-   the Test users section is offered. Do not add people to Supabase organization
-   membership just to make auth email delivery work.
-4. Under Google Auth Platform → Data Access, select only `openid`,
-   `https://www.googleapis.com/auth/userinfo.email` and
-   `https://www.googleapis.com/auth/userinfo.profile`. No Drive/Calendar scopes.
-5. Under Clients → Create client, choose **Web application**, name it `Web beta`.
-   Leave **Use this client for an AI-powered agent** unchecked. This client serves
-   human Google sign-in. Future Google MCP/agent actions require a separate client;
-   the app having an AI bartender does not make this identity client an agent client.
-   Authorized JavaScript origins:
+Keep email confirmation enabled. Verify actual SMTP delivery, templates, rate limits
+and recipient restrictions before admitting a wider cohort. Local/CI tests do not
+send mail or modify hosted auth configuration.
 
-   ```text
-   https://saymynamesaymyname.vercel.app
-   http://127.0.0.1:5174
-   ```
+## Google identity setup
 
-   Authorized redirect URI (Google returns to Supabase, not directly to Vercel):
+Use the dedicated Google Cloud project and an External consent audience. The
+operator reviews Google's policy and supplies support/contact emails directly in
+the dashboard. Keep the appropriate testing audience/test users during setup.
+Select only `openid`, `https://www.googleapis.com/auth/userinfo.email` and
+`https://www.googleapis.com/auth/userinfo.profile`.
 
-   ```text
-   https://chxlkmmkoadgcaomkznd.supabase.co/auth/v1/callback
-   ```
+Create a **Web application** client. Leave **Use this client for an AI-powered
+agent** unchecked; human identity and future Google MCP/agent actions use separate
+clients. Authorized JavaScript origins are the production origin and local
+`http://127.0.0.1:5174`. Google returns to Supabase at:
 
-6. Create the client, then transfer Client ID and Client Secret directly into this
-   project's Supabase Authentication → Sign In / Providers → Google settings. Enable
-   the provider and save. The secret belongs only there: never in GitHub, Vercel
-   frontend variables, screenshots, app code or chat. Do not skip nonce checks or
-   enable users without an email. Keep the Google secret securely; it may only be
-   displayed once. Save before leaving Google's creation dialog.
-7. Web callback code is implemented. Confirm email templates use Supabase's
-   `{{ .ConfirmationURL }}` links with the intended redirect, or adapt deliberately
-   to a verified token-hash flow; do not change templates to unsupported routes.
-   Email links in this PKCE browser flow must be opened in the initiating browser.
-   The built-in SMTP service only sends to the project's authorized team addresses
-   and is rate limited; configure dedicated SMTP before inviting other email testers.
-   Google sign-in does not depend on our SMTP delivery. Keep email verification on.
-8. Admit only a verified, explicitly selected tester by their Auth user UUID through
-   an operator-only database action. Never derive admission from client metadata or
-   self-service profile fields; the beta table has no client access policy.
-9. Run real browser acceptance checks with approved test accounts: confirmation,
-   login/logout, reload, two-device private sync, unadmitted rejection, recovery,
-   token expiration and account switching. Then test native Android callbacks.
+```text
+https://<project-ref>.supabase.co/auth/v1/callback
+```
 
-## Test evidence and remaining scope
+Replace the placeholder from the actual project dashboard. Transfer the matching
+Client ID and full Client Secret directly into Supabase's Google provider form.
+Enable Google sign-in, leave Skip nonce checks and Allow users without an email
+off, then save. Never place the secret in Git, chat, logs, screenshots or `VITE_*`.
 
-Live browser acceptance passed for Google consent → PKCE return → admission denial
-→ authorized admission → private app load → fictional reflection save → full reload.
-A database count independently confirmed one matching owned reflection and fulfilled
-check-in, with no duplicate artifact. No personal journal text was used in this test.
-The user additionally confirmed that the same reflection appears after Google sign-in
-in a second independent browser/device. The exact hardware/browser was not recorded;
-this does not certify the native Android wrapper. The first recovery attempt expired
-with `flow_state_expired`. After e02c062 deployed, the user confirmed that a fresh link
-completed password setup, email/password sign-in worked, and the same reflection
-remained visible. Credentials and recovery links stayed with the user throughout.
+## Recovery and identity guards
 
-`npm run test:auth` builds the production frontend with a fictional auth host and
-intercepts every auth/data request. It covers signup, PKCE recovery/password update,
-pending admission, two-client reflection synchronization, account isolation, Google
-basic scopes and failed callback cleanup. It creates no actual accounts or emails.
-The live SQL suite separately verifies Supabase ownership/admission rules. Neither
-test replaces real email acceptance or real two-device testing. Google, owner-account
-email recovery/sign-in and independent-browser/device acceptance have now also been
-performed separately as described above. Fresh signup for additional accounts and
-broader SMTP delivery remain unverified.
+Use Supabase-supported confirmation/recovery templates with the intended redirect.
+The web PKCE flow must open the newest recovery link in the browser/profile that
+requested it. Preserve `sb_flow_id` before URL cleanup and pass it explicitly when
+exchanging the code; a missing/expired flow cannot borrow another tab's verifier.
+Do not disable PKCE/nonce checks to make a test pass.
 
-### Email/password acceptance for a Google-first account
+The app's password update is separate from the Google password. Confirm recovery,
+email/password sign-in and preservation of owned reflections with an authorized
+test account. Never record passwords or recovery links in the evidence log.
+For `invalid_client`, correct the matching full Google secret in Supabase, then
+start a fresh sign-in flow rather than replaying an old callback URL.
 
-Use the same admitted email, not a new account. In a regular browser/profile where
-the user can also open their email: sign out of the app, choose Forgot password,
-request one recovery email, and open its link in that initiating browser/profile.
-Complete this as one continuous test: do not pause between receipt and opening.
-Supabase authorization codes are single-use and expire after five minutes. If a
-flow expires, start a fresh request rather than revisiting the old callback/link.
-The user enters and confirms a new app-specific password privately (12+ characters),
-then signs in with email/password and checks that the existing reflection remains.
-This changes the app password only; it does not change the Google password.
-Never put a password, recovery link or code in chat, screenshots, logs or source.
-An owner-address email test does not certify delivery to other testers; verify SMTP
-configuration, recipient restrictions and rate limits before broader email signup.
+AuthGate keys cloud/preview instances by account. Cloud operations verify identity
+and account generation before/after results; batches do not replace server RLS or
+sensitive-action authorization. Sign-out/account changes must not retain another
+account's visible private content or reveal an old safety notice.
 
-Callbacks preserve `sb_flow_id` before cleaning the address bar and pass it explicitly
-to `exchangeCodeForSession`. This retains the correct SDK verifier slot when multiple
-flows/tabs exist. Never fall back to another flow's verifier or disable PKCE to recover.
-
-For `invalid_client`, verify that Supabase holds the full Client Secret value from
-the same Google client as its Client ID; a Secret ID or masked value is insufficient.
-Correct it directly in the provider form, then start a fresh app sign-in flow.
-Never reload or manually navigate to an old provider callback URL to test OAuth.
-
-This is web auth. A native Android build/system-browser return path remains M5 work;
-do not add unimplemented custom-scheme callbacks or claim Android OAuth is complete.
-
-Sources checked: [Supabase Google setup](https://supabase.com/docs/guides/auth/social-sign-in/auth-google),
+[Supabase Google setup](https://supabase.com/docs/guides/auth/social-sign-in/auth-google),
 [password auth](https://supabase.com/docs/guides/auth/passwords),
-[PKCE expiry/browser requirements](https://supabase.com/docs/guides/auth/sessions/pkce-flow),
-[SMTP restrictions](https://supabase.com/docs/guides/auth/auth-smtp), and
-[Google consent setup](https://developers.google.com/workspace/guides/configure-oauth-consent).
-Google's [OAuth client guidance](https://support.google.com/cloud/answer/15549257)
-requires separating standard user features from Google agent/MCP workflows.
-
-## Current cloud scope and remaining activation
-
-Web Google/email sign-in, the admitted tester's recovery and private sync have live
-evidence above. Membership, unanimous invitations, pairwise blocking and explicit
-reflection snapshot sharing/revocation are now implemented and tested separately;
-see MEMBERSHIP.md and SHARING.md. New membership never grants private content.
-
-Durable Postgres jobs, schedule settings, leases, one-minute cron and a restricted
-mock worker runtime are implemented. Settings includes off-by-default schedules and
-worker readiness. See CLOUD-SCHEDULING.md for local/hosted evidence and the Render
-activation boundary. The worker is not claimed as running on Render merely because
-its schema and blueprint exist. Instant private mock preview remains usable.
-
-Remaining: broader signup/email delivery, session/MFA/reauthentication, account
-export/deletion and offline conflict resolution; restricted live worker credentials
-and hosting verification; provider consent/data-term/cost controls; native Android
-callbacks/build/device/push; reviewed safety resources and recovery/backup drills.
-The overall Phase 0/1 and beta-readiness checklists remain open.
-
-
-Current hosting update: the included Frankfurt Postgres mock consumer is live,
-with the same durable authorization/lease checks. Render remains a later option.
-See [cloud scheduling](CLOUD-SCHEDULING.md) for scope and evidence; no real AI or
-external messages are enabled by this interim adapter.
+[PKCE](https://supabase.com/docs/guides/auth/sessions/pkce-flow),
+[Google consent](https://developers.google.com/workspace/guides/configure-oauth-consent).

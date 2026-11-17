@@ -18,7 +18,7 @@ no duplicate approval, unapproved provider or unmetered paid call can bypass gua
 - React/Vite/TypeScript + Capacitor; adapt the sibling's build configuration and
   boundaries rather than copy its fitness domain or its local-only privacy claims.
 - Vercel frontend/stateless FastAPI + Frankfurt processing worker; dedicated Frankfurt
-  Supabase Auth/Postgres/Storage is the eventual cloud authority.
+  Supabase Auth/Postgres is the cloud authority; private Storage features follow their phase.
 - Italian, Spanish, Korean, Mandarin, Cantonese, English and German. Mandarin/Simplified
   and Cantonese/Traditional remain separate; locale choice never asserts identity.
 - 6-hour cadence, 22:00–08:00 local quiet hours, 3 proactive nudges/local day,
@@ -180,7 +180,8 @@ upcoming areas but must not masquerade as functioning controls.
 
 Prefer behavioral tests for state races, ownership and consent to snapshots of source
 code. Use temporary demo databases in tests; never touch personal or sibling data.
-Every milestone records tests run and remaining limits in CURRENT-TASK.md. Keep
+Every milestone updates current status and the dated changelog; detailed private
+operational receipts remain outside Git. Keep
 migrations additive/reversible where possible; a rollback cannot undo a sent external
 message. Do not enable live data to make an incomplete demo appear production-ready.
 
@@ -191,62 +192,12 @@ Capacitor: https://capacitorjs.com/docs/getting-started
 FastAPI tests: https://fastapi.tiangolo.com/tutorial/testing/
 React localization: https://react.i18next.com/latest/using-with-hooks
 
-## Verified first-slice progress
+## Progress and evidence
 
-M0/M1 are complete as a **local fictional-data demo** with tested scheduling rules.
-The hosted preview uses browser-local fictional data; a dedicated Frankfurt Supabase
-project now holds the private-sync foundation. Git pushes to main deploy to Vercel.
-M2 is partial: core web auth/private reflection sync and membership/invitation/block
-foundations passed their respective tests. Broader signup/delivery, session/MFA
-management remain open. Explicit reflection snapshots, read-only named grants and
-revocation are implemented; sharing for other content types remains open. Native
-auth remains M5. See SHARING.md.
-The Postgres dispatcher, restricted worker runtime and cloud controls are implemented;
-Render activation and live-worker evidence remain open. See CLOUD-SCHEDULING.md and
-CURRENT-TASK.md for evidence and CLOUD-AUTH-SETUP.md for the auth activation boundary.
-The local FastAPI adapter remains development-only and fails closed in production.
-
-Four durable-cloud code milestones are recorded in CLOUD-SCHEDULING.md. Installed
-cron/schema and local worker proofs do not close live Render activation or M4–M6.
-
-
-Current hosting update: the included Frankfurt Postgres mock consumer is live,
-with the same durable authorization/lease checks. Render remains a later option.
-See [cloud scheduling](CLOUD-SCHEDULING.md) for scope and evidence; no real AI or
-external messages are enabled by this interim adapter.
-
-
-M4 progress 2026-11-16: saved-reflection category permission and per-item exclusions,
-review-version-bound per-capability approval and separate fallback are implemented.
-See AI-CONSENT.md. Document/chat sources, actual context builders, live processors,
-safety evaluations and cost reservations remain open; this does not close all M4.
-
-M4 progress 2026-11-17: private usage ledger, atomic buffered reservations and
-idempotent usage/invoice reconciliation, personal safety limits/pauses and retention
-are implemented and tested with fictional prices only. AI-BUDGET.md records the
-limits; actual provider models/prices/imports and network/safety integration remain open.
-
-
-Frontend presentation checkpoint: the DESIGN.md overhaul has its own verification
-record in [FRONTEND-OVERHAUL.md](FRONTEND-OVERHAUL.md). This does not activate AI or
-complete native, translation-review or provider/source/safety release gates.
-
-
-DeepSeek adapter checkpoint: dormant server-side solo composition and actual SQL
-meter integration are implemented/tested (DEEPSEEK-ADAPTER.md). This does not close
-provider safety/terms evaluations, saved-context retrieval, live transport activation,
-invoice imports or running-worker gates. All deployed processing remains disabled.
-
-
-Safety/worker checkpoint: fixed-input policy, risk screening, assessment-evidence
-validation and disabled Python AI consumer/publication are implemented. Mock jobs
-remain the default. This does not close reviewed semantic/crisis evaluation,
-region-correct response UI, AI producer/hosting or live-activation requirements.
-See SAFETY-WORKER.md.
-
-
-Crisis-support checkpoint: static regional help and private explicit-reveal worker
-notices are implemented. Source verification is separate from professional/native
-copy review; topic-specific advice and automatic persona-drop remain disabled.
-This does not close clinical/locale evaluation, real disclosure intake or live AI
-activation. See [CRISIS-SUPPORT](CRISIS-SUPPORT.md).
+This file is the bounded acceptance checklist. [CURRENT-TASK](../../CURRENT-TASK.md)
+is the current milestone map; [CHANGELOG](../CHANGELOG.md) records dated progress.
+Use [testing](../TESTING.md) for actual commands and outputs. Mock/fictional, hosted
+schema, production response and native/live-provider proofs are different claims.
+Current implementation includes guarded membership/sharing, durable static mock
+scheduling, consent/accounting and dormant safety/AI plumbing; none closes the
+remaining clinical, provider, native-device or beta-release gates.

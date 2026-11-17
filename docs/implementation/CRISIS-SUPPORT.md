@@ -121,9 +121,7 @@ intercepted locally and checked for absent referrer; no emergency call is tested
 Auth tests check signed-out access; SQL-backed browser tests verify private notice
 reveal/dismiss. Android/device behavior and clinical/native review remain pending.
 
-
 Hosted verification: migration applied; read-only ACL/schema smoke passed. Existing
 mock cron remains active. Live budget flag is false; enabled provider/safety rows,
-prices, attempts, AI jobs and notices are all zero. Security advisors report the
-expected new private RLS/no-policy INFO; the pre-existing leaked-password warning
-is unchanged. No real user notice or external call was created for verification.
+prices, attempts, AI jobs and notices are all zero. Private RLS/no-client-policy notices are expected; current hosted configuration
+gates are tracked in [CURRENT-TASK](../../CURRENT-TASK.md). No real user notice or external call was created for verification.

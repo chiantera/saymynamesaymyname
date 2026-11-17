@@ -1,48 +1,17 @@
 # Supabase
 
-Dedicated Frankfurt project; Auth, private Postgres state and eventual private file
-storage. `migrations/` is ordered immutable migration history. Generate new files
-with `npx --yes supabase@2 migration new <name>`; test locally before hosted apply.
-Never edit an already-applied migration to alter a running database.
+Migrations define private ownership, verified beta admission, membership,
+recipient grants, pairwise blocks, durable jobs, consent, accounting and support
+notices. RLS and narrowly authorized RPCs enforce access independently of the UI.
+Membership is not a content grant; privileged helpers are not general client APIs.
 
-Public originals remain owner-only under RLS. Membership and sharing tables are in
-the non-exposed `companion_private` schema with no client table grants. Narrow public
-security-invoker RPCs call guarded private functions. The worker role has only the
-execution permissions needed for job claims/completion, never general table access.
+The existing Frankfurt cron executes a bounded static mock consumer. Restricted
+Python worker roles have no journal/table authority. The AI consumer remains
+explicitly gated/disabled; no key or reservation activates transport.
 
-`tests/` contains hosted smoke SQL that creates only synthetic actors in a transaction
-and ends with ROLLBACK. `backend/dbtests/` creates a disposable loopback database;
-its DSN guard deliberately refuses hosted targets. See the cloud scheduling runbook
-for migration, cron and worker activation evidence.
+[Migrations](migrations/README.md) · [Hosted smoke scripts](tests/README.md) ·
+[Local SQL fixture](../backend/dbtests/README.md) · [Cloud scheduling](../docs/implementation/CLOUD-SCHEDULING.md).
 
-Current mock execution: the same hosted cron now calls a bounded Postgres consumer
-inside the existing Frankfurt project. It uses private static catalogs and the
-existing leased queue. Render/Python remain available for later; no paid service
-or external AI is needed for this interim mode.
-
-AI consent foundation: Settings and guarded SQL persist private source preferences,
-reflection exclusions and versioned provider/capability/fallback approval. Real
-provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
-at repository root. No mock-worker journal access or external AI activation.
-
-Budget integration adds owner-only usage/ceiling/pause controls and a separate
-restricted accounting role. Exact reservations and unresolved holds are tested with
-fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.
-
-The dormant DeepSeek adapter has one private metadata-only authorization function,
-callable by companion_meter, not clients or companion_worker. It never returns
-journal text, enables processors or changes the mock cron. See the implementation
-guide DEEPSEEK-ADAPTER.md for hosted denial/ACL evidence and activation requirements.
-
-Safety/worker migration adds a private disabled safety-policy review and explicit
-job processor routing (mock default). The metering role receives only a narrow
-AI claim/authorize/publish/hold function. Mock workers cannot finish AI jobs; the
-shared finish helper is ungranted. No login, provider or cron is activated.
-
-
-Crisis resources and private safety notices: see
-[CRISIS-SUPPORT](../docs/implementation/CRISIS-SUPPORT.md). The static help panel
-works outside authentication, selects country only on user input and hides expired
-emergency numbers. Private notices store allowlisted metadata only. Topic advice
-and automatic crisis responses require professional locale review; live AI stays
-off. No automatic contact, location lookup or third-party widget is introduced.
+Use forward-only CLI-created migrations and verify permissions after changes.
+Local test commands refuse hosted DSNs. Current runtime/review/price defaults must
+remain disabled until their separate activation evidence exists.

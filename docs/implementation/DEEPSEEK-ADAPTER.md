@@ -68,9 +68,9 @@ and return static technical codes. No unsafe text or rationale is logged.
 The shipped safety implementation now validates fixed input, rejects conservative
 risk indicators and requires fresh text-bound local assessment for arbitrary output.
 Its production assessor remains unavailable; rule absence never implies safety.
-See SAFETY-WORKER.md; this is not a clinically validated keyword classifier. Production-reviewed safety detection,
-region-correct crisis resources and user-facing static refusal/crisis handling remain
-activation gates. Tests exercise verdict handling, not clinical detection quality.
+See [safety worker](SAFETY-WORKER.md); this is not a clinically validated keyword
+classifier. Evaluated safety detection and professional review of the implemented
+[regional support paths](CRISIS-SUPPORT.md) remain activation gates. Tests exercise verdict handling, not clinical detection quality.
 A network safety service would require separate processor consent, reviewed pricing
 and its own metered attempts; do not hide such a call inside the local callback.
 
@@ -100,17 +100,18 @@ a new attempt; this adapter implements neither automatically.
 
 ## Evidence — 2026-11-17
 
-- 31 isolated adapter tests use fictional credentials and HTTPX MockTransport; no real
+- Isolated adapter tests use fictional credentials and HTTPX MockTransport; no real
   key, provider request, balance endpoint or paid processing is used.
-- Six real PostgreSQL adapter tests cover committed reservation/reporting, replay,
+- Real PostgreSQL adapter tests cover committed reservation/reporting, replay,
   kill switch/cap, revocation during a mocked request, unknown cost on timeout, narrow
-  role metadata and solo-only scope. The complete database suite has 62 tests.
-- Backend suite now has 55 tests; frontend has 12 tests and seven 295-key catalogs.
+  role metadata and solo-only scope.
+- See [testing](../TESTING.md) for current suite results.
 - Migration `20261117040437_deepseek_dispatch_gate.sql` is installed in Frankfurt.
   Hosted smoke confirms the disabled gate rejects calls, clients/mock worker lack
   execute permission, and live=false, zero prices/usage and zero enabled processors.
-- Security advisor remains at 22 intentional private RLS/no-policy INFO findings and
-  the existing leaked-password-protection warning. No new table or login was created.
+- Private no-policy RLS tables intentionally deny direct access. No new table or
+  login was created in this adapter slice. Current hosted configuration gates are
+  tracked in [current status](../../CURRENT-TASK.md).
 
 ## Official references checked
 
@@ -127,8 +128,7 @@ and explicit `connection.transaction()` blocks on an autocommit connection, incl
 blocks opened after the gate object was constructed. No dispatch can depend on an
 uncommitted reservation.
 
-
 Worker integration follow-up: SAFETY-WORKER.md documents the disabled Python
 consumer, processor routing, current safety review checks, cost-bound private
 publication and no-replay/no-mock-fallback tests. The original evidence above is
-the prior adapter milestone; current suites total 102 backend and 76 database tests.
+the prior adapter milestone; current test commands report the suite results.

@@ -41,7 +41,6 @@ Tests use fictional prices, reviews and actors in an isolated database. Real pri
 provider terms and spend limits must be reviewed before paid activation. No financial
 or private conversation content belongs in this ledger.
 
-
 ## Private controls and operator reporting
 
 Settings shows the signed-in user's posted estimates/reconciled cost, reserved and
@@ -84,7 +83,7 @@ compaction. Do not import old invoices into new attempts to bypass deduplication
 
 ## Scope and evidence
 
-- 56 real PostgreSQL tests, including 13 budget scenarios: competing reservations,
+- Real PostgreSQL budget coverage: competing reservations,
   stale leases, live-off/consent/price denial, duplicate attempts/receipts, unknown
   holds across month rollover, retries/fallback, zero-price usage, cache worst-case,
   USD conversion, units, limits/pauses, actual overruns, ownership, account deletion,
@@ -95,7 +94,7 @@ compaction. Do not import old invoices into new attempts to bypass deduplication
   admin invocation of metering functions, then ROLLBACK. The deployed global switch
   stays false, with no prices or live processors configured. Restricted-role and
   concurrency evidence comes from local PostgreSQL, not a live processor request.
-- Seven catalogs have 295 draft keys; native/safety review remains pending.
+- The seven catalogs contain draft translations; native/safety review remains pending.
 
 Current price categories cover input/cached/output tokens or one of seconds/pages/
 characters/requests, with rounding/minimum and a fixed dated EUR conversion. Provider-
@@ -108,13 +107,11 @@ References checked 2026-11-17:
 https://www.postgresql.org/docs/17/explicit-locking.html
 https://www.postgresql.org/docs/17/datatype-numeric.html
 
-
 Dormant adapter integration: DEEPSEEK-ADAPTER.md now documents a server-only
 fixed-input solo draft service with real SQL reservation/reporting and safety
 hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
-safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
+safety, reviewed live pricing/terms, invoice integration and runtime activation remain
 separate gates; the static Postgres worker never invokes this adapter.
-
 
 Worker publication now requires a matching known-usage attempt within reserved
 bounds and current safety/provider review. Publication receipts hold only a content

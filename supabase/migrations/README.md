@@ -1,19 +1,13 @@
-# Migration history
+# Migrations
 
-Apply SQL in lexical timestamp order. Create new files with the pinned Supabase v2
-CLI migration command; never rewrite an applied migration. Current additions cover
-private auth/reflections, membership, sharing, queue/leases, scheduling, worker health
-and recovery/cron. Hosted cron installation is conditional on pg_cron availability;
-vanilla local fixtures omit the extension and test tick functions directly.
+Apply in filename order. Published migrations are immutable; make a new forward
+migration with the pinned Supabase CLI's `migration new` command. Never invent a
+version or rewrite an already-applied migration to conceal a fix.
 
-Current mock execution: the same hosted cron now calls a bounded Postgres consumer
-inside the existing Frankfurt project. It uses private static catalogs and the
-existing leased queue. Render/Python remain available for later; no paid service
-or external AI is needed for this interim mode.
+Every access change needs RLS/grant/function review, a pinned search_path for
+privileged helpers and tests of owner isolation, stale versions/revocation and
+restricted worker roles. Do not grant table access merely to bypass a failing RPC.
 
-20261117040437_deepseek_dispatch_gate adds a dormant metadata-only metering-role
-gate. It enables no provider, price, login or scheduler and grants no source access.
-
-20261117043406_safety_worker_publication adds disabled safety review, default-mock
-processor routing and restricted private AI publication with known usage/reviews.
-The free mock cron command and existing schedule opt-ins are unchanged.
+[Local fixture](../../backend/dbtests/README.md) applies all files to a generated
+loopback database. Hosted deployment needs explicit scope/evidence and post-change
+smoke/advisor checks. [Implementation guides](../../docs/implementation/README.md).

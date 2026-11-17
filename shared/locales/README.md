@@ -1,20 +1,11 @@
-# Draft locale catalogs
+# Locale catalogs
 
-Seven locales, 295 keys each at this milestone. Mandarin/Simplified and
-Cantonese/Traditional are separate preferences. JSON is UTF-8; keep interpolation
-names aligned. Human and specialist safety review remains pending. Static worker
-copy is mock output; localization alone does not enable an AI provider.
+Launch catalogs: `en`, `it`, `es`, `ko`, `zh-Hans`, `yue-Hant`, `de`. Mandarin and
+Cantonese preferences remain distinct; explicit choice wins over inferred defaults.
+English supplies source keys. Use native Intl formatting rather than translating
+private user text or inferring country from language.
 
-AI consent foundation: Settings and guarded SQL persist private source preferences,
-reflection exclusions and versioned provider/capability/fallback approval. Real
-provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
-at repository root. No mock-worker journal access or external AI activation.
-
-Budget integration adds owner-only usage/ceiling/pause controls and a separate
-restricted accounting role. Exact reservations and unresolved holds are tested with
-fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.
-
-The checker parses TypeScript/TSX translation calls, conditional keys and section
-labels as well as catalog parity. Dynamic statuses/capabilities and planned lists
-have explicit key contracts; new dynamic families must extend that contract.
-Interpolation names must match English. This does not certify translation quality.
+Run `npm test` for key/interpolation/encoding/source checks. All translations remain
+drafts requiring native review; topic-specific crisis copy also needs professional
+review before display. Never activate a locale by merely filling its JSON keys.
+Mock workers read the same trusted prompt/draft keys. [Localization specification](../../docs/plan/LOCALIZATION.md).

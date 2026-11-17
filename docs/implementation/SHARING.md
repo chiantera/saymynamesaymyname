@@ -58,7 +58,7 @@ The fictional local preview does not simulate cloud sharing.
   all test data is rolled back. No real invitations or outward messages are sent.
 
 Remaining work includes shared documents/media, deletion UI, source-aware derived
-artifact cleanup before adding shared search/export/AI, hosted scheduling and native
+artifact cleanup before adding shared search/export/AI, outward delivery and native
 Android verification. M2 and Phase 0/1 as a whole remain incomplete.
 
 ## Scheduling integration
@@ -66,7 +66,6 @@ Android verification. M2 and Phase 0/1 as a whole remain incomplete.
 Private relationship-scoped jobs bind to current membership generations and recheck
 archive/mute/leave before publication. They never create recipient content grants.
 Cloud infrastructure and live Render activation status: [CLOUD-SCHEDULING](CLOUD-SCHEDULING.md).
-
 
 Current hosting update: the included Frankfurt Postgres mock consumer is live,
 with the same durable authorization/lease checks. Render remains a later option.

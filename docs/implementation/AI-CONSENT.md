@@ -43,30 +43,30 @@ cleanup in the existing cron command. Source deletion cascades exclusion rows.
 
 ## Evidence and limits
 
-- 43 real PostgreSQL tests: existing membership/sharing/scheduling/worker checks plus
+- real PostgreSQL tests: existing membership/sharing/scheduling/worker checks plus
   consent defaults, stale revision rejection, unreviewed-provider denial, exact
   capabilities, fallback, terms change, per-item exclusion, cross-member privacy,
   runtime disable/revocation and event cleanup.
 - Browser + real SQL: category/exclusion save/reload, sticky exclusions, unavailable
   provider controls and 390px layout. Auth/HTTP transport is simulated.
 - Hosted `supabase/tests/ai_consent.sql`: fictional actor only, all rows rolled back.
-- Seven catalogs contain 295 draft keys each; human/native review remains pending.
+- The seven catalogs contain draft translations; human/native review remains pending.
 
-No real provider call, provider safety evaluation, cost reservation, attachment
-processing, chat/document retrieval or Android validation is claimed. Remaining M4
-work starts with provider-neutral composition and atomic budget reservations. The
-free Postgres executor stays static-mock-only; Render remains a later runtime.
+No real provider call, clinical safety evaluation, attachment processing or native
+validation is claimed. Atomic budget reservations and the dormant fixed-input
+adapter/worker are implemented separately; see [budget](AI-BUDGET.md) and
+[safety worker](SAFETY-WORKER.md). Saved document/chat retrieval, actual processor
+terms/prices, invoice imports, evaluated review and live runtime activation remain
+gated. The free Postgres executor is static-mock-only; Render is retained for later.
 
 Supabase RLS reference checked 2026-11-16:
 https://supabase.com/docs/guides/database/postgres/row-level-security
 
-
 Dormant adapter integration: DEEPSEEK-ADAPTER.md now documents a server-only
 fixed-input solo draft service with real SQL reservation/reporting and safety
 hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
-safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
+safety, reviewed live pricing/terms, invoice integration and runtime activation remain
 separate gates; the static Postgres worker never invokes this adapter.
-
 
 Disabled worker integration adds current safety-policy review to provider/lease
 authorization and rechecks both before private pending-draft publication. Existing

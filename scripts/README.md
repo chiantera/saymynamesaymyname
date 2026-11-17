@@ -1,7 +1,12 @@
-# Development scripts
+# Workspace scripts
 
-`dev.mjs` launches the local fictional frontend/API/SQLite worker.
-`check-locales.mjs` checks catalog parity and nonempty UTF-8 text. These scripts do
-not start a cloud scheduler or provision Render. The cloud worker entry point is
-`uv run --directory backend python -m app.cloud_worker`; consult its configuration
-runbook before use. Never pass production credentials as command-line arguments.
+- `dev.mjs` starts the local fictional Vite/API/SQLite worker and stops its own child
+  processes; it never provisions a cloud worker or paid service.
+- `check-locales.mjs` validates catalog keys, interpolation, nonempty text and source
+  encoding/contracts. Catalog totals come from the files, not Markdown copies.
+- `check-docs.mjs` validates local Markdown targets/anchors and the single-guide,
+  short-status, indexed-plan documentation contracts.
+
+Use [testing](../docs/TESTING.md) for commands. Cloud worker configuration belongs
+in its [runbook](../docs/implementation/CLOUD-SCHEDULING.md), not the dev launcher.
+Never pass production credentials as command-line arguments.

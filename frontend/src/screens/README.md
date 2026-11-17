@@ -1,11 +1,11 @@
-# Screens
+# Screen modules
 
-Home owns presentation of the private check-in, saved reflections and day band.
-`DayBand.tsx` renders the pure model from `../day-band.ts`; the parent supplies time
-and real records. LocalRelationships is fictional-preview only. SettingsScreen
-composes preference controls and cloud sections without granting new access.
-Growth and Bartender describe planned functionality; neither calls a provider.
+Home presents the private check-in loop, saved reflections and optional sharing.
+The day-band helpers render actual fixture/account records in the chosen timezone,
+not invented activity. Settings composes the existing guarded configuration panels.
+LocalRelationships is the fictional-label surface, distinct from cloud membership.
 
-Data writes and check-in version guards stay in App or the guarded cloud modules.
-All copy goes through the seven shared catalogs. Follow ../../DESIGN.md and keep
-the accessible names and classes required by browser tests.
+Growth and Bartender explicitly describe planned capabilities; they do not provide
+live advice or enable processors. Keep solo use complete and use neutral copy.
+[DESIGN](../../DESIGN.md) controls presentation; [client source](../README.md)
+explains the unchanged authorization/data responsibilities.

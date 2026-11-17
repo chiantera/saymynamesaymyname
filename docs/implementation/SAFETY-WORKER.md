@@ -106,15 +106,15 @@ worker heartbeat or beta readiness. No cron command or schedule opt-in is change
 
 ## Validation
 
-- 44 safety-policy tests: seven locale contracts, crisis/violence/stalking/injection
+- Safety-policy tests: seven locale contracts, crisis/violence/stalking/injection
   examples, normalization, malformed input and stale/wrong evidence rejection.
-- Three CLI tests prove disabled/unknown modes and missing assessor fail before DB
-  or key access. Backend suite: 102 tests including the existing adapter/demo tests.
-- 14 real-SQL worker tests (HTTP and assessments fictional): private pending draft,
+- CLI tests prove disabled/unknown modes and missing assessor fail before DB
+  or key access; existing adapter/demo tests remain in the suite.
+- Real-SQL worker tests (HTTP and assessments fictional): private pending draft,
   manual approval boundary, no duplicate publication, no-call disabled defaults,
   no-review denial, unsafe holds, revocation/kill after assessment, uncertain-cost
   recovery, role isolation, processor routing and tampered publication rejection.
-  Full database suite: 76 tests.
+
 - Browser/auth/SQL membership regressions run sequentially in CI. No real provider
   requests, balance lookups, secrets, beta-member text or paid safety model used.
 
@@ -127,14 +127,13 @@ Installed 20261117043406_safety_worker_publication in Frankfurt. The read-only
 `safety_worker.sql` smoke passes: the kill switch denies claims, clients/mock
 workers lack AI-RPC access, and the shared finish helper is ungranted. Live=false;
 zero price rows, usage rows, enabled processors, approved safety reviews or AI-tagged
-jobs. The single cron still calls postgres_mock_tick. Security advisor: 23
-intentional private RLS/no-policy INFO findings (one new private policy table),
-plus the existing leaked-password-protection WARN. No other warning/error added.
+jobs. The single cron still calls postgres_mock_tick. Private RLS/no-client-policy
+notices are deliberate; current hosted configuration gates belong in
+[CURRENT-TASK](../../CURRENT-TASK.md).
 
-Final local verification: 102 backend tests, 76 full PostgreSQL tests, 12 frontend
-tests, seven-catalog checks and TypeScript/Vite build passed. The final targeted
-adapter/worker rerun also passed after adding pre-reservation network readiness.
-The live key was not accessed; no production assessor/host was enabled.
+Local backend, PostgreSQL, frontend/catalog and production-build checks passed.
+The targeted adapter/worker rerun also passed after adding pre-reservation network
+readiness. No live key, production assessor or paid host was activated.
 
 Technical references checked: https://supabase.com/changelog.md and
 https://www.postgresql.org/docs/17/sql-grant.html. This work adds no clinical

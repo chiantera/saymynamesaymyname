@@ -1,28 +1,20 @@
-# Documentation
+# Documentation map
 
-[PLAN](../PLAN.md) records product decisions. [SOUL](../SOUL.md) records product
-principles. [AGENTS](../AGENTS.md) and [CLAUDE](../CLAUDE.md) guide coding agents.
-[CURRENT-TASK](../CURRENT-TASK.md) records tested milestones and outstanding gates.
+| Need | Source |
+| --- | --- |
+| What works and what remains | [Current status](../CURRENT-TASK.md) |
+| Run and understand the app | [Main README](../README.md) |
+| Accepted product decisions | [Plan index](../PLAN.md) and [topic specs](plan/README.md) |
+| Bounded build/release checklist | [Phase 0/1](implementation/PHASE-0-1.md) |
+| Code contracts and runbooks | [Implementation guides](implementation/README.md) |
+| Architecture choices and consequences | [Decision records](decisions/README.md) |
+| Commands and evidence limits | [Testing](TESTING.md) |
+| Dated implementation evidence | [Changelog](CHANGELOG.md) |
+| Coding instructions | [AGENTS](../AGENTS.md); CLAUDE is a pointer |
+| Product principles | [SOUL](../SOUL.md) |
+| Frontend contract | [DESIGN](../frontend/DESIGN.md) |
 
-Implementation guides:
-
-- [Phase 0/1](implementation/PHASE-0-1.md): scope, milestones and completion checklist.
-- [Cloud auth](implementation/CLOUD-AUTH-SETUP.md): OAuth and recovery evidence.
-- [Membership](implementation/MEMBERSHIP.md): unanimous invitations and pairwise blocks.
-- [Sharing](implementation/SHARING.md): named read-only grants and revocation.
-- [Cloud scheduling](implementation/CLOUD-SCHEDULING.md): durable jobs, worker and operations.
-
-Historical verification remains historical; do not rewrite old evidence as though
-later capabilities were already deployed. Plans are not proof of live activation.
-
-Current mock execution: the same hosted cron now calls a bounded Postgres consumer
-inside the existing Frankfurt project. It uses private static catalogs and the
-existing leased queue. Render/Python remain available for later; no paid service
-or external AI is needed for this interim mode.
-
-- [AI consent](implementation/AI-CONSENT.md): saved-context and processor permissions.
-- [Decisions](decisions/README.md): dated architectural choices and their limits.
-
-- [AI budget](implementation/AI-BUDGET.md): reservations, private ledger, reconciliation and retention.
-
-- [Crisis support](implementation/CRISIS-SUPPORT.md): static regional directory, quick exit and private held-output notices; reviewed response activation still pending.
+Current status is not an append-only log. Specifications span future phases and do
+not assert completed features. Keep aggregate test counts in command output, avoid
+private operational identifiers/account stories, and update the existing topic
+instead of duplicating guidance in folder READMEs.

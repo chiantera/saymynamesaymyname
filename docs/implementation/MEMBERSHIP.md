@@ -2,7 +2,7 @@
 
 The membership foundation is a separate authorization layer from private ownership.
 A shared relationship never grants access to journals, check-ins, profiles or past
-content. Explicit item-recipient grants remain a later feature.
+content. Explicit item-recipient grants are implemented separately; see [sharing](SHARING.md).
 
 ## Server contract
 
@@ -52,7 +52,7 @@ it with ordered group/pair locks before scaling, while retaining the same guaran
 creates a new disposable database, applies all migrations, and models authenticated
 SQL roles with a minimal local Auth fixture. Concurrent clients exercise real locks.
 Hosted JWT/email/OAuth behavior is covered by separate acceptance evidence.
-Seventeen integration tests passed, including true concurrent client transactions.
+integration tests passed, including true concurrent client transactions.
 `supabase/tests/membership.sql` also passed in the hosted project; it rolls back all
 synthetic users, memberships, approvals and tokens, leaving no test accounts behind.
 
@@ -97,7 +97,6 @@ generation, archive/mute and pair gates immediately before acting.
 Private relationship-scoped jobs bind to current membership generations and recheck
 archive/mute/leave before publication. They never create recipient content grants.
 Cloud infrastructure and live Render activation status: [CLOUD-SCHEDULING](CLOUD-SCHEDULING.md).
-
 
 Current hosting update: the included Frankfurt Postgres mock consumer is live,
 with the same durable authorization/lease checks. Render remains a later option.

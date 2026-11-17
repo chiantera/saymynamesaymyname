@@ -1,12 +1,13 @@
-# Browser smoke scripts
+# Browser and verification scripts
 
-browser_smoke.py exercises the fictional local adapter. auth_smoke.py intercepts
-Auth/cloud requests with synthetic sessions; it cannot certify Google delivery.
-Run the npm wrappers at repository root. Scripts start dedicated local ports and
-clean up only their own processes. Evidence goes to ignored .local/screenshots/.
+- `browser_smoke.py`: local fictional FastAPI/SQLite plus responsive locale/theme,
+  accessibility, check-in and quick-exit coverage.
+- `auth_smoke.py`: production-build fake Auth, recovery/account isolation, actual
+  polling request budgets and enforced security-policy probes.
+- `ui_checks.py`: test-only accessibility instrumentation; no CSP bypass.
+- `security_checks.py`: response-header and browser script/connection/framing checks.
 
-`ui_checks.py` loads the npm-pinned axe-core bundle for fixture-only WCAG A/AA
-checks. Auth audits sign-in/signup/recovery/beta states; the SQL-backed browser
-suite audits membership, sharing review and private settings. The preview smoke
-covers all seven languages in light/dark at 360px and 1440px. Browser suites must
-run sequentially. No test should target real beta accounts.
+Use root npm commands and [testing prerequisites](../../docs/TESTING.md). Scripts
+reserve dedicated ports, fail on conflicts and stop only their own processes.
+Run browser/build suites sequentially. Logs/screenshots stay in ignored `.local/`;
+no hosted account, credential or processor is needed.

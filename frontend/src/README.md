@@ -1,18 +1,20 @@
 # Client source
 
-App.tsx owns data loading, guarded actions and routing; Shell.tsx renders the frame;
-screens/ and ui.tsx hold presentation; styles/ holds tokens and CSS (see ../DESIGN.md).
- AuthGate owns sign-in/session boundaries; cloud.ts guards
-account-scoped Supabase requests. Relationships, Sharing and Scheduling each expose
-bounded cloud capabilities. The fictional browser adapter remains isolated from
-private cloud accounts. Include every visible string in all locale catalogs and
-avoid untrusted HTML. Read ../README.md and the implementation guides before editing.
+`App.tsx` owns data, versioned decisions, navigation state and guarded refreshes.
+`Shell.tsx` renders one responsive navigation/account layout. `AuthGate.tsx` owns
+cloud admission, account-keyed remounts and recovery screens.
 
-AI consent foundation: Settings and guarded SQL persist private source preferences,
-reflection exclusions and versioned provider/capability/fallback approval. Real
-provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
-at repository root. No mock-worker journal access or external AI activation.
+`api.ts` selects local, fictional-browser or cloud transport. `cloud.ts` maps guarded
+operations to Supabase and checks account generation around every result. The main
+and sharing refreshes each verify the user once. `polling.ts` serializes periodic
+reads, backs off and pauses while hidden; it never schedules sends/AI calls.
 
-Budget integration adds owner-only usage/ceiling/pause controls and a separate
-restricted accounting role. Exact reservations and unresolved holds are tested with
-fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.
+`Relationships.tsx`, `Sharing.tsx`, `Scheduling.tsx`, `Budget.tsx` and `AIConsent.tsx`
+are cloud controls. `Support.tsx` provides independent static help plus private
+explicit-reveal notices. `support-resources.ts` resolves curated country facts and
+review gates; UI language never determines the emergency number.
+
+[Screen modules](screens/README.md) · [Styles](styles/README.md) ·
+[Design contract](../DESIGN.md) · [Testing](../../docs/TESTING.md).
+Preserve recipient/version/generation arguments and fail-closed UI state. Render
+untrusted text as text; do not introduce raw HTML or provider credentials.

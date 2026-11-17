@@ -6,8 +6,7 @@ Completes the interrupted `frontend-overhaul` workflow against
 [DESIGN.md](../../frontend/DESIGN.md). Its foundation and screen implementations
 were recovered from the working tree; 39 translation drafts were recovered from
 local agent results. Existing catalog meanings were preserved, missing drafts
-completed and section labels added in all seven locales. Catalogs contain 295
-keys each. All translations remain drafts pending human/native safety review.
+completed and section labels added in all seven locales. Catalog keys are checked from the files. All translations remain drafts pending human/native safety review.
 
 No backend runtime, Supabase migration, provider review, live activation switch,
 price row, worker mode or billing setting is changed. Live AI stays disabled.
@@ -38,8 +37,8 @@ create/drop only their own generated loopback databases.
 
 | Command | Coverage |
 | --- | --- |
-| `npm run check` | 12 frontend tests, 24 local backend tests, seven catalogs, source-key/interpolation checks, TypeScript/Vite build |
-| `npm run test:database` | 56 PostgreSQL tests: membership, grants/revocation, leases/scheduling, consent and budgets |
+| `npm run check` | frontend tests, local backend tests, seven catalogs, source-key/interpolation checks, TypeScript/Vite build |
+| `npm run test:database` | PostgreSQL tests: membership, grants/revocation, leases/scheduling, consent and budgets |
 | `npm run test:browser` | Compose/edit/save/skip/snooze, persistence, 140 combinations of five destinations × seven locales × two themes × two widths |
 | `npm run test:auth` | Simulated signup, recovery/PKCE/error states, beta admission, private sync, account isolation, Google request |
 | `npm run test:membership` | Production client with real local SQL/RLS: unanimous joins, pairwise blocks, explicit sharing/revocation, budget/consent and mock queue |
