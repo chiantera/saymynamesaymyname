@@ -35,6 +35,7 @@ export async function cloudRequest(path:string,method:string,body:unknown){
   return {workspace,shares};
  }
  if(path==='/support')return checked(()=>cloud!.rpc('support_notice',{p_action:payload.action,p_args:payload.args??{}}));
+ if(path==='/edit-recovery')return checked(()=>cloud!.rpc('edit_recovery',{p_action:payload.action,p_args:payload.args??{}}));
  if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:payload.action,p_args:payload.args??{}}));
  if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
  if(path==='/cloud/queue')return checked(()=>cloud!.rpc('cloud_queue',{p_action:payload.action,p_args:payload.args??{}}));

@@ -40,6 +40,8 @@ requests = []
 admitted = True
 queue_jobs = []
 decision_errors = []
+recovery_errors = []
+recoveries = {actor_a:{},actor_b:{}}
 
 def user(actor):
     return {'id':actor,'aud':'authenticated','role':'authenticated',
@@ -83,6 +85,19 @@ def handle(route):
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
     if path=='/rest/v1/rpc/support_notice': return reply({'id':None})
+    if path=='/rest/v1/rpc/edit_recovery':
+        action=body['p_action'];args=body['p_args'];store=recoveries[actor]
+        if action=='list':return reply([row for row in store.values() if not row.get('deleted')])
+        if recovery_errors and recovery_errors[0]==action:
+            recovery_errors.pop(0);return reply({'code':'P0001','message':'fixture unavailable'},400)
+        rid=args['id']
+        if action=='save':
+            if store.get(rid,{}).get('deleted'):return reply({'code':'P0001','message':'recovery_unavailable'},400)
+            store.setdefault(rid,dict(args))
+            if recovery_errors and recovery_errors[0]=='bad_ack':
+                recovery_errors.pop(0);return reply({'id':'00000000-0000-0000-0000-000000000000'})
+            return reply({'id':rid})
+        if action=='dismiss':store[rid]={'id':rid,'deleted':True};return reply({'dismissed':True})
     if path=='/rest/v1/rpc/cloud_queue': return reply(queue_jobs)
     if path=='/rest/v1/rpc/cloud_schedule': return reply({'revision':0,'paused':False,'paused_until':None,'quiet_start':'22:00','quiet_end':'08:00','daily_cap':3,'scopes':[]})
     if path=='/rest/v1/rpc/relationship_workspace': return reply({'relationships':[],'blocks':[]})
@@ -213,6 +228,7 @@ try:
             page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private fictional reflection for actor A')
         page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
         decision_errors.append({'code':'P0001','message':'stale_decision','details':'fictional private diagnostic','fixture_remote_closed':True})
@@ -222,6 +238,7 @@ try:
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private fictional reflection for actor A')
         assert not records[actor_a]
         page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         # An intentionally cleared draft is still an edit, even though it is empty.
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).clear()
@@ -230,6 +247,7 @@ try:
             page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('')
         page.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
         page.get_by_role('button',name=en['approve'],exact=True).click()
@@ -237,21 +255,43 @@ try:
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private unsent edit for actor A')
+        recovery_errors.extend(['save','bad_ack'])
         checkins[actor_a][-1]['status']='fulfilled'
         with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
             page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private unsent edit for actor A')
+        expect(page.get_by_text(en['recoveryFailed'],exact=True)).to_be_visible()
+        with page.expect_response(lambda response: response.url==fake+'/rest/v1/rpc/edit_recovery' and response.request.post_data_json.get('p_action')=='save'):
+            page.get_by_role('button',name=en['recoveryRetry'],exact=True).click()
+        expect(page.get_by_text(en['recoveryFailed'],exact=True)).to_be_visible()
+        page.get_by_role('button',name=en['recoveryRetry'],exact=True).click()
+        expect(page.get_by_text(en['recoverySaved'],exact=True)).to_be_visible()
         other,second=new_page()
         second.goto(origin)
         login(second)
         expect(second.locator('.entry')).to_contain_text('Private fictional reflection for actor A')
-        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private unsent edit for actor A')
+        second.reload()
+        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private unsent edit for actor A')
         page.get_by_role('button',name=en['signOut'],exact=True).click()
         expect(page.locator('.entry')).to_have_count(0)
         expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         login(page,'b@example.invalid')
         expect(page.get_by_role('button',name=en['signOut'],exact=True)).to_be_visible()
         expect(page.locator('.entry')).to_have_count(0)
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        recovery_errors.append('dismiss')
+        second.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(second.get_by_text(en['recoveryDeleteFailed'],exact=True)).to_be_visible()
+        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_value('Private unsent edit for actor A')
+        second.get_by_role('button',name=en['recoveredDraftDismiss']+' 1',exact=True).click()
+        expect(second.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
+        page.get_by_role('button',name=en['signOut'],exact=True).click()
+        with page.expect_response(fake+'/rest/v1/rpc/edit_recovery'):
+            login(page)
+        page.wait_for_load_state('networkidle')
+        expect(page.locator('.entry')).to_contain_text('Private fictional reflection for actor A')
+        expect(page.get_by_label(en['recoveredDraftLabel'],exact=True)).to_have_count(0)
         page.get_by_role('button',name=en['signOut'],exact=True).click()
         page.get_by_role('button',name=en['cloudAccount'],exact=True).click()
         page.get_by_role('button',name=en['continueGoogle']).click()

@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — 设备安全",
   "recoveredDraftLabel": "已恢复的未发送编辑",
   "recoveredDraftHint": "此临时编辑可能因页面或会话变化而被清除。请现在复制。",
-  "recoveredDraftDismiss": "关闭编辑"
+  "recoveredDraftDismiss": "关闭编辑",
+  "recoverySaved": "已私密保存到你的云账户。",
+  "recoverySaving": "正在私密保存此编辑…",
+  "recoveryFailed": "无法保存此编辑。请现在复制或重试。",
+  "recoveryDeleteFailed": "无法关闭此编辑，请重试。",
+  "recoveryRetry": "重试保存",
+  "recoveryLoadFailed": "无法加载已保存的编辑。",
+  "recoveryRefresh": "重试加载"
 }

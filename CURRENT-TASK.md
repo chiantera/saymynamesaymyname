@@ -14,11 +14,12 @@ remain disabled; `httpx2` is retained for Starlette's test client.**
 | M6 beta release | Automated local/CI checks and web deployment | Professional/native review, recovery/support/processor and device release gates |
 
 Recent hardening: typed cloud request inputs and guarded result handling, a safe
-stale-decision conflict message and temporary private recovery of unsent edits,
+stale-decision conflict message and private cloud recovery of displaced edits,
 adaptive non-overlapping polling, hidden-tab pauses, immediate
 Home/visibility refresh and identity-checked read batches; enforced browser security
 headers with positive auth/sharing and negative script/connection/frame tests.
-Seven locale catalogs are drafts. Static support contacts have verification/expiry
+Saved recovery copies sync privately after acknowledgement; active drafts and
+unacknowledged/offline edits are not yet durable. Seven locale catalogs are drafts. Static support contacts have verification/expiry
 metadata; country is explicit and temporary. Topic advice and automatic crisis
 responses remain professionally review-gated.
 

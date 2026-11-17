@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — Gerätesicherheit",
   "recoveredDraftLabel": "Wiederhergestellte ungesendete Änderung",
   "recoveredDraftHint": "Diese vorübergehende Änderung kann bei einem Seiten- oder Sitzungswechsel verloren gehen. Kopiere sie jetzt.",
-  "recoveredDraftDismiss": "Änderung verwerfen"
+  "recoveredDraftDismiss": "Änderung verwerfen",
+  "recoverySaved": "Privat in deinem Cloud-Konto gespeichert.",
+  "recoverySaving": "Änderung wird privat gespeichert…",
+  "recoveryFailed": "Die Änderung konnte nicht gespeichert werden. Kopiere sie jetzt oder versuche es erneut.",
+  "recoveryDeleteFailed": "Die Änderung konnte nicht verworfen werden. Versuche es erneut.",
+  "recoveryRetry": "Speichern erneut versuchen",
+  "recoveryLoadFailed": "Gespeicherte Änderungen konnten nicht geladen werden.",
+  "recoveryRefresh": "Laden erneut versuchen"
 }

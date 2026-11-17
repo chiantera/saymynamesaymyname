@@ -6,11 +6,14 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-17
 
+- Added owner-only cloud recovery for displaced edits with immutable retry IDs,
+  deletion tombstones and explicit save/retry status. Active editor checkpoints
+  and offline durability remain open. [Recovery](implementation/EDIT-RECOVERY.md).
+
 - Tightened cloud request input/result typing and mapped only the exact server
   stale-decision error to the existing conflict message. Raw diagnostics remain
-  hidden. Unsent edits displaced by a refreshed version are available privately
-  temporarily; page changes, sign-out or session revalidation can clear them. They
-  are not automatically sent or saved.
+  hidden. Initial displaced-edit recovery was temporary; the later cloud recovery
+  milestone above supersedes it after server acknowledgement.
 
 - Reduced cloud reads with idle/active cadence, bounded failure backoff, hidden-tab
   pause, one fresh read on return and one identity check per refresh batch. The

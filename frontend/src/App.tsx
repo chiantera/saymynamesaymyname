@@ -21,7 +21,7 @@ import {
   type Relationship,
   type Snapshot,
 } from './api';
-import { isCloudActive } from './cloud';
+import { cloudRequest, isCloudActive } from './cloud';
 import { canGenerate, readSetting, resolveLocale, saveSetting, type Locale } from './domain';
 import Bartender from './screens/Bartender';
 import Growth from './screens/Growth';
@@ -31,6 +31,10 @@ import SettingsScreen from './screens/SettingsScreen';
 import { Button, Field, Notice } from './ui';
 import { SupportNotices } from './Support';
 import { pollDelay, startPolling } from './polling';
+import { parseRecoveryList } from './recovery-list';
+
+type RecoveredEdit = { id: string; text: string; checkin_id: string; base_version: number;
+  sync: 'local' | 'saving' | 'saved' | 'failed' | 'deleting' | 'delete_failed' };
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -43,7 +47,8 @@ export default function App() {
   const [label, setLabel] = useState('');
   const [timezone, setTimezone] = useState('Europe/Berlin');
   const [draft, setDraft] = useState('');
-  const [recoveredDrafts, setRecoveredDrafts] = useState<string[]>([]);
+  const [recoveredDrafts, setRecoveredDrafts] = useState<RecoveredEdit[]>([]);
+  const [recoveryLoadError, setRecoveryLoadError] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<'errorMessage' | 'errorConflict' | null>(null);
   const [notice, setNotice] = useState(false);
@@ -57,9 +62,61 @@ export default function App() {
   const previousActive = useRef<Checkin | undefined>(undefined);
   const latestDraft = useRef(draft);
   const approvedHere = useRef<string | null>(null);
+  const dismissedRecoveries = useRef(new Set<string>());
+  const recoveryMutationVersion = useRef(0);
   latestDraft.current = draft;
   const language = resolveLocale(i18n.language);
   const cloud = isCloudActive();
+  const loadRecoveries = useCallback(async () => {
+    const version = recoveryMutationVersion.current;
+    try {
+      const rows = parseRecoveryList(await cloudRequest('/edit-recovery','POST',{action:'list'}));
+      setRecoveredDrafts(current => {
+        const present = new Set(rows.map(item => item.id));
+        // A list started before a local mutation cannot remove a newly saved edit.
+        const retained = version === recoveryMutationVersion.current
+          ? current.filter(item => item.sync !== 'saved' || present.has(item.id)) : current;
+        const known = new Set(retained.map(item => item.id));
+        return [...retained, ...rows.filter(item => !known.has(item.id) && !dismissedRecoveries.current.has(item.id))
+          .map(item => ({...item, sync:'saved' as const}))];
+      });
+      setRecoveryLoadError(false);
+    } catch { setRecoveryLoadError(true); throw new Error('Recovery list unavailable'); }
+  }, []);
+  useEffect(() => {
+    if (!cloud) return;
+    return startPolling(loadRecoveries, {delay: failures => pollDelay(true, false, failures)});
+  }, [cloud, loadRecoveries]);
+
+  async function saveRecovery(item: RecoveredEdit) {
+    ++recoveryMutationVersion.current;
+    setRecoveredDrafts(items => items.map(row => row.id === item.id ? {...row,sync:'saving'} : row));
+    try {
+      const result = await cloudRequest('/edit-recovery','POST',{action:'save',args:{id:item.id,checkin_id:item.checkin_id,
+        base_version:item.base_version,text:item.text}});
+      if (result.id !== item.id) throw new Error('Save acknowledgement unavailable');
+      ++recoveryMutationVersion.current;
+      setRecoveredDrafts(items => items.map(row => row.id === item.id && row.sync === 'saving' ? {...row,sync:'saved'} : row));
+    } catch {
+      ++recoveryMutationVersion.current;
+      setRecoveredDrafts(items => items.map(row => row.id === item.id && row.sync === 'saving' ? {...row,sync:'failed'} : row));
+    }
+  }
+  async function dismissRecovery(item: RecoveredEdit) {
+    if (item.sync === 'local') { setRecoveredDrafts(items => items.filter(row => row.id !== item.id)); return; }
+    ++recoveryMutationVersion.current;
+    setRecoveredDrafts(items => items.map(row => row.id === item.id ? {...row,sync:'deleting'} : row));
+    try {
+      const result = await cloudRequest('/edit-recovery','POST',{action:'dismiss',args:{id:item.id,checkin_id:item.checkin_id,base_version:item.base_version}});
+      if (result.dismissed !== true) throw new Error('Dismissal unavailable');
+      ++recoveryMutationVersion.current;
+      dismissedRecoveries.current.add(item.id);
+      setRecoveredDrafts(items => items.filter(row => row.id !== item.id));
+    } catch {
+      ++recoveryMutationVersion.current;
+      setRecoveredDrafts(items => items.map(row => row.id === item.id ? {...row,sync:'delete_failed'} : row));
+    }
+  }
   const formatDate = (value: string) =>
     new Intl.DateTimeFormat(language, {
       dateStyle: 'medium',
@@ -129,7 +186,10 @@ export default function App() {
     const previous = previousActive.current;
     if (previous && approvedHere.current !== previous.id && latestDraft.current !== previous.draft) {
       const text = latestDraft.current;
-      setRecoveredDrafts(items => [...items, text]);
+      const item:RecoveredEdit = {id:crypto.randomUUID(),text,checkin_id:previous.id,
+        base_version:previous.version,sync:cloud?'saving':'local'};
+      setRecoveredDrafts(items => [...items, item]);
+      if (cloud) void saveRecovery(item);
     }
     approvedHere.current = null;
     previousActive.current = active;
@@ -219,12 +279,17 @@ export default function App() {
     >
       <JoinInvitation onJoined={() => setTab('relationships')} />
       {cloud && <SupportNotices />}
-      {recoveredDrafts.map((text, index) => (
-        <Notice key={index} tone="warning">
-          <Field label={t('recoveredDraftLabel')} hint={t('recoveredDraftHint')}>
-            <textarea readOnly value={text} rows={4} dir="auto" />
+      {recoveryLoadError && <Notice tone="warning" actions={<Button onClick={() => void loadRecoveries().catch(() => undefined)}>{t('recoveryRefresh')}</Button>}>
+        <p>{t('recoveryLoadFailed')}</p></Notice>}
+      {recoveredDrafts.map((item, index) => (
+        <Notice key={item.id} tone="warning">
+          <Field label={t('recoveredDraftLabel')} hint={t(item.sync === 'saved' ? 'recoverySaved' : 'recoveredDraftHint')}>
+            <textarea readOnly value={item.text} rows={4} dir="auto" />
           </Field>
-          <Button onClick={() => setRecoveredDrafts(items => items.filter((_, i) => i !== index))}
+          {item.sync === 'saving' && <p role="status">{t('recoverySaving')}</p>}
+          {(item.sync === 'failed' || item.sync === 'delete_failed') && <p role="status">{t(item.sync === 'failed' ? 'recoveryFailed' : 'recoveryDeleteFailed')}</p>}
+          {item.sync === 'failed' && <Button onClick={() => void saveRecovery(item)}>{t('recoveryRetry')}</Button>}
+          <Button disabled={item.sync === 'deleting'} onClick={() => void dismissRecovery(item)}
             aria-label={`${t('recoveredDraftDismiss')} ${index + 1}`}>
             {t('recoveredDraftDismiss')}
           </Button>

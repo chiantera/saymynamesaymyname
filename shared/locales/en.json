@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — device safety",
   "recoveredDraftLabel": "Recovered unsent edit",
   "recoveredDraftHint": "This temporary edit can be cleared by a page or session change. Copy it now.",
-  "recoveredDraftDismiss": "Dismiss edit"
+  "recoveredDraftDismiss": "Dismiss edit",
+  "recoverySaved": "Saved privately to your cloud account.",
+  "recoverySaving": "Saving this edit privately…",
+  "recoveryFailed": "Could not save this edit. Copy it now or retry.",
+  "recoveryDeleteFailed": "Could not dismiss this edit. Try again.",
+  "recoveryRetry": "Retry save",
+  "recoveryLoadFailed": "Could not load saved edits.",
+  "recoveryRefresh": "Retry loading"
 }

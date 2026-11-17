@@ -11,7 +11,7 @@ use fictional text, mocked HTTP and synthetic identities, never real provider ke
 | `npm run test:backend` | Local API, loop, scheduling, adapter/safety/crisis and worker-gate tests | uv/Python dependencies |
 | `npm run test:browser` | Fictional local API/SQLite + responsive/localization/accessibility/quick-exit browser matrix | Playwright Chromium; free ports 8003 and 5175 |
 | `npm run test:auth` | Production build + intercepted signup/recovery/Google, account isolation, polling budget and enforced-header probes | Playwright Chromium; free port 5176 |
-| `npm run test:database` | Real PostgreSQL authorization, concurrency, queue/recovery, consent, accounting and safety notices | Isolated loopback fixture |
+| `npm run test:database` | Real PostgreSQL authorization, concurrency, queue/recovery, consent, accounting, safety notices and edit tombstones | Isolated loopback fixture |
 | `npm run test:membership` | Production build + fake Auth transport backed by real SQL/RLS, grants/revocation/blocking and enforced headers | PostgreSQL fixture, Chromium; free port 5177 |
 | `npm run test:docs` | Relative Markdown targets/anchors and documentation authority contracts | Node |
 

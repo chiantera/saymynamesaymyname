@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — 기기 안전",
   "recoveredDraftLabel": "복구된 미전송 수정 내용",
   "recoveredDraftHint": "이 임시 수정 내용은 페이지나 세션이 바뀌면 지워질 수 있습니다. 지금 복사하세요.",
-  "recoveredDraftDismiss": "수정 내용 닫기"
+  "recoveredDraftDismiss": "수정 내용 닫기",
+  "recoverySaved": "클라우드 계정에 비공개로 저장되었습니다.",
+  "recoverySaving": "수정 내용을 비공개로 저장하는 중…",
+  "recoveryFailed": "수정 내용을 저장하지 못했습니다. 지금 복사하거나 다시 시도하세요.",
+  "recoveryDeleteFailed": "수정 내용을 삭제하지 못했습니다. 다시 시도하세요.",
+  "recoveryRetry": "저장 재시도",
+  "recoveryLoadFailed": "저장된 수정 내용을 불러오지 못했습니다.",
+  "recoveryRefresh": "다시 불러오기"
 }

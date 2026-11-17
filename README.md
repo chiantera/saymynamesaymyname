@@ -16,6 +16,9 @@ previews; they are not functioning counseling or personal-growth services.
 
 - Review, edit, save, skip or snooze a private check-in; silence defaults to skip
   after 30 minutes. Saving creates one private reflection; skipping creates none.
+- Privately sync displaced check-in edits after the cloud acknowledges them; retain
+  unsent text locally and offer retry when storage fails. Active editing is not yet
+  continuously checkpointed. [Recovery details](docs/implementation/EDIT-RECOVERY.md).
 - Web email/password and Google sign-in, verified beta admission, password recovery
   and private saved-reflection sync. Beta admission and relationship invitation are
   separate gates. Wider email delivery and native auth still need release testing.

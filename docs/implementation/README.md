@@ -14,6 +14,7 @@ claim. These guides describe implemented contracts and remaining gates; the
 - [DeepSeek adapter](DEEPSEEK-ADAPTER.md): dormant fixed-input composition and accounting.
 - [Safety worker](SAFETY-WORKER.md): reviewed assessment and publication fences.
 - [Crisis support](CRISIS-SUPPORT.md): curated resources, review gates and private notices.
+- [Private edit recovery](EDIT-RECOVERY.md): owner-only copies, tombstones and active-draft limits.
 - [Polling](POLLING.md): bounded refreshes, visibility and account-generation checks.
 - [Security headers](SECURITY-HEADERS.md): enforced policy and browser/hosted verification.
 - [Frontend overhaul](FRONTEND-OVERHAUL.md): design integration and test coverage.

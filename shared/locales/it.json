@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — sicurezza del dispositivo",
   "recoveredDraftLabel": "Modifica non inviata recuperata",
   "recoveredDraftHint": "Questa modifica temporanea può essere cancellata se cambia la pagina o la sessione. Copiala ora.",
-  "recoveredDraftDismiss": "Rimuovi modifica"
+  "recoveredDraftDismiss": "Rimuovi modifica",
+  "recoverySaved": "Salvata privatamente nel tuo account cloud.",
+  "recoverySaving": "Salvataggio privato in corso…",
+  "recoveryFailed": "Impossibile salvare la modifica. Copiala ora o riprova.",
+  "recoveryDeleteFailed": "Impossibile rimuovere la modifica. Riprova.",
+  "recoveryRetry": "Riprova salvataggio",
+  "recoveryLoadFailed": "Impossibile caricare le modifiche salvate.",
+  "recoveryRefresh": "Riprova caricamento"
 }

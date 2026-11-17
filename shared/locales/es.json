@@ -338,5 +338,12 @@
   "supportDirectory_device": "NNEDV Safety Net — seguridad del dispositivo",
   "recoveredDraftLabel": "Edición no enviada recuperada",
   "recoveredDraftHint": "Esta edición temporal puede borrarse al cambiar de página o de sesión. Cópiala ahora.",
-  "recoveredDraftDismiss": "Descartar edición"
+  "recoveredDraftDismiss": "Descartar edición",
+  "recoverySaved": "Guardada de forma privada en tu cuenta en la nube.",
+  "recoverySaving": "Guardando esta edición de forma privada…",
+  "recoveryFailed": "No se pudo guardar la edición. Cópiala ahora o inténtalo de nuevo.",
+  "recoveryDeleteFailed": "No se pudo descartar la edición. Inténtalo de nuevo.",
+  "recoveryRetry": "Reintentar guardado",
+  "recoveryLoadFailed": "No se pudieron cargar las ediciones guardadas.",
+  "recoveryRefresh": "Reintentar carga"
 }
