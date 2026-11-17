@@ -50,7 +50,7 @@ cleanup in the existing cron command. Source deletion cascades exclusion rows.
 - Browser + real SQL: category/exclusion save/reload, sticky exclusions, unavailable
   provider controls and 390px layout. Auth/HTTP transport is simulated.
 - Hosted `supabase/tests/ai_consent.sql`: fictional actor only, all rows rolled back.
-- Seven catalogs contain 183 draft keys each; human/native review remains pending.
+- Seven catalogs contain 295 draft keys each; human/native review remains pending.
 
 No real provider call, provider safety evaluation, cost reservation, attachment
 processing, chat/document retrieval or Android validation is claimed. Remaining M4
@@ -59,3 +59,10 @@ free Postgres executor stays static-mock-only; Render remains a later runtime.
 
 Supabase RLS reference checked 2026-11-16:
 https://supabase.com/docs/guides/database/postgres/row-level-security
+
+
+Dormant adapter integration: DEEPSEEK-ADAPTER.md now documents a server-only
+fixed-input solo draft service with real SQL reservation/reporting and safety
+hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
+safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
+separate gates; the static Postgres worker never invokes this adapter.

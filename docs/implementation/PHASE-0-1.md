@@ -230,3 +230,9 @@ limits; actual provider models/prices/imports and network/safety integration rem
 Frontend presentation checkpoint: the DESIGN.md overhaul has its own verification
 record in [FRONTEND-OVERHAUL.md](FRONTEND-OVERHAUL.md). This does not activate AI or
 complete native, translation-review or provider/source/safety release gates.
+
+
+DeepSeek adapter checkpoint: dormant server-side solo composition and actual SQL
+meter integration are implemented/tested (DEEPSEEK-ADAPTER.md). This does not close
+provider safety/terms evaluations, saved-context retrieval, live transport activation,
+invoice imports or running-worker gates. All deployed processing remains disabled.

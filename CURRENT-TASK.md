@@ -411,3 +411,18 @@ The repeated main CI exposed a viewport-transition race in the cloud browser
 fixture; wait for mobile-shell rendering before asserting scroll width. Repeat
 CI follows that fixture correction. API provider selection/key entry is pending;
 no secret has been requested in chat and no provider has been activated.
+
+
+## Dormant DeepSeek adapter — 2026-11-17
+
+Implemented server-only fixed-input solo composition with narrow SQL job/provider
+authorization, independent input/output safety hooks, bounded HTTPS transport and
+committed reserve/begin/report accounting. 31 adapter unit tests and six real SQL
+adapter scenarios pass; complete database suite 62, backend suite 55. No actual
+provider request/key access, new host, public route or worker integration.
+
+Installed dormant gate migration in Frankfurt. Hosted smoke: live=false, zero
+price/usage rows, zero enabled processors, no client/mock-worker execute permission.
+Security advisor remains 22 intentional private RLS INFO and the existing password
+protection WARN. All live defaults stay off; unavailable safety is a hard stop.
+See docs/implementation/DEEPSEEK-ADAPTER.md for remaining activation requirements.

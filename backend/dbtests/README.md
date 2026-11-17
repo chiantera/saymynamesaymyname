@@ -6,7 +6,7 @@ its synthetic actors; no hosted beta data is used. Credentials stay in ignored l
 configuration or CI service environment, never in tracked fixtures.
 
 `npm run test:database` covers membership, sharing, queue leases, scheduling and
-worker subprocess restarts (56 tests). `npm run test:membership` builds the real
+worker subprocess restarts (62 tests). `npm run test:membership` builds the real
 client with fake Auth/HTTP endpoints backed by real SQL/RLS. Its transport commits
 before returning a response, matching PostgREST transaction ordering. Browser builds
 share dist: do not run auth/membership/browser suites concurrently.
@@ -24,3 +24,8 @@ at repository root. No mock-worker journal access or external AI activation.
 Budget integration adds owner-only usage/ceiling/pause controls and a separate
 restricted accounting role. Exact reservations and unresolved holds are tested with
 fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.
+
+`test_deepseek_adapter.py` adds six real-SQL tests of the dormant adapter using
+mocked HTTP and fictional keys. The restricted role returns metadata only, and
+reserved/started cost cannot roll back after an external call. Includes kill/cap,
+revocation, replay and timeout coverage. Full database suite: 62 tests.

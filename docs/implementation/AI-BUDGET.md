@@ -95,7 +95,7 @@ compaction. Do not import old invoices into new attempts to bypass deduplication
   admin invocation of metering functions, then ROLLBACK. The deployed global switch
   stays false, with no prices or live processors configured. Restricted-role and
   concurrency evidence comes from local PostgreSQL, not a live processor request.
-- Seven catalogs have 203 draft keys; native/safety review remains pending.
+- Seven catalogs have 295 draft keys; native/safety review remains pending.
 
 Current price categories cover input/cached/output tokens or one of seconds/pages/
 characters/requests, with rounding/minimum and a fixed dated EUR conversion. Provider-
@@ -107,3 +107,10 @@ The free Postgres worker is still static-mock-only; no network AI belongs there.
 References checked 2026-11-17:
 https://www.postgresql.org/docs/17/explicit-locking.html
 https://www.postgresql.org/docs/17/datatype-numeric.html
+
+
+Dormant adapter integration: DEEPSEEK-ADAPTER.md now documents a server-only
+fixed-input solo draft service with real SQL reservation/reporting and safety
+hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
+safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
+separate gates; the static Postgres worker never invokes this adapter.

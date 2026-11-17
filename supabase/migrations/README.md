@@ -10,3 +10,6 @@ Current mock execution: the same hosted cron now calls a bounded Postgres consum
 inside the existing Frankfurt project. It uses private static catalogs and the
 existing leased queue. Render/Python remain available for later; no paid service
 or external AI is needed for this interim mode.
+
+20261117040437_deepseek_dispatch_gate adds a dormant metadata-only metering-role
+gate. It enables no provider, price, login or scheduler and grants no source access.

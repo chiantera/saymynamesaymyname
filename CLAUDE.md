@@ -329,3 +329,13 @@ confirmations and cloud/account sequencing. Source-key/interpolation checks and
 seven draft catalogs must pass; extend the dynamic-key registry for new families.
 Browser suites run sequentially and use fictional data. See
 docs/implementation/FRONTEND-OVERHAUL.md. Live AI remains disabled.
+
+
+## Dormant DeepSeek adapter
+
+backend/app/ai.py is server-only and not wired to routes or workers. Defaults deny
+live/network execution; Safety defaults unavailable. Only fixed-input solo drafts
+are allowed; no saved content or outward contact. Use the restricted autocommit
+meter role, current authorization and committed cost holds. Never auto-load or
+upload the local key, activate a processor or place network AI into Postgres cron.
+See docs/implementation/DEEPSEEK-ADAPTER.md.

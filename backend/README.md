@@ -17,3 +17,9 @@ Current mock execution: the same hosted cron now calls a bounded Postgres consum
 inside the existing Frankfurt project. It uses private static catalogs and the
 existing leased queue. Render/Python remain available for later; no paid service
 or external AI is needed for this interim mode.
+
+Server-side AI adapter: `app/ai.py` implements dormant solo draft composition with
+execution-time SQL consent/lease checks, local safety hooks and committed metering.
+It has no public route or worker hookup; default safety and all live gates deny.
+The saved local key is not automatically loaded. See
+[DeepSeek adapter](../docs/implementation/DEEPSEEK-ADAPTER.md).

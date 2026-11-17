@@ -1981,3 +1981,13 @@ Visual integration follows frontend/DESIGN.md, with seven 295-key draft catalogs
 source-key/interpolation validation, tested wall-clock day-band and shared
 accessible controls. See docs/implementation/FRONTEND-OVERHAUL.md for verification
 and remaining native/language/AI activation gates. No live provider enabled.
+
+
+### Implementation checkpoint — dormant DeepSeek adapter (2026-11-17)
+
+Server-only fixed-input solo draft composition, narrow execution-time metadata
+authorization, centralized inclusive prompt, fail-closed safety hooks and atomic
+meter lifecycle are implemented with mocked HTTP plus real SQL. No saved context,
+public route, worker hookup or live activation. Reviewed safety detection/resources,
+provider terms/region/model pricing and runtime wiring remain activation gates.
+See docs/implementation/DEEPSEEK-ADAPTER.md for evidence and exact limits.

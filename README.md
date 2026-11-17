@@ -423,3 +423,17 @@ and real local SQL/RLS workflows. Screenshots use fictional data. Native-languag
 safety review and Android/device checks are still pending. Read the
 [overhaul verification record](docs/implementation/FRONTEND-OVERHAUL.md).
 Live AI remains disabled; no provider, price, storage or worker configuration changed.
+
+## Dormant server-side DeepSeek adapter
+
+The server-only adapter now composes bounded solo drafts behind current SQL
+provider consent, lease and budget checks, with affirmative input/output safety
+hooks. Mocked transport tests cover failures, revocation and unresolved costs;
+real PostgreSQL tests verify committed accounting and narrow permissions.
+
+**Live AI remains disabled.** The saved local key is not uploaded or automatically
+loaded. There is no public AI endpoint or worker integration, and the default
+safety gate refuses dispatch until a reviewed implementation is supplied.
+The free static mock worker continues unchanged. See the
+[adapter runbook](docs/implementation/DEEPSEEK-ADAPTER.md) for scope, 55 backend/62
+database tests and remaining provider/safety/runtime activation gates.

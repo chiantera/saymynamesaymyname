@@ -19,3 +19,6 @@ operator-only aggregate report. Live AI stays off until the remaining activation
 
 - [Frontend overhaul](FRONTEND-OVERHAUL.md): recovered design/copy, responsive and
   accessibility coverage, cloud regression boundaries and remaining release gates.
+
+- [Dormant DeepSeek adapter](DEEPSEEK-ADAPTER.md): execution-time authorization,
+  safety hooks, committed budget accounting and explicit activation boundaries.

@@ -28,3 +28,8 @@ at repository root. No mock-worker journal access or external AI activation.
 Budget integration adds owner-only usage/ceiling/pause controls and a separate
 restricted accounting role. Exact reservations and unresolved holds are tested with
 fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.
+
+The dormant DeepSeek adapter has one private metadata-only authorization function,
+callable by companion_meter, not clients or companion_worker. It never returns
+journal text, enables processors or changes the mock cron. See the implementation
+guide DEEPSEEK-ADAPTER.md for hosted denial/ACL evidence and activation requirements.
