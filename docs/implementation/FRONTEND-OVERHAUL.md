@@ -76,9 +76,15 @@ audits. Auth state audits passed. Dependencies report zero npm audit findings at
 installation; this is a point-in-time report, not a security guarantee.
 
 CI now also runs the expanded preview browser suite before auth and membership.
-The branch is published separately for review/preview; production main is unchanged.
+The branch was first published separately for review/preview. On 2026-11-17 it
+was fast-forward merged into main and deployed to production at the owner’s request.
 
 CI follow-up: Linux axe initially sampled navigation colors during a theme
 transition. The shared fixture audit now awaits document font readiness and
 actual CSS animation completion before measuring contrast. No accessibility rule
 is disabled, no fixed sleep is used and no product behavior is changed.
+
+Production follow-up: the repeated Linux cloud fixture sampled scroll width directly
+after resizing, before React switched from the desktop rail to mobile tabs. The
+fixture now waits for the actual mobile shell before checking overflow. This keeps
+the width assertion and product behavior intact; repeat CI verifies the correction.

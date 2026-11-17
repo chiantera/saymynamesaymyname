@@ -271,6 +271,7 @@ def test_membership_browser(state):
             expect(ai_panel.get_by_label(en['aiJournals'],exact=True)).to_be_enabled()
             expect(exclude).to_be_checked()
             a.set_viewport_size({'width':390,'height':844})
+            expect(a.locator('.app-shell--tabs')).to_be_visible()
             assert a.evaluate('document.documentElement.scrollWidth <= innerWidth')
             a.screenshot(path=str(ROOT/'.local/screenshots/ai-consent-mobile.png'),full_page=True)
             audit_ui(a,'private-settings-mobile')

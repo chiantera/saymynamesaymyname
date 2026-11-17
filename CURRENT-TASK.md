@@ -400,3 +400,14 @@ CI follow-up: Linux axe initially sampled navigation colors during a theme
 transition. The shared fixture audit now awaits document font readiness and
 actual CSS animation completion before measuring contrast. No accessibility rule
 is disabled, no fixed sleep is used and no product behavior is changed.
+
+
+## Frontend production release — 2026-11-17
+
+Owner authorized merge/deployment. Fast-forwarded frontend-overhaul into main at
+75fe4e1; production deployment dpl_9EAPJvwZU5NEXwJwMviK2eEqecvW is READY and the
+production alias returns the verified frontend assets. Live AI remains disabled.
+The repeated main CI exposed a viewport-transition race in the cloud browser
+fixture; wait for mobile-shell rendering before asserting scroll width. Repeat
+CI follows that fixture correction. API provider selection/key entry is pending;
+no secret has been requested in chat and no provider has been activated.
