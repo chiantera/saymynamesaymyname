@@ -489,3 +489,9 @@ copy evaluation remain open. Details: docs/implementation/CRISIS-SUPPORT.md.
 Production build passes with the existing Vite chunk-size advisory: main JS about
 520 kB (169 kB gzip). The static help/resources stay in the initial client bundle
 so opening them does not depend on a later resource-fetch request.
+
+
+Polling checkpoint (2026-11-17): adaptive, completion-driven, hidden-tab-aware
+cloud reads and generation-checked refresh batches are implemented. See
+[client polling](docs/implementation/POLLING.md). `httpx2` remains required by the
+installed Starlette test client; live AI remains disabled.

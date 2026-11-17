@@ -464,3 +464,9 @@ or infer that unsafe model output means the user is in crisis. Live AI/network
 remain disabled. Topic-specific advice and automatic persona-drop copy remain
 professionally review-gated; no real user-disclosure intake is activated. See
 [crisis support](docs/implementation/CRISIS-SUPPORT.md) for exact boundaries.
+
+
+Polling checkpoint (2026-11-17): adaptive, completion-driven, hidden-tab-aware
+cloud reads and generation-checked refresh batches are implemented. See
+[client polling](docs/implementation/POLLING.md). `httpx2` remains required by the
+installed Starlette test client; live AI remains disabled.

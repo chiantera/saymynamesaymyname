@@ -30,6 +30,7 @@ import LocalRelationships from './screens/LocalRelationships';
 import SettingsScreen from './screens/SettingsScreen';
 import { Button, Notice } from './ui';
 import { SupportNotices } from './Support';
+import { pollDelay, startPolling } from './polling';
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -47,6 +48,10 @@ export default function App() {
   const [notice, setNotice] = useState(false);
   const [theme, setTheme] = useState(readSetting('theme') ?? 'system');
   const refreshSequence = useRef(0);
+  const lastTab = useRef(tab);
+  const pollSnapshot = useRef(snapshot);
+  pollSnapshot.current = snapshot;
+  const ready = prefs !== null;
   const active = snapshot.checkins.find((checkin) => checkin.status === 'pending');
   const language = resolveLocale(i18n.language);
   const cloud = isCloudActive();
@@ -59,9 +64,10 @@ export default function App() {
 
   const refresh = useCallback(async () => {
     const sequence = ++refreshSequence.current;
-    const [state, saved] = await Promise.all([api.snapshot(), api.entries()]);
+    const { snapshot: state, entries: saved } = await api.refresh();
     // A slower, older response must never replace a newer one.
     if (sequence === refreshSequence.current) {
+      pollSnapshot.current = state;
       setSnapshot(state);
       setEntries(saved);
     }
@@ -94,20 +100,25 @@ export default function App() {
   }, [connect]);
 
   useEffect(() => {
-    if (!prefs) return;
+    if (lastTab.current === tab) return;
+    lastTab.current = tab;
+    if (tab === 'home' && ready && cloud) void refresh().catch(() => setError('errorMessage'));
+  }, [tab, ready, cloud, refresh]);
+
+  useEffect(() => {
+    if (!ready) return;
     let stopped = false;
-    const timer = setInterval(() => {
-      if (!stopped) {
-        void refresh().catch(() => {
-          if (!stopped) setError('errorMessage');
-        });
-      }
-    }, 1500);
+    const stop = startPolling(refresh, {
+      immediate: false,
+      delay: failures => pollDelay(cloud,
+        pollSnapshot.current.jobs.some(job => ['queued','processing'].includes(job.status)), failures),
+      onError: () => { if (!stopped) setError('errorMessage'); },
+    });
     return () => {
       stopped = true;
-      clearInterval(timer);
+      stop();
     };
-  }, [prefs, refresh]);
+  }, [ready, cloud, refresh]);
 
   useEffect(() => {
     setDraft(active?.draft ?? '');

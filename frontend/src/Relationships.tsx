@@ -7,6 +7,7 @@
  */
 import { useCallback, useEffect, useId, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { pollDelay, startPolling } from './polling';
 import {
   Archive,
   ArchiveRestore,
@@ -218,7 +219,7 @@ export default function Relationships() {
   useEffect(() => {
     let current = true;
     const load = () =>
-      void membership
+      membership
         .workspace()
         .then((value) => {
           if (current) {
@@ -228,14 +229,12 @@ export default function Relationships() {
         })
         .catch(() => {
           if (current) setError(true);
+          throw new Error('Membership refresh unavailable');
         });
-    load();
-    const timer = setInterval(() => {
-      if (!document.hidden) load();
-    }, 30000);
+    const stop = startPolling(load, { delay: failures => pollDelay(true, false, failures) });
     return () => {
       current = false;
-      clearInterval(timer);
+      stop();
     };
   }, []);
 

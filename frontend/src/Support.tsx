@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useId, useRef, useState, type Rea
 import { useTranslation } from 'react-i18next';
 import { Button, Field, Notice } from './ui';
 import { cloudRequest, isCloudActive } from './cloud';
+import { pollDelay, startPolling } from './polling';
 import { countries, directories, emergencyResources, quickExitURL, supportPathKey, validSupportKind, type SupportKind } from './support-resources';
 
 const Help = createContext<(kind?: SupportKind) => void>(() => {});
@@ -87,11 +88,11 @@ export function SupportNotices() {
       try {
         const data = await cloudRequest('/support', 'POST', { action: 'peek' });
         if (alive && current === sequence.current) setId(data.id);
-      } catch { /* Offline help remains available; do not expose RPC errors. */ }
+      } catch { throw new Error('Support notice refresh unavailable'); }
     }
     if (!isCloudActive()) return;
-    void refresh(); const timer = window.setInterval(() => void refresh(), 30000);
-    return () => { alive = false; mounted.current = false; ++sequence.current; window.clearInterval(timer); };
+    const stop = startPolling(refresh, { delay: failures => pollDelay(true, false, failures) });
+    return () => { alive = false; mounted.current = false; ++sequence.current; stop(); };
   }, []);
   async function action(reveal: boolean) {
     if (!id || busy) return;

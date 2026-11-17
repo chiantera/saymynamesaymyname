@@ -37,6 +37,7 @@ checkins = {actor_a:[],actor_b:[]}
 profiles = {}
 requests = []
 admitted = True
+queue_jobs = []
 
 def user(actor):
     return {'id':actor,'aud':'authenticated','role':'authenticated',
@@ -80,6 +81,7 @@ def handle(route):
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
     if path=='/rest/v1/rpc/support_notice': return reply({'id':None})
+    if path=='/rest/v1/rpc/cloud_queue': return reply(queue_jobs)
     if path=='/rest/v1/rpc/cloud_schedule': return reply({'revision':0,'paused':False,'paused_until':None,'quiet_start':'22:00','quiet_end':'08:00','daily_cap':3,'scopes':[]})
     if path=='/rest/v1/rpc/relationship_workspace': return reply({'relationships':[],'blocks':[]})
     if path=='/rest/v1/rpc/reflection_sharing':
@@ -231,7 +233,45 @@ try:
         expect(page.get_by_role('status')).to_have_text(en['authLinkBrowser'])
         assert not any(body.get('auth_code')=='fixture-other-flow-code' for _,_,body in requests)
         assert not errors, errors
-        context.close();other.close();browser.close()
+        context.close();other.close()
+        # Real browser timers measure the absence of the old 1.5-second hammer.
+        # Exact 30/60-second timing and serialization use the pure clock fixture;
+        # faking SDK auth timers here would obscure the network behavior under test.
+        context,page=new_page()
+        page.goto(origin)
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            login(page,'b@example.invalid')
+        expect(page.get_by_role('button',name=en['generate'],exact=True)).to_be_enabled()
+        page.wait_for_load_state('networkidle')
+        observed=[]
+        page.on('request',lambda request:observed.append(urlparse(request.url).path) if request.url.startswith(fake) else None)
+        page.wait_for_timeout(5500) # observation window, not an assumed startup delay
+        assert not any(path.startswith('/rest/v1/') for path in observed),observed
+        queue_jobs=[{'id':'30000000-0000-0000-0000-000000000001','status':'queued'}]
+        observed.clear()
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
+        page.wait_for_load_state('networkidle')
+        assert observed.count('/rest/v1/rpc/refresh_private_checkins')==1,observed
+        assert observed.count('/rest/v1/rpc/cloud_queue')==1,observed
+        assert observed.count('/rest/v1/companion_entries')==1,observed
+        # One user verification per batch: main, Sharing and support.
+        assert observed.count('/auth/v1/user')<=4,observed
+        assert len(observed)<=12,observed
+        expect(page.get_by_role('button',name=en['generate'],exact=True)).to_be_disabled()
+        observed.clear()
+        page.wait_for_timeout(6000)
+        assert observed.count('/rest/v1/rpc/cloud_queue')==1,observed
+        page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'))")
+        page.wait_for_load_state('networkidle')
+        observed.clear();page.wait_for_timeout(7000)
+        assert not any(path.startswith('/rest/v1/') for path in observed),observed
+        with page.expect_response(fake+'/rest/v1/rpc/cloud_queue'):
+            page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'))")
+        page.wait_for_load_state('networkidle')
+        assert observed.count('/rest/v1/rpc/cloud_queue')==1,observed
+        assert not errors,errors
+        context.close();browser.close()
 finally:
     if server.poll() is None:
         if os.name=='nt': subprocess.run(['taskkill','/pid',str(server.pid),'/t','/f'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,creationflags=flags)

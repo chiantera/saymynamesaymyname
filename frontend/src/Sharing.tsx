@@ -2,7 +2,8 @@ import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from 
 import { useTranslation } from 'react-i18next';
 import { Ban, Eye, RefreshCw, ShieldCheck } from 'lucide-react';
 import { cloudRequest } from './cloud';
-import { membership, type Workspace } from './membership-api';
+import { pollDelay, startPolling } from './polling';
+import type { Workspace } from './membership-api';
 import type { Entry } from './api';
 import { Button, Check, Chip, ConfirmDialog, EmptyState, Field, Notice, Section } from './ui';
 
@@ -58,7 +59,7 @@ export default function Sharing({ entries }: { entries: Entry[] }) {
     setOpened(null);
     setReview(false);
     try {
-      const [workspace, nextShares] = await Promise.all([membership.workspace(), action('workspace')]);
+      const {workspace,shares:nextShares} = await cloudRequest('/sharing/refresh','GET',undefined) as {workspace:Workspace;shares:Shares};
       if (n === sequence.current) {
         setSpaces(workspace);
         setShares(nextShares);
@@ -80,23 +81,22 @@ export default function Sharing({ entries }: { entries: Entry[] }) {
         setRecipients([]);
         setError(true);
       }
+      throw new Error('Sharing refresh unavailable');
     }
   }, []);
 
   useEffect(() => {
-    void refresh();
-    const timer = setInterval(() => void refresh(), 15000);
     // Opened copies and a pending review never stay on screen while the tab is hidden.
     const hide = () => {
       ++sequence.current;
       setOpened(null);
       setReview(false);
-      if (!document.hidden) void refresh();
     };
     document.addEventListener('visibilitychange', hide);
+    const stop = startPolling(refresh, { delay: failures => pollDelay(true, false, failures) });
     return () => {
       ++sequence.current;
-      clearInterval(timer);
+      stop();
       document.removeEventListener('visibilitychange', hide);
     };
   }, [refresh]);
@@ -152,7 +152,7 @@ export default function Sharing({ entries }: { entries: Entry[] }) {
       title={t('sharingTitle')}
       ariaLabel={t('sharingTitle')}
       actions={
-        <Button size="sm" icon={RefreshCw} disabled={busy} onClick={() => void refresh()}>
+        <Button size="sm" icon={RefreshCw} disabled={busy} onClick={() => void refresh().catch(() => undefined)}>
           {t('sharingRefresh')}
         </Button>
       }

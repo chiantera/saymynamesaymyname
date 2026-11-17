@@ -22,6 +22,11 @@ async function request<T>(path: string, method = 'GET', body?: unknown): Promise
   return response.json() as Promise<T>;
 }
 export const api = {
+  async refresh(): Promise<{snapshot: Snapshot; entries: Entry[]}> {
+    if (isCloudActive()) return cloudRequest('/refresh','GET',undefined);
+    const [snapshot, entries] = await Promise.all([request<Snapshot>('/checkins'), request<Entry[]>('/entries')]);
+    return {snapshot,entries};
+  },
   async connect() { token = (await request<{ token: string }>('/demo/session')).token; },
   preferences: () => request<Preferences>('/preferences'),
   savePreferences: (locale: Locale, timezone: string) => request<Preferences>('/preferences', 'PATCH', { locale, timezone }),

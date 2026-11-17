@@ -16,6 +16,22 @@ export async function cloudRequest(path:string,method:string,body:any){
  const {data:{user},error}=await cloud.auth.getUser();if(error||!user)throw new Error('Sign in required');
  assertCurrent(); if(user.id!==expectedOwner)throw new Error('Account changed');
  const checked=async (operation:()=>PromiseLike<any>)=>{assertCurrent();const result=await operation();assertCurrent();if(result.error)throw new Error('Cloud request failed');return result.data;};
+ if(path==='/refresh'){
+  await checked(()=>cloud!.rpc('refresh_private_checkins'));
+  const [checkins,entries,jobs]=await Promise.all([
+   checked(()=>cloud!.from('companion_checkins').select('*').order('created_at',{ascending:false})),
+   checked(()=>cloud!.from('companion_entries').select('id,text,locale,created_at').order('created_at',{ascending:false})),
+   checked(()=>cloud!.rpc('cloud_queue',{p_action:'list',p_args:{}})),
+  ]);
+  return {snapshot:{checkins,jobs},entries};
+ }
+ if(path==='/sharing/refresh'){
+  const [workspace,shares]=await Promise.all([
+   checked(()=>cloud!.rpc('relationship_workspace')),
+   checked(()=>cloud!.rpc('reflection_sharing',{p_action:'workspace',p_args:{}})),
+  ]);
+  return {workspace,shares};
+ }
  if(path==='/support')return checked(()=>cloud!.rpc('support_notice',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
