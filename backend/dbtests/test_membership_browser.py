@@ -11,6 +11,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 import psycopg
 from playwright.sync_api import sync_playwright, expect
+from scripts.ui_checks import audit_ui
 
 ROOT=Path(__file__).resolve().parents[2]
 ORIGIN='http://127.0.0.1:5177'
@@ -183,6 +184,7 @@ def test_membership_browser(state):
                 expect(modal).to_be_visible()
                 assert a.evaluate('document.documentElement.scrollWidth <= innerWidth')
                 a.screenshot(path=str(ROOT/'.local/screenshots/sharing-review-mobile.png'),full_page=True)
+                audit_ui(a,'sharing-review')
                 modal.get_by_role('button',name=en['sharingConfirm'],exact=True).click()
                 expect(modal).not_to_be_visible()
                 a.set_viewport_size({'width':1280,'height':1000})
@@ -222,10 +224,12 @@ def test_membership_browser(state):
             expect(space(c).locator('.member-row').filter(has_text='Blair')).to_contain_text(en['contactAvailable'])
             a.set_viewport_size({'width':390,'height':844})
             a.screenshot(path=str(ROOT/'.local/screenshots/membership-mobile.png'),full_page=True)
+            audit_ui(a,'membership-mobile')
             overflow=a.evaluate('''() => [...document.querySelectorAll('body *')].map(e=>({tag:e.tagName,cls:e.className,right:e.getBoundingClientRect().right,width:e.getBoundingClientRect().width})).filter(e=>e.right>innerWidth+1)''')
             assert a.evaluate('document.documentElement.scrollWidth <= innerWidth'),f'Membership mobile overflow: {overflow}'
             a.set_viewport_size({'width':1280,'height':1000})
             a.screenshot(path=str(ROOT/'.local/screenshots/membership-desktop.png'),full_page=True)
+            audit_ui(a,'membership-desktop')
             space(a).get_by_role('button',name=en['archiveRelationship'],exact=True).click()
             expect(space(a)).to_have_count(0)
             a.get_by_label(en['showArchived'],exact=True).check()
@@ -269,6 +273,11 @@ def test_membership_browser(state):
             a.set_viewport_size({'width':390,'height':844})
             assert a.evaluate('document.documentElement.scrollWidth <= innerWidth')
             a.screenshot(path=str(ROOT/'.local/screenshots/ai-consent-mobile.png'),full_page=True)
+            audit_ui(a,'private-settings-mobile')
+            a.get_by_role('combobox',name=en['theme'],exact=True).select_option('dark')
+            audit_ui(a,'private-settings-mobile-dark')
+            a.screenshot(path=str(ROOT/'.local/screenshots/overhaul-cloud-settings-dark-390.png'),full_page=True)
+            a.get_by_role('combobox',name=en['theme'],exact=True).select_option('system')
             a.set_viewport_size({'width':1280,'height':1000})
             schedule_panel=a.get_by_role('region',name=en['scheduleTitle'],exact=True)
             expect(schedule_panel).to_contain_text(en['workerUnavailable'])

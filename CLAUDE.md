@@ -319,3 +319,13 @@ ledger and edit personal limits/pause. Live_enabled stays false and prices are e
 No actual transport is enabled by a reservation. Before future calls, recheck source,
 consent, lease, region, cost and safety gates at dispatch; record every retry/fallback.
 Read docs/implementation/AI-BUDGET.md for retention, reconciliation and activation gaps.
+
+
+## Frontend visual system
+
+Follow frontend/DESIGN.md. App owns guarded actions; Shell owns the responsive
+frame; screens/ and ui.tsx own presentation. Preserve accessible names, explicit
+confirmations and cloud/account sequencing. Source-key/interpolation checks and
+seven draft catalogs must pass; extend the dynamic-key registry for new families.
+Browser suites run sequentially and use fictional data. See
+docs/implementation/FRONTEND-OVERHAUL.md. Live AI remains disabled.

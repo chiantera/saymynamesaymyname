@@ -1,0 +1,67 @@
+/*
+ * placeholders screen styles (Growth and Bartender previews).
+ * Owned by the placeholders screen agent. See frontend/DESIGN.md.
+ *
+ * Both screens are text only: a purpose sentence, a "not working yet" notice,
+ * plain lists and one button back to Home. Nothing here may look operable.
+ */
+
+/* The status notice: title on its own line, explanation under it. */
+.soon-status {
+  max-inline-size: var(--measure);
+}
+
+.soon-status__title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.2;
+}
+
+.soon-status span,
+.soon-status__title {
+  overflow-wrap: anywhere;
+}
+
+/*
+ * Planned items: hairline rows of plain sentences. The leading mark is a short
+ * rule, not a bullet, box or ring, so no row reads as a checkbox or a toggle.
+ */
+.soon-list {
+  max-inline-size: var(--measure);
+}
+
+.soon-list__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-3);
+  align-items: baseline;
+  overflow-wrap: anywhere;
+}
+
+.soon-list__item::before {
+  content: "";
+  inline-size: var(--space-3);
+  block-size: 0;
+  border-block-start: 2px solid var(--line-strong);
+  /* Lift the rule from the baseline to the middle of the first line. */
+  transform: translateY(-0.3em);
+}
+
+/* Limits are commitments, not features: mark them in the action colour. */
+.soon-list--limits .soon-list__item::before {
+  border-block-start-color: var(--action);
+}
+
+/* The one action. Full width on narrow screens so long translations fit. */
+.soon-action {
+  display: flex;
+}
+
+@media (max-width: 479px) {
+  .soon-action .btn {
+    flex: 1 1 auto;
+    white-space: normal;
+    text-align: center;
+  }
+}

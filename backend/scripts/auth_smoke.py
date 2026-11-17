@@ -4,6 +4,7 @@ No real users, emails, OAuth credentials, Supabase data or paid services are use
 This proves client behavior, not live provider configuration or server RLS.
 """
 from pathlib import Path
+from ui_checks import audit_ui
 from urllib.parse import urlparse, parse_qs
 from urllib.request import urlopen
 import base64, json, os, shutil, socket, subprocess, time
@@ -133,7 +134,9 @@ try:
         context,page=new_page()
         page.goto(origin)
         page.get_by_role('button',name=en['cloudAccount'],exact=True).click()
+        audit_ui(page,'sign-in')
         page.get_by_role('button',name=en['createAccount'],exact=True).click()
+        audit_ui(page,'create-account')
         page.get_by_label(en['email'],exact=True).fill('new@example.invalid')
         page.get_by_label(en['password'],exact=True).fill('fictional-test-password')
         page.get_by_role('button',name=en['createAccount'],exact=True).click()
@@ -144,6 +147,7 @@ try:
         page.get_by_role('button',name=en['forgotPassword']).click()
         page.get_by_role('button',name=en['sendRecovery']).click()
         expect(page.get_by_role('status')).to_have_text(en['recoverySent'])
+        audit_ui(page,'recovery-requested')
         reset=next(r for r in requests if r[0]=='/auth/v1/recover')
         assert parse_qs(reset[1])['redirect_to']==[origin+'/auth/recovery']
         # The SDK's fixed legacy verifier is deliberately removed in this fixture.
@@ -157,6 +161,7 @@ try:
         }''')
         page.goto(origin+'/auth/recovery?code=fixture-recovery-code&sb_flow_id='+recovery_flow+'&next=https://evil.invalid')
         expect(page.get_by_role('heading',name=en['setPassword'])).to_be_visible()
+        audit_ui(page,'set-password')
         assert page.url==origin+'/'
         page.get_by_label(en['newPassword'],exact=True).fill('new-fictional-password')
         page.get_by_label(en['confirmPassword'],exact=True).fill('different-fictional-password')
@@ -171,6 +176,7 @@ try:
         admitted=False
         login(page)
         expect(page.get_by_text(en['betaExplanation'])).to_be_visible()
+        audit_ui(page,'beta-pending')
         expect(page.locator('.app-shell')).to_have_count(0)
         page.get_by_role('button',name=en['signOut'],exact=True).click()
         admitted=True

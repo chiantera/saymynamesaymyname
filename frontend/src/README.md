@@ -1,6 +1,8 @@
 # Client source
 
-App.tsx owns navigation; AuthGate owns sign-in/session boundaries; cloud.ts guards
+App.tsx owns data loading, guarded actions and routing; Shell.tsx renders the frame;
+screens/ and ui.tsx hold presentation; styles/ holds tokens and CSS (see ../DESIGN.md).
+ AuthGate owns sign-in/session boundaries; cloud.ts guards
 account-scoped Supabase requests. Relationships, Sharing and Scheduling each expose
 bounded cloud capabilities. The fictional browser adapter remains isolated from
 private cloud accounts. Include every visible string in all locale catalogs and

@@ -225,3 +225,8 @@ M4 progress 2026-11-17: private usage ledger, atomic buffered reservations and
 idempotent usage/invoice reconciliation, personal safety limits/pauses and retention
 are implemented and tested with fictional prices only. AI-BUDGET.md records the
 limits; actual provider models/prices/imports and network/safety integration remain open.
+
+
+Frontend presentation checkpoint: the DESIGN.md overhaul has its own verification
+record in [FRONTEND-OVERHAUL.md](FRONTEND-OVERHAUL.md). This does not activate AI or
+complete native, translation-review or provider/source/safety release gates.

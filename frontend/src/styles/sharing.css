@@ -1,0 +1,194 @@
+/* sharing screen styles. Owned by the sharing screen agent. See frontend/DESIGN.md. */
+
+/*
+ * One named region in three parts: share a copy, copies you shared, shared with
+ * you. Parts are separated by hairlines and headings, not by cards.
+ */
+
+.sharing-region {
+  gap: var(--space-5);
+}
+
+/* Live region: takes no room until it has something to say. */
+.sharing-status:empty {
+  display: none;
+}
+
+.sharing-part {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+
+.sharing-part > * {
+  min-inline-size: 0;
+}
+
+.sharing-part--ruled {
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--line);
+}
+
+/* Part one: the form */
+
+.sharing-form {
+  display: grid;
+  gap: var(--space-5);
+  min-inline-size: 0;
+}
+
+.sharing-form__selects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.sharing-recipients {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.sharing-recipients__legend {
+  padding-block-end: var(--space-1);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+.sharing-recipients__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  column-gap: var(--space-4);
+}
+
+.sharing-form__submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.sharing-form__submit > p {
+  flex: 1 1 14rem;
+  min-inline-size: 0;
+}
+
+/* Review dialog: what, with whom, on which terms */
+
+.sharing-review__block {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.sharing-review__label {
+  color: var(--muted);
+  font-family: var(--font-text);
+  font-size: var(--text-xs);
+  font-weight: 550;
+  letter-spacing: 0;
+}
+
+.sharing-review__text {
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border-inline-start: 3px solid var(--action);
+  border-radius: var(--radius-control);
+  background: var(--wash);
+  font-size: var(--text-md);
+  white-space: pre-wrap;
+}
+
+.sharing-review__people {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-md);
+  font-weight: var(--weight-strong);
+  overflow-wrap: anywhere;
+}
+
+/* Part two: copies you shared, grouped by reflection */
+
+.sharing-sent {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sharing-sent__item {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+
+.sharing-sent__excerpt {
+  padding-inline-start: var(--space-3);
+  border-inline-start: 2px solid var(--line-strong);
+  font-weight: var(--weight-strong);
+}
+
+/* A person row, used for recipients and for senders */
+
+.sharing-person {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  min-inline-size: 0;
+}
+
+.sharing-person__who {
+  display: flex;
+  flex: 1 1 12rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+}
+
+.sharing-person__name {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Revoked reads without colour: struck name, different icon, the word itself. */
+.sharing-person[data-revoked='true'] .sharing-person__name {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.sharing-person__date {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Part three: an opened copy */
+
+.sharing-copy {
+  display: grid;
+  flex: 1 1 100%;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border-inline-start: 3px solid var(--action);
+  border-radius: var(--radius-control);
+  background: var(--wash);
+}
+
+.sharing-copy .received-text {
+  white-space: pre-wrap;
+}
+
+.sharing-copy__hint {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}

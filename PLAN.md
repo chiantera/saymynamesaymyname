@@ -1973,3 +1973,11 @@ M4 accounting checkpoint 2026-11-17: buffered exact-decimal reservations, separa
 tracked attempts, unknown holds, reconciliation, private user budgets and minimized
 operator reports are implemented. Live processors/prices remain disabled. Supported
 billing categories and outstanding activation gates: docs/implementation/AI-BUDGET.md.
+
+
+### Implementation checkpoint — frontend overhaul (2026-11-17)
+
+Visual integration follows frontend/DESIGN.md, with seven 295-key draft catalogs,
+source-key/interpolation validation, tested wall-clock day-band and shared
+accessible controls. See docs/implementation/FRONTEND-OVERHAUL.md for verification
+and remaining native/language/AI activation gates. No live provider enabled.

@@ -1,0 +1,175 @@
+/*
+ * Signed-out screens rendered by AuthGate.tsx: checking, pending, sign in,
+ * create account, forgot password and set password. One calm column on paper;
+ * no shell, no card. See frontend/DESIGN.md.
+ */
+
+.auth {
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  inline-size: min(100%, 26rem);
+  min-block-size: 100dvh;
+  margin-inline: auto;
+  padding-block: clamp(var(--space-8), 12vh, 6rem) var(--space-12);
+  padding-inline: max(var(--space-4), env(safe-area-inset-left))
+    max(var(--space-4), env(safe-area-inset-right));
+}
+
+.auth > * {
+  min-inline-size: 0;
+}
+
+/* Brand line: the mark and the app title, quiet above the heading. */
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+
+.auth-brand__title {
+  min-inline-size: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-tight);
+  overflow-wrap: anywhere;
+}
+
+/* Heading and the one-line explanation */
+
+.auth-header {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.auth-title {
+  font-size: var(--text-2xl);
+  line-height: 1.12;
+}
+
+.auth-lead {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+/* Form: fields, the primary action, the status line, then the other routes. */
+
+.auth-form {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+
+.auth-form > * {
+  min-inline-size: 0;
+}
+
+.auth-form .btn--primary {
+  margin-block-start: var(--space-2);
+}
+
+/*
+ * Status line. Always in the document so screen readers hear changes, and it
+ * keeps room for two lines so a message does not push the layout around.
+ */
+
+.auth-status {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-block-size: 4rem;
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border-inline-start: 3px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.auth-status[data-tone='none'] {
+  /* Between the primary action and the alternatives the empty line is spacing. */
+  min-block-size: var(--space-6);
+  padding-block: 0;
+}
+
+.auth-status__icon {
+  margin-block-start: 0.15rem;
+}
+
+.auth-status__text {
+  min-inline-size: 0;
+}
+
+.auth-status[data-tone='success'] {
+  border-inline-start-color: var(--action);
+  background: var(--wash);
+}
+
+.auth-status[data-tone='success'] .auth-status__icon {
+  color: var(--action);
+}
+
+.auth-status[data-tone='error'] {
+  border-inline-start-color: var(--danger);
+  background: var(--danger-wash);
+  font-weight: 550;
+}
+
+.auth-status[data-tone='error'] .auth-status__icon {
+  color: var(--danger);
+}
+
+.auth-status[data-tone='pending'] {
+  border-inline-start-color: var(--lamp);
+  background: var(--lamp-wash);
+  color: var(--lamp-ink);
+}
+
+/* Quiet, text-style buttons for the other routes. Still real 44px buttons. */
+
+.auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-5);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--line);
+}
+
+.auth-link {
+  padding-inline: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--action);
+  text-align: start;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.auth-link:hover:not(:disabled) {
+  border-color: transparent;
+  background: transparent;
+  text-decoration-thickness: 2px;
+}
+
+.auth-link:disabled {
+  text-decoration: none;
+}
+
+/* Checking: a quiet centred status while the session is verified. */
+
+.auth--checking {
+  align-content: center;
+  justify-items: center;
+  padding-block: var(--space-12);
+  text-align: center;
+}
+
+.auth-checking {
+  color: var(--muted);
+}

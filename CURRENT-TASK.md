@@ -9,7 +9,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (203 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (295 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -21,7 +21,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
 ## Validation
 
-- `npm run check`: seven-catalog parity/encoding checks, 8 frontend domain/link tests,
+- `npm run check`: seven-catalog/source-key/interpolation checks, 12 frontend tests,
   24 backend tests, TypeScript and Vite production build.
 - `npm run test:browser`: isolated temporary demo database and dedicated ports;
   edit/save, skip, reload persistence, all locales, relationship creation, snooze,
@@ -376,3 +376,22 @@ and source/safety gates remain explicit prerequisites for paid activation.
 Post-smoke verification: global live_enabled=false; zero real price rows/usage rows;
 zero enabled processors; synthetic account absent; last three cron runs succeeded.
 Auth client smoke also passed. Render and mock-worker source files are unchanged.
+
+
+## Frontend overhaul integration — 2026-11-17
+
+Completed the interrupted frontend-overhaul against frontend/DESIGN.md. Recovered
+39 translation drafts and completed the missing copy in all seven catalogs (295
+keys each). Added TypeScript-aware source/conditional key checks and interpolation
+parity, extracted/tested the timezone day-band model and removed unused legacy CSS.
+Shared primitives, rail/mobile tabs, auth, membership/sharing, scheduling and private
+budget/consent views retain their existing authorization contracts. Growth and
+Bartender remain explicit previews. Live AI/provider pricing/configuration untouched.
+
+Verification record and remaining release gates:
+[FRONTEND-OVERHAUL.md](docs/implementation/FRONTEND-OVERHAUL.md). Local preview
+checks passed all 140 locale/theme/width/destination combinations and automated
+English WCAG checks; 56 SQL tests and 12 frontend/24 backend tests passed. Auth
+fixture accessibility checks passed. Cloud membership, sharing-modal and private
+settings audits passed after fixing list/group semantics in provider controls.
+All local suites passed; CI/deployment results are checked after push. Screenshots are ignored fictional fixtures.

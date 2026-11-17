@@ -8,7 +8,7 @@ catalog = lambda lang: json.loads((root/'shared'/'locales'/f'{lang}.json').read_
 en = catalog('en')
 artifacts = root/'.local'/'screenshots'
 artifacts.mkdir(parents=True, exist_ok=True)
-browsers = sorted((Path(os.environ['LOCALAPPDATA'])/'ms-playwright').glob('chromium-*/chrome-win64/chrome.exe'))
+browsers = sorted((Path(os.environ.get('LOCALAPPDATA',''))/'ms-playwright').glob('chromium-*/chrome-win64/chrome.exe'))
 # Dedicated test database and ports; never mutate a running developer workspace.
 for port in (8003, 5175):
     with socket.socket() as probe:
@@ -86,6 +86,38 @@ with tempfile.TemporaryDirectory(prefix='browser-test-', dir=root/'.local') as t
             page.get_by_role('combobox',name=en['theme']).select_option('system')
             page.keyboard.press('Tab')
             assert page.evaluate('document.activeElement !== document.body')
+            # Every destination, both layouts/themes, all seven draft catalogs.
+            # No hosted data or external font/processor requests are needed.
+            external=[]
+            page.on('request', lambda request: external.append(request.url)
+                    if not request.url.startswith(('http://127.0.0.1:', 'ws://127.0.0.1:', 'data:')) else None)
+            axe_source=(root/'frontend/node_modules/axe-core/axe.min.js').read_text(encoding='utf-8')
+            page.add_script_tag(content=axe_source)
+            for width in (360,1440):
+                page.set_viewport_size({'width':width,'height':900})
+                for theme in ('light','dark'):
+                    for lang in ('en','it','es','ko','zh-Hans','yue-Hant','de'):
+                        old=catalog(page.locator('html').get_attribute('lang'))
+                        page.get_by_role('combobox',name=old['language'],exact=True).select_option(lang)
+                        expect(page.locator('html')).to_have_attribute('lang',lang)
+                        words=catalog(lang)
+                        page.get_by_role('button',name=words['settings'],exact=True).click()
+                        page.get_by_role('combobox',name=words['theme'],exact=True).select_option(theme)
+                        for tab in ('home','relationships','growth','bartender','settings'):
+                            page.get_by_role('button',name=words[tab],exact=True).click()
+                            expect(page.locator('main h1')).to_have_count(1)
+                            assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), (width,theme,lang,tab)
+                            if lang=='en':
+                                result=page.evaluate("""async () => {
+                                  const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});
+                                  return r.violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)}));
+                                }""")
+                                assert not result,(width,theme,lang,tab,result)
+                            if lang in ('en','de','ko'):
+                                page.screenshot(path=str(artifacts/f'overhaul-{tab}-{lang}-{theme}-{width}.png'),full_page=True)
+            page.emulate_media(reduced_motion='reduce')
+            assert page.locator('main h1').is_visible()
+            assert not external,external
             assert not errors, errors
             browser.close()
     finally:

@@ -1,11 +1,59 @@
-import {useEffect, useRef, useState, type ReactNode} from 'react';
+import {createContext, Fragment, useContext, useEffect, useRef, useState, type ReactNode} from 'react';
 import {useTranslation} from 'react-i18next';
 import {cloud, setCloudActive} from './cloud';
 import {initializeAuth} from './auth-bootstrap';
 import {authRedirect} from './auth-links';
 import {pendingInvitation} from './invitation-links';
+import {CircleAlert, CircleCheck, Hourglass} from 'lucide-react';
+import {Button, Field, Icon, type LucideIcon} from './ui';
 
 type Screen = 'checking' | 'preview' | 'login' | 'signup' | 'reset' | 'password' | 'pending' | 'cloud';
+
+/* Presentation of the status line. Decided by message key, never by its text. */
+type MessageTone = 'none' | 'error' | 'pending' | 'success';
+
+const errorMessages = new Set([
+  'authError',
+  'authActionError',
+  'authUnavailable',
+  'authLinkError',
+  'authLinkExpired',
+  'authLinkBrowser',
+  'passwordMismatch',
+]);
+
+const toneIcons: Record<Exclude<MessageTone, 'none'>, LucideIcon> = {
+  error: CircleAlert,
+  pending: Hourglass,
+  success: CircleCheck,
+};
+
+function messageTone(message: string): MessageTone {
+  if (!message) return 'none';
+  if (errorMessages.has(message)) return 'error';
+  if (message === 'betaPending') return 'pending';
+  return 'success';
+}
+
+/**
+ * What the application shell needs to render the single account control.
+ * The shell shows the "signOut" string in cloud mode and "cloudAccount" in the
+ * fictional preview; `act` signs out or opens the sign-in screen respectively.
+ */
+export interface AccountControl {
+  mode: 'cloud' | 'preview';
+  /** False when no cloud project is configured; the control is then not rendered. */
+  available: boolean;
+  busy: boolean;
+  act: () => void;
+}
+
+const AccountContext = createContext<AccountControl | null>(null);
+
+/** Null outside AuthGate's signed-in or preview states. */
+export function useAccount() {
+  return useContext(AccountContext);
+}
 
 export default function AuthGate({children}: {children: ReactNode}) {
   const {t} = useTranslation();
@@ -146,26 +194,164 @@ export default function AuthGate({children}: {children: ReactNode}) {
     finally { setBusy(false); }
   }
 
-  if (screen === 'checking') return <main className="auth-panel" aria-busy="true"><p role="status">{t('checkingAccount')}</p></main>;
-  if (screen === 'pending') return <main className="auth-panel"><h1>{t('cloudAccount')}</h1><p role="status">{t(message)}</p><p>{t('betaExplanation')}</p><button disabled={busy} onClick={() => void logout()}>{t('signOut')}</button></main>;
-  if (['login', 'signup', 'reset', 'password'].includes(screen)) {
-    const title = screen === 'signup' ? 'createAccount' : screen === 'reset' ? 'forgotPassword' : screen === 'password' ? 'setPassword' : 'signIn';
-    return <main className="auth-panel"><h1>{t(title)}</h1><p>{t('cloudSetup')}</p>
-      <form className="card form" onSubmit={event => { event.preventDefault(); void submit(); }}>
-        {screen !== 'password' && <label>{t('email')}<input type="email" required autoComplete="email" value={email} disabled={busy} onChange={e => setEmail(e.target.value)}/></label>}
-        {screen !== 'reset' && <label>{t(screen === 'password' ? 'newPassword' : 'password')}<input type="password" required minLength={screen === 'login' ? undefined : 12} maxLength={256} autoComplete={screen === 'login' ? 'current-password' : 'new-password'} value={password} disabled={busy} onChange={e => setPassword(e.target.value)}/></label>}
-        {screen === 'password' && <label>{t('confirmPassword')}<input type="password" required autoComplete="new-password" value={confirmation} disabled={busy} onChange={e => setConfirmation(e.target.value)}/></label>}
-        {(screen === 'signup' || screen === 'password') && <small>{t('passwordHint')}</small>}
-        <button className="primary" disabled={busy || !cloud}>{t(screen === 'reset' ? 'sendRecovery' : title)}</button>
-        {screen === 'login' && <>
-          <button type="button" disabled={busy || !cloud} onClick={() => void googleLogin()}>{t('continueGoogle')}</button>
-          <button type="button" disabled={busy} onClick={() => navigate('signup')}>{t('createAccount')}</button>
-          <button type="button" disabled={busy} onClick={() => navigate('reset')}>{t('forgotPassword')}</button>
-        </>}
-        {screen !== 'login' && <button type="button" disabled={busy} onClick={() => screen === 'password' ? void logout() : navigate('login')}>{t(screen === 'password' ? 'signOut' : 'backSignIn')}</button>}
-        {screen !== 'password' && <button type="button" disabled={busy} onClick={() => navigate('preview')}>{t('localPreview')}</button>}
-        <p role="status">{message ? t(message) : ''}</p>
-      </form></main>;
+  // Presentation only: the brand line shared by every signed-out screen.
+  const brand = (
+    <p className="auth-brand">
+      <span className="brand-mark" aria-hidden="true">
+        {'◒'}
+      </span>
+      <span className="auth-brand__title">{t('appTitle')}</span>
+    </p>
+  );
+
+  // The one role="status" element of a screen. It is always rendered and keeps
+  // its space when empty; the tone comes from the message key, never its text.
+  const tone = messageTone(message);
+  const status = (
+    <p className="auth-status" role="status" data-tone={tone}>
+      {tone !== 'none' && <Icon icon={toneIcons[tone]} className="auth-status__icon" />}
+      {message ? <span className="auth-status__text">{t(message)}</span> : ''}
+    </p>
+  );
+
+  if (screen === 'checking') {
+    return (
+      <main className="auth auth--checking" aria-busy="true">
+        {brand}
+        <p className="auth-checking" role="status">
+          {t('checkingAccount')}
+        </p>
+      </main>
+    );
   }
-  return <><div className="account-bar"><span>{t(screen === 'cloud' ? 'cloudMode' : 'localPreview')}</span>{cloud && <button disabled={busy} onClick={() => screen === 'cloud' ? void logout() : navigate('login')}>{t(screen === 'cloud' ? 'signOut' : 'cloudAccount')}</button>}</div><div key={screen + sessionKey}>{children}</div></>;
+
+  if (screen === 'pending') {
+    return (
+      <main className="auth">
+        {brand}
+        <header className="auth-header">
+          <h1 className="auth-title">{t('cloudAccount')}</h1>
+        </header>
+        {status}
+        <p className="auth-lead">{t('betaExplanation')}</p>
+        <div className="auth-links">
+          <Button disabled={busy} onClick={() => void logout()}>
+            {t('signOut')}
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (['login', 'signup', 'reset', 'password'].includes(screen)) {
+    const title =
+      screen === 'signup'
+        ? 'createAccount'
+        : screen === 'reset'
+          ? 'forgotPassword'
+          : screen === 'password'
+            ? 'setPassword'
+            : 'signIn';
+    const hint =
+      screen === 'signup' || screen === 'password' ? t('passwordHint') : undefined;
+    return (
+      <main className="auth">
+        {brand}
+        <header className="auth-header">
+          <h1 className="auth-title">{t(title)}</h1>
+          <p className="auth-lead">{t('cloudSetup')}</p>
+        </header>
+        <form
+          className="auth-form"
+          aria-busy={busy}
+          onSubmit={(event) => {
+            event.preventDefault();
+            void submit();
+          }}
+        >
+          {screen !== 'password' && (
+            <Field label={t('email')}>
+              <input
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                disabled={busy}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Field>
+          )}
+          {screen !== 'reset' && (
+            <Field label={t(screen === 'password' ? 'newPassword' : 'password')} hint={hint}>
+              <input
+                type="password"
+                required
+                minLength={screen === 'login' ? undefined : 12}
+                maxLength={256}
+                autoComplete={screen === 'login' ? 'current-password' : 'new-password'}
+                value={password}
+                disabled={busy}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Field>
+          )}
+          {screen === 'password' && (
+            <Field label={t('confirmPassword')}>
+              <input
+                type="password"
+                required
+                autoComplete="new-password"
+                value={confirmation}
+                disabled={busy}
+                onChange={(e) => setConfirmation(e.target.value)}
+              />
+            </Field>
+          )}
+          <Button type="submit" variant="primary" block disabled={busy || !cloud}>
+            {t(screen === 'reset' ? 'sendRecovery' : title)}
+          </Button>
+          {status}
+          {screen === 'login' && (
+            <Button block disabled={busy || !cloud} onClick={() => void googleLogin()}>
+              {t('continueGoogle')}
+            </Button>
+          )}
+          <div className="auth-links">
+            {screen === 'login' && (
+              <>
+                <Button className="auth-link" disabled={busy} onClick={() => navigate('signup')}>
+                  {t('createAccount')}
+                </Button>
+                <Button className="auth-link" disabled={busy} onClick={() => navigate('reset')}>
+                  {t('forgotPassword')}
+                </Button>
+              </>
+            )}
+            {screen !== 'login' && (
+              <Button
+                className="auth-link"
+                disabled={busy}
+                onClick={() => (screen === 'password' ? void logout() : navigate('login'))}
+              >
+                {t(screen === 'password' ? 'signOut' : 'backSignIn')}
+              </Button>
+            )}
+            {screen !== 'password' && (
+              <Button className="auth-link" disabled={busy} onClick={() => navigate('preview')}>
+                {t('localPreview')}
+              </Button>
+            )}
+          </div>
+        </form>
+      </main>
+    );
+  }
+  const account: AccountControl = {
+    mode: screen === 'cloud' ? 'cloud' : 'preview',
+    available: cloud !== null,
+    busy,
+    act: () => screen === 'cloud' ? void logout() : navigate('login'),
+  };
+  // The key remounts the application whenever the account or mode changes.
+  return <AccountContext.Provider value={account}><Fragment key={screen + sessionKey}>{children}</Fragment></AccountContext.Provider>;
 }

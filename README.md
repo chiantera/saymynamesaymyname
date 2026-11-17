@@ -355,7 +355,7 @@ provisioning, TLS, heartbeat, cancellation, recovery and activation checks.
 | `supabase/tests/cloud_worker.sql` | Hosted synthetic queue workflow with rollback; admin invocation, not a Render process |
 
 Run browser suites sequentially because each builds frontend/dist. SQL tests refuse
-hosted DSNs. Static catalogs have 203 draft keys per locale; native/safety review
+hosted DSNs. Static catalogs have 295 draft keys per locale; native/safety review
 remains open. A green CI run and a ready Vercel alias are verified separately.
 
 ## What remains after these four milestones
@@ -408,3 +408,18 @@ mock worker continues unchanged. Hosting/storage invoices are separate. These ar
 application controls, not a guaranteed provider-invoice hard cap. Read the
 [budget runbook](docs/implementation/AI-BUDGET.md) for states, tests, retention and
 remaining billing/processor activation work.
+
+## Frontend visual overhaul
+
+The client follows [frontend/DESIGN.md](frontend/DESIGN.md): bottle-glass green,
+sage paper and lamp amber, self-hosted fonts, a desktop rail and mobile tabs.
+Shared accessible controls and named-recipient confirmation dialogs retain the
+existing cloud/privacy contracts. The Home day band reflects actual records in
+your timezone. Growth and Bartender stay labeled as planned features.
+
+All seven draft catalogs contain the new UI copy. Automated checks cover source
+keys and interpolation parity, desktop/360px layouts in both themes, authentication
+and real local SQL/RLS workflows. Screenshots use fictional data. Native-language
+safety review and Android/device checks are still pending. Read the
+[overhaul verification record](docs/implementation/FRONTEND-OVERHAUL.md).
+Live AI remains disabled; no provider, price, storage or worker configuration changed.

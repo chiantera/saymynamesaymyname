@@ -1,0 +1,343 @@
+/*
+ * Settings screen: the page frame with its section index, the preference
+ * sections owned by SettingsScreen.tsx and the cloud schedule (Scheduling.tsx).
+ * Prefix: settings-. Tokens only; no colours or raw lengths beyond hairlines.
+ * See frontend/DESIGN.md.
+ */
+
+/* Page frame: header, index, sections. The index sits beside the sections from 1100px. */
+
+.settings-sections {
+  display: grid;
+  gap: var(--space-10);
+  min-inline-size: 0;
+}
+
+.settings-sections > * {
+  min-inline-size: 0;
+}
+
+/* Each block is an anchor target; the hairline between blocks replaces cards. */
+.settings-block {
+  /* Clear the sticky index when the block is scrolled to. */
+  scroll-margin-block-start: calc(var(--control-height) + var(--space-6));
+}
+
+.settings-block + .settings-block {
+  padding-block-start: var(--space-10);
+  border-block-start: 1px solid var(--line);
+}
+
+/* Focus lands here after an index jump; the block is not a control, so no ring. */
+.settings-block:focus {
+  outline: none;
+}
+
+.settings-block:empty {
+  display: none;
+}
+
+/* Section index: horizontal scroll chips by default (mobile and narrow rail). */
+
+.settings-index {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  min-inline-size: 0;
+  /* Cancel half of the page gap so the strip reads as part of the header. */
+  margin-block: calc(-1 * var(--space-4));
+  padding-block: var(--space-2);
+  border-block-end: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.settings-index__title {
+  display: none;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 550;
+}
+
+.settings-index__list {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.settings-index__list::-webkit-scrollbar {
+  display: none;
+}
+
+.settings-index__list > li {
+  flex: none;
+}
+
+.settings-index__link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--control-height);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 550;
+  line-height: var(--leading-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) var(--ease),
+    color var(--motion-fast) var(--ease);
+}
+
+.settings-index__link:hover {
+  background: var(--wash);
+  color: var(--ink);
+}
+
+.settings-index__link:focus-visible {
+  /* Keep the ring inside the scrolling strip so it is not clipped. */
+  outline-offset: -2px;
+}
+
+.settings-index__link[aria-current] {
+  border-color: transparent;
+  background: var(--wash);
+  color: var(--action);
+  font-weight: 650;
+}
+
+@media (min-width: 1100px) {
+  .settings > .settings-sections {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .settings > .settings-index {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    inset-block-start: var(--space-10);
+    display: grid;
+    gap: var(--space-3);
+    margin-block: 0;
+    padding-block: 0;
+    padding-inline-start: var(--space-4);
+    border-block-end: 0;
+    border-inline-start: 1px solid var(--line);
+    background: none;
+  }
+
+  .settings-index__title {
+    display: block;
+  }
+
+  .settings-index__list {
+    flex-direction: column;
+    gap: 0;
+    overflow: visible;
+  }
+
+  .settings-index__link {
+    display: flex;
+    min-block-size: var(--control-height);
+    padding-inline: var(--space-3);
+    border: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .settings-index__link:focus-visible {
+    outline-offset: 2px;
+  }
+
+  .settings-block {
+    scroll-margin-block-start: var(--space-10);
+  }
+}
+
+/* Forms */
+
+.settings-form {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  min-inline-size: 0;
+}
+
+.settings-form > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.settings-form > .field {
+  inline-size: min(100%, 26rem);
+}
+
+/* Short controls should not stretch across the reading column. */
+.settings-narrow {
+  inline-size: min(100%, 20rem);
+}
+
+.settings-narrow--number input {
+  inline-size: min(100%, 7rem);
+}
+
+/* Saved confirmation: an always-present live region that fills on success. */
+.settings-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--action);
+  font-size: var(--text-sm);
+  font-weight: 550;
+}
+
+.settings-saved:empty {
+  display: none;
+}
+
+/* Rhythm facts: three figures on one hairline-separated row, stacking when narrow. */
+
+.settings-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--space-4) var(--space-6);
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--line);
+  font-size: inherit;
+}
+
+.settings-facts .fact {
+  min-inline-size: 0;
+}
+
+.settings-facts .fact__value {
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+/* The mode statement that closes the page. */
+
+.settings-mode {
+  display: grid;
+  gap: var(--space-1);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--line);
+  font-size: var(--text-sm);
+}
+
+/* Cloud schedule */
+
+.settings-schedule__status {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-weight: 550;
+}
+
+.settings-schedule__dot {
+  flex: none;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+}
+
+.settings-schedule__status[data-state='ready'] .settings-schedule__dot {
+  border-color: var(--action);
+  background: var(--action);
+}
+
+/* Lamp marks attention: the service is not answering. */
+.settings-schedule__status[data-state='unavailable'] .settings-schedule__dot {
+  border-color: var(--lamp);
+  background: var(--lamp);
+}
+
+.settings-schedule__status[data-state='checking'] {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* A fieldset that groups related controls under a small heading. */
+.settings-group {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  inline-size: 100%;
+}
+
+.settings-group > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.settings-group + .settings-group {
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--line);
+}
+
+.settings-group__title {
+  margin-block-end: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.2;
+}
+
+/* Legends do not take part in grid gaps, so the inner label spaces itself. */
+.settings-group .field > legend {
+  margin-block-end: var(--space-2);
+  font-family: var(--font-text);
+  letter-spacing: 0;
+}
+
+/* Quiet hours: start and end on one line. */
+.settings-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted);
+}
+
+.settings-range input {
+  flex: 0 1 8.5rem;
+  inline-size: auto;
+  min-inline-size: 6.5rem;
+  color: var(--ink);
+}
+
+/* Cloud jobs */
+
+.settings-jobs {
+  display: grid;
+  gap: var(--space-3);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--line);
+}
+
+.settings-jobs__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.settings-jobs__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-block-size: calc(var(--control-height) + 2 * var(--space-3));
+}

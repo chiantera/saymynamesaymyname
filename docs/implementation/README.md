@@ -16,3 +16,6 @@ review/version gates and separate fallback approval. Live processing stays disab
 
 AI-BUDGET.md covers exact cost reservations, unknown holds, user controls and the
 operator-only aggregate report. Live AI stays off until the remaining activation gates.
+
+- [Frontend overhaul](FRONTEND-OVERHAUL.md): recovered design/copy, responsive and
+  accessibility coverage, cloud regression boundaries and remaining release gates.
