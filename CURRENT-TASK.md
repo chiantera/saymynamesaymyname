@@ -1,10 +1,8 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: M4 private AI consent foundation. Saved-reflection context preferences
-and per-item exclusions now persist privately. Provider/capability approval and
-fallback are separately versioned; every real provider remains unavailable pending
-review and runtime/cost/safety activation. The free Frankfurt Postgres mock executor
-continues unchanged. Hosting decision recorded in docs/decisions/0001-free-interim-executor.md.
+Active slice: M4 budget controls and usage ledger. Implementing private atomic
+reservations, exact pricing versions and idempotent reconciliation. Live AI remains
+disabled; the free static-mock executor and retained Render setup are unchanged.
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
@@ -345,3 +343,12 @@ Follow-up review constraint migration 20261116144525 enforces complete non-null
 provider review data. Policy URL changes revoke earlier consent even if the version
 label is unchanged; restoring the old URL cannot restore approval. Five consent
 tests pass, including this regression. The overall database suite now has 43 tests.
+
+
+## AI metering foundation — 2026-11-17
+
+Added exact-decimal, private task/attempt accounting, immutable reviewed-price
+versions, EUR 20 shared month target, conservative reservations, unresolved holds,
+separate NOLOGIN metering role and idempotent receipt reconciliation. No configured
+prices/providers or live calls. Targeted lifecycle tests passed; further tests and
+private user controls/retention are the next integration milestone in this slice.
