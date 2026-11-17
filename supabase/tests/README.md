@@ -23,3 +23,6 @@ fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at r
 `deepseek_adapter.sql` is a read-only hosted smoke of the dormant kill switch
 and metering-role-only authorization function. It refuses a live-enabled runtime
 and never creates a provider request, user, price, usage row or temporary activation.
+
+`safety_worker.sql` checks disabled AI/safety review and restricted worker/helper
+permissions without claiming a job, creating a review or invoking any processor.

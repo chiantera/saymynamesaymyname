@@ -10,7 +10,7 @@
     "check": "npm test && npm run test:backend && npm run build",
     "test:browser": "uv run --directory backend python scripts/browser_smoke.py",
     "test:auth": "uv run --directory backend python scripts/auth_smoke.py",
-    "test:database": "uv run --directory backend pytest dbtests/test_membership.py dbtests/test_sharing.py dbtests/test_cloud_jobs.py dbtests/test_cloud_scheduling.py dbtests/test_cloud_worker.py dbtests/test_free_worker.py dbtests/test_ai_consent.py dbtests/test_ai_budget.py dbtests/test_deepseek_adapter.py -q",
+    "test:database": "uv run --directory backend pytest dbtests/test_membership.py dbtests/test_sharing.py dbtests/test_cloud_jobs.py dbtests/test_cloud_scheduling.py dbtests/test_cloud_worker.py dbtests/test_free_worker.py dbtests/test_ai_consent.py dbtests/test_ai_budget.py dbtests/test_deepseek_adapter.py dbtests/test_safety_worker.py -q",
     "test:membership": "uv run --directory backend pytest dbtests/test_membership_browser.py -q --tb=short"
   },
   "engines": {

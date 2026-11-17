@@ -236,3 +236,10 @@ DeepSeek adapter checkpoint: dormant server-side solo composition and actual SQL
 meter integration are implemented/tested (DEEPSEEK-ADAPTER.md). This does not close
 provider safety/terms evaluations, saved-context retrieval, live transport activation,
 invoice imports or running-worker gates. All deployed processing remains disabled.
+
+
+Safety/worker checkpoint: fixed-input policy, risk screening, assessment-evidence
+validation and disabled Python AI consumer/publication are implemented. Mock jobs
+remain the default. This does not close reviewed semantic/crisis evaluation,
+region-correct response UI, AI producer/hosting or live-activation requirements.
+See SAFETY-WORKER.md.

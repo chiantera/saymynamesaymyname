@@ -22,3 +22,6 @@ operator-only aggregate report. Live AI stays off until the remaining activation
 
 - [Dormant DeepSeek adapter](DEEPSEEK-ADAPTER.md): execution-time authorization,
   safety hooks, committed budget accounting and explicit activation boundaries.
+
+- [Safety policy and worker](SAFETY-WORKER.md): fixed input, risk indicators,
+  bound local assessments, disabled AI consumer and private publication fences.

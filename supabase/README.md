@@ -33,3 +33,8 @@ The dormant DeepSeek adapter has one private metadata-only authorization functio
 callable by companion_meter, not clients or companion_worker. It never returns
 journal text, enables processors or changes the mock cron. See the implementation
 guide DEEPSEEK-ADAPTER.md for hosted denial/ACL evidence and activation requirements.
+
+Safety/worker migration adds a private disabled safety-policy review and explicit
+job processor routing (mock default). The metering role receives only a narrow
+AI claim/authorize/publish/hold function. Mock workers cannot finish AI jobs; the
+shared finish helper is ungranted. No login, provider or cron is activated.

@@ -5,9 +5,10 @@
 `backend/app/ai.py` implements a server-only composition service, a fixed-destination
 DeepSeek HTTP transport and a restricted PostgreSQL authorization/metering bridge.
 It supports **solo private check-in drafts from fixed task input only**. There is no
-public route, scheduler integration, saved-context retrieval, file input, tool call,
+public route, AI queue producer, saved-context retrieval, file input, tool call,
 streaming, automatic retry/fallback or outward send. Returning a draft does not mark
-a check-in completed or approve it. The existing mock worker and cron are unchanged.
+a check-in completed or approve it. The existing mock cron remains active; the Python worker now has a disabled AI
+branch documented in SAFETY-WORKER.md.
 
 No module import, startup, environment key or stored local key triggers a request.
 The private local secrets file is not loaded or copied to hosting. `environment_key`
@@ -64,8 +65,10 @@ implementation must affirm both input and output; missing/throwing/unknown decis
 fail closed. Refusal, self-harm, violence and stalking verdicts suppress generated text
 and return static technical codes. No unsafe text or rationale is logged.
 
-The shipped safety implementation is intentionally **unavailable**, not an unevaluated
-keyword classifier claiming clinical reliability. Production-reviewed safety detection,
+The shipped safety implementation now validates fixed input, rejects conservative
+risk indicators and requires fresh text-bound local assessment for arbitrary output.
+Its production assessor remains unavailable; rule absence never implies safety.
+See SAFETY-WORKER.md; this is not a clinically validated keyword classifier. Production-reviewed safety detection,
 region-correct crisis resources and user-facing static refusal/crisis handling remain
 activation gates. Tests exercise verdict handling, not clinical detection quality.
 A network safety service would require separate processor consent, reviewed pricing
@@ -123,3 +126,9 @@ Transaction fence follow-up: regression checks reject both implicit transactions
 and explicit `connection.transaction()` blocks on an autocommit connection, including
 blocks opened after the gate object was constructed. No dispatch can depend on an
 uncommitted reservation.
+
+
+Worker integration follow-up: SAFETY-WORKER.md documents the disabled Python
+consumer, processor routing, current safety review checks, cost-bound private
+publication and no-replay/no-mock-fallback tests. The original evidence above is
+the prior adapter milestone; current suites total 102 backend and 76 database tests.

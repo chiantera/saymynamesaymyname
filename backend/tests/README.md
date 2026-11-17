@@ -9,3 +9,7 @@ fictional keys and MockTransport. Tests cover disabled defaults, inclusive promp
 in seven locales, safety verdicts/unavailability, retries forbidden, unknown costs,
 receipt/output validation and revocation. They never read the private real key.
 The full local backend suite has 55 tests.
+
+Safety/worker coverage: 44 policy-contract/red-team tests plus three CLI tests
+for disabled/default configuration before key/DB access. These do not certify
+clinical or multilingual semantic detection. Current backend total: 102 tests.

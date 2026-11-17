@@ -1991,3 +1991,14 @@ meter lifecycle are implemented with mocked HTTP plus real SQL. No saved context
 public route, worker hookup or live activation. Reviewed safety detection/resources,
 provider terms/region/model pricing and runtime wiring remain activation gates.
 See docs/implementation/DEEPSEEK-ADAPTER.md for evidence and exact limits.
+
+
+### Implementation checkpoint — safety/worker wiring (2026-11-17)
+
+Implemented structural input policy, multilingual conservative risk screening and
+fresh hash/locale/policy-bound local assessment enforcement. Disabled Python AI
+worker claims explicitly tagged solo jobs and publishes only privately/pending
+behind current consent, safety review, lease and usage checks. Mock routing and
+free cron stay default; no new host or processor is activated. Evaluated semantic
+assessor, crisis resources/response UI and live approval remain required. See
+docs/implementation/SAFETY-WORKER.md.

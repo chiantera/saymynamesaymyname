@@ -13,3 +13,7 @@ or external AI is needed for this interim mode.
 
 20261117040437_deepseek_dispatch_gate adds a dormant metadata-only metering-role
 gate. It enables no provider, price, login or scheduler and grants no source access.
+
+20261117043406_safety_worker_publication adds disabled safety review, default-mock
+processor routing and restricted private AI publication with known usage/reviews.
+The free mock cron command and existing schedule opt-ins are unchanged.

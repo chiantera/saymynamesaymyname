@@ -14,5 +14,11 @@ services:
         value: production
       - key: WORKER_REGION
         value: frankfurt
+      - key: AI_WORKER_MODE
+        value: mock
+      - key: AI_LIVE_ENABLED
+        value: "0"
+      - key: AI_NETWORK_ENABLED
+        value: "0"
       - key: WORKER_DATABASE_URL
         sync: false

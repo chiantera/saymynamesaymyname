@@ -66,3 +66,9 @@ fixed-input solo draft service with real SQL reservation/reporting and safety
 hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
 safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
 separate gates; the static Postgres worker never invokes this adapter.
+
+
+Disabled worker integration adds current safety-policy review to provider/lease
+authorization and rechecks both before private pending-draft publication. Existing
+app jobs retain mock routing. No saved-source access or outward sharing is added;
+consent/runtime/price/safety approvals remain separate. See SAFETY-WORKER.md.

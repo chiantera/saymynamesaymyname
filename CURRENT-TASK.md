@@ -430,3 +430,25 @@ See docs/implementation/DEEPSEEK-ADAPTER.md for remaining activation requirement
 Adapter transaction fence: every authorization/meter call checks that an autocommit
 connection is IDLE, rejecting explicit transaction blocks opened before or after
 gate construction. Real SQL regression coverage includes all three cases.
+
+
+## Safety checks and dormant AI worker — 2026-11-17
+
+Implemented fixed-input validation, Unicode-normalized risk indicators and mandatory
+fresh local safety assessment binding. Python worker has an explicit disabled AI
+mode and a metering-role queue/publication bridge. Drafts remain private/pending;
+review revocation, unsafe/unavailable judgments or uncertain billing never trigger
+automatic paid retry or unreviewed mock fallback. Added processor routing default
+mock and isolated mock claim/finish from AI-tagged work. No cron command, paid
+host, key loading/upload or processor enablement.
+
+Validation: 44 policy tests, three disabled-CLI tests and 14 real-SQL worker cases;
+current suites contain 102 backend/76 database tests. Tests use fictional local
+assessments and HTTP mocks, not clinical safety evaluation. Hosted verification
+and CI follow the tested migration. See docs/implementation/SAFETY-WORKER.md.
+
+Hosted safety/worker migration installed. Read-only smoke passed; live=false,
+zero prices/usage/enabled processors/approved safety reviews/AI-tagged jobs,
+mock cron unchanged. Security advisor 23 intentional private RLS INFO (new policy
+table) and prior password-protection WARN. Full 76 SQL/102 backend/12 frontend
+checks passed; CI/deployment are verified after push. No live provider/key access.

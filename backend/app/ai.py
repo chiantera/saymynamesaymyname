@@ -74,6 +74,18 @@ class Task:
         return dict(job_id=self.job_id, lease=self.lease, price_id=self.price_id)
 
 
+@dataclass(frozen=True)
+class Composition:
+    prompt: str
+    draft: str
+    attempt_id: str
+    context: dict
+
+    @property
+    def content(self):
+        return {'prompt':self.prompt, 'draft':self.draft}
+
+
 class Safety(Protocol):
     def check(self, text: str, *, phase: str, locale: str) -> str:
         """Reviewed local gate: allow/refuse/self_harm/violence/stalking/unavailable.
@@ -133,9 +145,12 @@ class DeepSeekHTTP:
         self.network_enabled = network_enabled
         self.transport = transport
 
-    def send(self, body: bytes, key: str):
-        if self.transport is None and not self.network_enabled:
+    def check_ready(self):
+        if self.transport is None and self.network_enabled is not True:
             raise Denied('network_disabled')
+
+    def send(self, body: bytes, key: str):
+        self.check_ready()
         try:
             deadline = time.monotonic() + 20
             with httpx.Client(transport=self.transport, trust_env=False,
@@ -206,7 +221,10 @@ class Composer:
                  credentials: Callable[[], str] = environment_key):
         self.gate = gate
         self.deployment = deployment or Deployment()
-        self.safety = safety or UnavailableSafety()
+        if safety is None:
+            from .safety import PolicySafety
+            safety = PolicySafety()
+        self.safety = safety
         self.provider = provider or DeepSeekHTTP()
         self.credentials = credentials
 
@@ -220,6 +238,9 @@ class Composer:
             raise Denied('safety_' + code)
 
     def compose(self, task: Task):
+        return self.compose_for_worker(task).content
+
+    def compose_for_worker(self, task: Task):
         try:
             return self._compose(task)
         except Denied:
@@ -239,6 +260,7 @@ class Composer:
                        tool_choice='none', response_format={'type': 'json_object'})
         body = json.dumps(payload, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
         self._safe(body.decode(), 'input', locale)
+        self.provider.check_ready()
         key = self.credentials()
         # UTF-8 wire bytes plus framing allowance; no cache discount assumed.
         bounds = dict(input=len(body) + 4096, cached=0, output=MAX_OUTPUT, units=0)
@@ -265,7 +287,7 @@ class Composer:
             self.deployment.check()
             if self.gate.authorize(task) != context:
                 raise Denied('authorization_changed')
-            return content
+            return Composition(content['prompt'], content['draft'], aid, context)
         except Exception:
             if not reported:
                 try:

@@ -16,5 +16,10 @@ or external AI is needed for this interim mode.
 
 - ai.py: dormant server-only DeepSeek composition, restricted PostgresGate, fixed
   HTTPS transport, centralized prompt and fail-closed input/output safety hooks.
-  No startup/routes/worker integration. No saved-source retrieval or outbound send.
+  No public route or activation. The Python worker has a disabled AI branch;
+  no saved-source retrieval or outbound send.
   See docs/implementation/DEEPSEEK-ADAPTER.md at repository root.
+
+- safety.py: fixed-input policy, normalized risk indicators and fresh bound local
+  assessments. No rule-hit absence can approve output. No production semantic
+  assessor, crisis resource UI or external safety API is implicitly configured.

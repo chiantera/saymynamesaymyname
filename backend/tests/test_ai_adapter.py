@@ -62,6 +62,10 @@ def test_default_live_off_never_reads_key_or_touches_transport():
     for value in ('false',1,0,None):
         with pytest.raises(Denied,match='live_ai_disabled'):
             Deployment(value,True,True,'frankfurt').check()
+    gate=Gate()
+    with pytest.raises(Denied,match='network_disabled'):
+        Composer(gate,deployment=APPROVED,safety=Safe(),credentials=forbidden).compose(TASK)
+    assert not actions(gate)
 
 
 def test_composition_has_central_prompt_fixed_route_and_committed_meter_order():

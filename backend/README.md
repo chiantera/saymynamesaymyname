@@ -20,6 +20,13 @@ or external AI is needed for this interim mode.
 
 Server-side AI adapter: `app/ai.py` implements dormant solo draft composition with
 execution-time SQL consent/lease checks, local safety hooks and committed metering.
-It has no public route or worker hookup; default safety and all live gates deny.
+It has no public route; the Python worker has a disabled AI branch, and default
+safety/live gates deny.
 The saved local key is not automatically loaded. See
 [DeepSeek adapter](../docs/implementation/DEEPSEEK-ADAPTER.md).
+
+Safety/worker wiring: `app/safety.py` validates exact solo input, blocks risk
+indicators and requires fresh bound local output assessment. `cloud_worker.py`
+selects mock by default; the disabled AI branch uses current SQL checks before
+private pending publication. No production assessor or paid host is activated.
+See ../docs/implementation/SAFETY-WORKER.md.

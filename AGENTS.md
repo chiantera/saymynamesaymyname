@@ -347,9 +347,20 @@ docs/implementation/FRONTEND-OVERHAUL.md. Live AI remains disabled.
 
 ## Dormant DeepSeek adapter
 
-backend/app/ai.py is server-only and not wired to routes or workers. Defaults deny
+backend/app/ai.py is server-only, with no public route; the Python worker has a
+disabled AI branch. Defaults deny
 live/network execution; Safety defaults unavailable. Only fixed-input solo drafts
 are allowed; no saved content or outward contact. Use the restricted autocommit
 meter role, current authorization and committed cost holds. Never auto-load or
 upload the local key, activate a processor or place network AI into Postgres cron.
 See docs/implementation/DEEPSEEK-ADAPTER.md.
+
+
+## Safety/worker boundary
+
+Follow docs/implementation/SAFETY-WORKER.md. Fixed solo input, conservative rules
+and fresh local assessments are enforced before private pending publication.
+Shipped production semantic assessor/reviews remain unavailable; no implicit
+network judge. Job routing defaults mock; never reroute existing jobs or let a
+mock worker substitute output for a paid/uncertain AI attempt. All live/network
+flags and hosted safety reviews stay disabled. No key autoload or paid host setup.

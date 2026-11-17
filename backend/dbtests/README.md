@@ -29,3 +29,8 @@ fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at r
 mocked HTTP and fictional keys. The restricted role returns metadata only, and
 reserved/started cost cannot roll back after an external call. Includes kill/cap,
 revocation, replay and timeout coverage. Full database suite: 62 tests.
+
+`test_safety_worker.py` adds 14 real SQL worker scenarios with fictional local
+assessments/HTTP: private pending publication, holds, review revocation, kill switch,
+replay/lease isolation, mock/AI routing, ACLs and tampered receipts. Current full
+database suite: 76 tests. No real processor or beta data is used.

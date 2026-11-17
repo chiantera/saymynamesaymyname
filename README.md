@@ -437,3 +437,18 @@ safety gate refuses dispatch until a reviewed implementation is supplied.
 The free static mock worker continues unchanged. See the
 [adapter runbook](docs/implementation/DEEPSEEK-ADAPTER.md) for scope, 55 backend/62
 database tests and remaining provider/safety/runtime activation gates.
+
+## Safety checks and worker integration
+
+The disabled Python AI worker now uses fixed-input validation, conservative risk
+screening and mandatory fresh, content-bound local safety assessments. It rechecks
+consent, reviews, lease and recorded budget usage before publishing a private
+**pending** draft. Risky/unavailable results are held; uncertain calls are not
+automatically replayed or replaced with mock text.
+
+Job processor routing defaults to mock, so the existing free Postgres consumer
+continues serving the app. Live/network switches and the database safety review
+remain disabled. No key is loaded/uploaded and no Render host is activated. An
+evaluated local assessor and regional crisis responses remain release gates.
+See [safety/worker runbook](docs/implementation/SAFETY-WORKER.md) for implemented
+checks, 102 backend/76 database tests and exact limitations.

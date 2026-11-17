@@ -114,3 +114,11 @@ fixed-input solo draft service with real SQL reservation/reporting and safety
 hooks. No provider calls or activation occurred. Saved-source retrieval, evaluated
 safety, reviewed live pricing/terms, invoice integration and runtime wiring remain
 separate gates; the static Postgres worker never invokes this adapter.
+
+
+Worker publication now requires a matching known-usage attempt within reserved
+bounds and current safety/provider review. Publication receipts hold only a content
+digest and safety policy/review IDs, inheriting accounting retention. No prompt or
+draft text enters the ledger. Unknown/dispatched attempts cannot be auto-replayed
+by worker recovery; mock consumers cannot substitute output for AI-tagged jobs.
+See SAFETY-WORKER.md; live AI remains off.

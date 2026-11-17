@@ -258,3 +258,13 @@ Sources checked 2026-11-15: https://supabase.com/docs/guides/cron and
 https://supabase.com/pricing. Supabase Edge Functions remain a possible later
 short-task runtime (https://supabase.com/docs/guides/functions/limits); they are not
 needed or deployed for static mock composition.
+
+
+## Disabled AI worker integration
+
+The Python worker now has an explicit DeepSeek branch, default off. Processor
+routing defaults all existing/new app jobs to mock; mock workers cannot claim or
+finish explicitly tagged AI jobs. The private metering-role consumer enforces
+safety/provider/lease/usage checks and only creates pending private drafts.
+Uncertain dispatched attempts cannot be automatically reclaimed. No second
+scheduler or cron change, new login or paid host was added. See SAFETY-WORKER.md.
