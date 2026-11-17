@@ -137,8 +137,11 @@ HTTP initial local contracts:
   seven-language/tool/safety evaluations; caller selects only approved capability routes.
 - [ ] Persist per-user processor/saved-context consent; no retrieval from unchecked
   journals/documents/prior chats; explicit attachments are task-scoped.
-- [ ] Usage ledger, conservative atomic reservations, pending unknown charges,
-  reconciliation and EUR 20 aggregate test target. Safety calls/retries/fallback count.
+- [x] Private usage ledger, conservative atomic reservations, pending unknown charges,
+  idempotent reconciliation and EUR 20 aggregate target, verified with fictional
+  prices and isolated requests.
+- [ ] Integrate real processor/safety/retry/fallback usage and authenticated billing
+  receipts with reviewed pricing; every potentially charged attempt must pass the gate.
 - [ ] Centralized inclusive system core, source minimization and injection resistance.
   Distinguish an outage from no consent or exhausted budget in static copy.
 - [ ] Live calls limited to explicit smoke tests after verified prerequisites.
@@ -217,3 +220,8 @@ M4 progress 2026-11-16: saved-reflection category permission and per-item exclus
 review-version-bound per-capability approval and separate fallback are implemented.
 See AI-CONSENT.md. Document/chat sources, actual context builders, live processors,
 safety evaluations and cost reservations remain open; this does not close all M4.
+
+M4 progress 2026-11-17: private usage ledger, atomic buffered reservations and
+idempotent usage/invoice reconciliation, personal safety limits/pauses and retention
+are implemented and tested with fictional prices only. AI-BUDGET.md records the
+limits; actual provider models/prices/imports and network/safety integration remain open.

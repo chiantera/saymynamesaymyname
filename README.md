@@ -355,7 +355,7 @@ provisioning, TLS, heartbeat, cancellation, recovery and activation checks.
 | `supabase/tests/cloud_worker.sql` | Hosted synthetic queue workflow with rollback; admin invocation, not a Render process |
 
 Run browser suites sequentially because each builds frontend/dist. SQL tests refuse
-hosted DSNs. Static catalogs have 183 draft keys per locale; native/safety review
+hosted DSNs. Static catalogs have 203 draft keys per locale; native/safety review
 remains open. A green CI run and a ready Vercel alias are verified separately.
 
 ## What remains after these four milestones
@@ -393,3 +393,18 @@ See [AI consent](docs/implementation/AI-CONSENT.md) for behavior and remaining g
 The free interim hosting choice is recorded in
 [decision 0001](docs/decisions/0001-free-interim-executor.md): use the existing
 Frankfurt database for bounded static mocks and retain Render for later.
+
+
+## AI budgets and usage
+
+Settings now has a private usage ledger, personal safety ceiling and pause control.
+The shared application target remains EUR 20/month. Atomic reservations use exact
+amounts, conservative bounds and a 10% buffer; retries/fallback reserve separately.
+Unknown costs stay held until evidence resolves them. Reconciliation is idempotent,
+and actual overruns stop new requests rather than being hidden.
+
+**Live AI remains off, with no real prices, keys or processors enabled.** The free
+mock worker continues unchanged. Hosting/storage invoices are separate. These are
+application controls, not a guaranteed provider-invoice hard cap. Read the
+[budget runbook](docs/implementation/AI-BUDGET.md) for states, tests, retention and
+remaining billing/processor activation work.

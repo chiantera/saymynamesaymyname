@@ -22,3 +22,5 @@ or external AI is needed for this interim mode.
 
 - [AI consent](implementation/AI-CONSENT.md): saved-context and processor permissions.
 - [Decisions](decisions/README.md): dated architectural choices and their limits.
+
+- [AI budget](implementation/AI-BUDGET.md): reservations, private ledger, reconciliation and retention.

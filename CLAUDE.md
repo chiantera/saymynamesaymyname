@@ -308,3 +308,14 @@ provider reviews/processing remain disabled, so no real processor consent is off
 prematurely. Do not connect these preferences directly to a network request. Future
 calls need execution-time authorization, cost reservation and safety checks. The mock
 worker must retain no journal access. See docs/implementation/AI-CONSENT.md.
+
+
+## AI accounting foundation — current status
+
+Private exact-decimal usage accounting and atomic reservations are implemented.
+Global target EUR 20/UTC month, 10% reservation buffer; unknown/started costs keep
+holds across rollover. Separate NOLOGIN metering role; browsers only read their own
+ledger and edit personal limits/pause. Live_enabled stays false and prices are empty.
+No actual transport is enabled by a reservation. Before future calls, recheck source,
+consent, lease, region, cost and safety gates at dispatch; record every retry/fallback.
+Read docs/implementation/AI-BUDGET.md for retention, reconciliation and activation gaps.

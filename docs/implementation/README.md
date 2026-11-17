@@ -13,3 +13,6 @@ or external AI is needed for this interim mode.
 
 AI-CONSENT.md documents private source preferences, per-item exclusions, provider
 review/version gates and separate fallback approval. Live processing stays disabled.
+
+AI-BUDGET.md covers exact cost reservations, unknown holds, user controls and the
+operator-only aggregate report. Live AI stays off until the remaining activation gates.

@@ -15,3 +15,7 @@ AI consent foundation: Settings and guarded SQL persist private source preferenc
 reflection exclusions and versioned provider/capability/fallback approval. Real
 provider controls remain unavailable pending review. Details: docs/implementation/AI-CONSENT.md
 at repository root. No mock-worker journal access or external AI activation.
+
+Budget integration adds owner-only usage/ceiling/pause controls and a separate
+restricted accounting role. Exact reservations and unresolved holds are tested with
+fictional prices; live AI is disabled. See docs/implementation/AI-BUDGET.md at root.

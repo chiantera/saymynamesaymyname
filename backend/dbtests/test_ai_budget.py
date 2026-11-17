@@ -119,7 +119,7 @@ def test_fx_units_bounds_and_worst_case_cache(state):
     denied(lambda:attempt(state,a|dict(attempt_no=2,bounds=dict(input=0,cached=0,output=0,units=101))),'usage_bounds_exceeded')
 
 
-def test_free_price_explicit_and_owner_deletion_preserves_global_charge(state):
+def test_owner_deletion_preserves_global_charge(state):
     a=setup(state);aid=begin(state,a)
     meter(state,'reconcile',id=aid,provider_request_id='deleted-user-charge',actual_native='3',actual_fx='1')
     with psycopg.connect(state.dsn) as conn:
@@ -147,3 +147,64 @@ def test_budget_lowered_before_dispatch_blocks_existing_reservation(state):
     with psycopg.connect(state.dsn) as conn:conn.execute('update companion_private.ai_budget_config set monthly_eur=1')
     denied(lambda:meter(state,'begin',id=aid,lease=a['lease']),'budget_exhausted')
     assert row(state,aid)[0]=='reserved'
+
+
+def view(state,person='A',action='get',**args):
+    with state.client(person) as conn:return conn.execute('select public.ai_budget(%s,%s)',(action,Jsonb(args))).fetchone()[0]
+
+
+def test_private_views_pause_limit_and_alerts(state):
+    a=setup(state);a['bounds']['input']=10;aid=attempt(state,a)
+    summary=view(state);assert summary['held_eur']==11 and summary['posted_eur']==0 and summary['alert']=='50'
+    assert view(state,'B',owner=state.people['A'])['attempts']==[]
+    with state.client('B') as conn:denied(lambda:conn.execute('select companion_private.ai_budget_admin()'),'permission denied')
+    view(state,action='save',revision=0,monthly_eur='12.00',paused=True)
+    denied(lambda:meter(state,'begin',id=aid,lease=a['lease']),'budget_paused')
+    denied(lambda:view(state,action='save',revision=0,monthly_eur='20.00',paused=False),'stale_budget')
+    summary=view(state,action='save',revision=1,monthly_eur='12.00',paused=False)
+    assert summary['alert']=='80'
+    summary=view(state,action='save',revision=2,monthly_eur='11.50',paused=False)
+    assert summary['alert']=='95'
+    meter(state,'release',id=aid)
+    assert view(state)['held_eur']==0
+
+
+def test_maintenance_expiry_rollups_and_pending_charge_retention(state):
+    a=setup(state);aid=begin(state,a)
+    with psycopg.connect(state.dsn) as conn:
+        conn.execute("update companion_private.ai_usage_attempts set expires_at=now()-interval '1 second' where id=%s",(aid,))
+        conn.execute('select companion_private.ai_budget_maintenance()')
+    assert row(state,aid)[0]=='unknown'
+    assert Decimal(str(view(state)['unknown_eur']))==Decimal('1.1')
+    meter(state,'reconcile',id=aid,provider_request_id='archive-fixture',actual_native='2',actual_fx='1')
+    aid2=begin(state,a|dict(attempt_no=2))
+    with psycopg.connect(state.dsn) as conn:
+        conn.execute("update companion_private.ai_usage_attempts set created_at=now()-interval '91 days' where id in (%s,%s)",(aid,aid2))
+        conn.execute('select companion_private.ai_budget_maintenance()')
+        assert conn.execute('select count(*) from companion_private.ai_usage_attempts where id=%s',(aid,)).fetchone()[0]==0
+        assert conn.execute('select state from companion_private.ai_usage_attempts where id=%s',(aid2,)).fetchone()[0]=='started'
+        operator=conn.execute('select companion_private.ai_budget_admin()').fetchone()[0]
+        assert operator['posted_eur']==2 and Decimal(str(operator['held_eur']))==Decimal('1.1')
+        assert 'owner' not in operator and 'email' not in operator
+        conn.execute("insert into companion_private.ai_usage_rollups(month,reconciled_eur) values((date_trunc('month',now())-interval '13 months')::date,1)")
+        conn.execute('select companion_private.ai_budget_maintenance()')
+        assert conn.execute("select count(*) from companion_private.ai_usage_rollups where month<(date_trunc('month',now())-interval '12 months')::date").fetchone()[0]==0
+
+
+def test_reconciliation_after_consent_revocation_and_kill_switch(state):
+    a=setup(state);aid=begin(state,a)
+    change(state,'provider',provider='deepseek',capability='chat',approved=False,allow_fallback=False)
+    with psycopg.connect(state.dsn) as conn:conn.execute('update companion_private.ai_budget_config set live_enabled=false')
+    meter(state,'unknown',id=aid)
+    meter(state,'reconcile',id=aid,provider_request_id='revoked-but-billed',actual_native='1.05',actual_fx='1')
+    assert row(state,aid)[3]==Decimal('1.05')
+    denied(lambda:attempt(state,a|dict(attempt_no=2)),'live_ai_disabled')
+
+
+def test_fallback_is_separate_approved_charge(state):
+    a=setup(state);a['bounds']['input']=8;aid=begin(state,a);meter(state,'unknown',id=aid)
+    retry=a|dict(attempt_no=2,fallback=True,bounds=dict(input=1,cached=0,output=0,units=0))
+    denied(lambda:attempt(state,retry),'processor_not_approved')
+    change(state,'provider',provider='deepseek',capability='chat',approved=True,allow_fallback=True,review_revision='fixture-v1')
+    second=attempt(state,retry);assert second!=aid
+    assert Decimal(str(view(state)['held_eur']))==Decimal('9.9')

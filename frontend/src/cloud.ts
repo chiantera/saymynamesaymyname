@@ -19,6 +19,7 @@ export async function cloudRequest(path:string,method:string,body:any){
  if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
  if(path==='/cloud/queue')return checked(()=>cloud!.rpc('cloud_queue',{p_action:body.action,p_args:body.args??{}}));
+ if(path==='/ai/budget')return checked(()=>cloud!.rpc('ai_budget',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/ai/consent')return checked(()=>cloud!.rpc('ai_consent',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/sharing')return checked(()=>cloud!.rpc('reflection_sharing',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/relationships/workspace')return checked(()=>cloud!.rpc('relationship_workspace'));

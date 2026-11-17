@@ -61,6 +61,7 @@ def test_membership_browser(state):
         if path=='/auth/v1/logout':return reply({})
         try:
             with state.client(actor) as conn:
+                if path=='/rest/v1/rpc/ai_budget':return reply(conn.execute('select public.ai_budget(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/ai_consent':return reply(conn.execute('select public.ai_consent(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/cloud_schedule':return reply(conn.execute('select public.cloud_schedule(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/cloud_queue':return reply(conn.execute('select public.cloud_queue(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
@@ -237,6 +238,17 @@ def test_membership_browser(state):
             refresh(b)
             expect(space(b).locator('.member-row').filter(has_text='Casey')).to_contain_text(en['contactAvailable'])
             a.get_by_role('button',name=en['settings'],exact=True).click()
+            budget_panel=a.get_by_role('region',name=en['budgetTitle'],exact=True)
+            expect(budget_panel).to_contain_text(en['budgetEmpty'])
+            budget_panel.get_by_label(en['budgetPersonalLimit'],exact=True).fill('5.50')
+            budget_panel.get_by_label(en['budgetPause'],exact=True).check()
+            budget_panel.get_by_role('button',name=en['save'],exact=True).click()
+            expect(budget_panel.get_by_role('button',name=en['save'],exact=True)).to_be_enabled()
+            a.reload();a.get_by_role('button',name=en['settings'],exact=True).click()
+            expect(budget_panel.get_by_label(en['budgetPersonalLimit'],exact=True)).to_have_value('5.5')
+            expect(budget_panel.get_by_label(en['budgetPause'],exact=True)).to_be_checked()
+            with state.client('B') as conn:
+                assert conn.execute("select public.ai_budget('get')").fetchone()[0]['monthly_eur']==20
             ai_panel=a.get_by_role('region',name=en['aiConsentTitle'],exact=True)
             expect(ai_panel.get_by_label(en['aiJournals'],exact=True)).not_to_be_checked()
             expect(ai_panel.get_by_label(en['aiDocuments'],exact=True)).to_be_disabled()

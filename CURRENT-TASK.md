@@ -9,7 +9,7 @@ Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 ## Implemented and verified
 
 - M0 runnable React/Vite/TypeScript shell and provisional Capacitor configuration.
-- Five-tab responsive UI; seven draft catalogs (183 keys each), language switching,
+- Five-tab responsive UI; seven draft catalogs (203 keys each), language switching,
   system/light/dark theme, local-only fictional-data banner.
 - FastAPI API with local-only, host/origin and ephemeral bearer-session guards.
 - Durable SQLite **demo adapter**, separate mock worker, persistent jobs and reflections.
@@ -352,3 +352,27 @@ versions, EUR 20 shared month target, conservative reservations, unresolved hold
 separate NOLOGIN metering role and idempotent receipt reconciliation. No configured
 prices/providers or live calls. Targeted lifecycle tests passed; further tests and
 private user controls/retention are the next integration milestone in this slice.
+
+
+## AI budget integration — 2026-11-17
+
+Added owner-only budget controls and usage ledger, separate operator-only aggregate
+cost view, 50/80/95% status thresholds and bounded retention/expiry maintenance.
+Installed both accounting migrations in Frankfurt. Hosted ai_budget.sql passed with
+synthetic-only temporary settings and rollback; no live calls or paid resources.
+Post-test global live_enabled=false, real price catalog empty, processors disabled.
+
+Validation: 56 real PostgreSQL tests; browser private budget/pause save/reload and
+cross-account denial; prior consent/sharing/scheduling flows; 8 frontend and 24 local
+backend tests, TypeScript/Vite build and 203-key seven-catalog parity. The mock
+consumer remains independent of paid-AI pause. Anonymous monthly cost totals retain
+12 months after terminal detail compaction; unresolved cost holds do not expire.
+
+Security advisor: 22 intentional private RLS/no-client-policy INFO notices; existing
+leaked-password-protection WARN unchanged. Provider invoicing corrections/imports,
+specific billing categories, real price/terms reviews, cost-aware actual transport
+and source/safety gates remain explicit prerequisites for paid activation.
+
+Post-smoke verification: global live_enabled=false; zero real price rows/usage rows;
+zero enabled processors; synthetic account absent; last three cron runs succeeded.
+Auth client smoke also passed. Render and mock-worker source files are unchanged.

@@ -1967,3 +1967,9 @@ M4 checkpoint 2026-11-16: private AI consent foundations are implemented, includ
 review-bound capability/fallback gates and persistent reflection exclusions. Live
 providers and actual context retrieval are not activated. Implementation evidence:
 docs/implementation/AI-CONSENT.md. Free-worker choice: docs/decisions/0001-free-interim-executor.md.
+
+
+M4 accounting checkpoint 2026-11-17: buffered exact-decimal reservations, separately
+tracked attempts, unknown holds, reconciliation, private user budgets and minimized
+operator reports are implemented. Live processors/prices remain disabled. Supported
+billing categories and outstanding activation gates: docs/implementation/AI-BUDGET.md.

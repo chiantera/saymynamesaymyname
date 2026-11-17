@@ -1,3 +1,4 @@
+import Budget from './Budget';
 import AIConsent from './AIConsent';
 import Scheduling from './Scheduling';
 import Sharing from './Sharing';
@@ -111,6 +112,7 @@ export default function App() {
         </section><aside className="side-cards"><section className="card small-card"><span className="eyebrow">{t('budget')}</span><strong className="big-number">{new Intl.NumberFormat(language, { style: 'currency', currency: 'EUR' }).format(0)}</strong><p>{t('zeroCost')}</p></section><section className="card small-card"><span className="eyebrow">{t('quietHours')}</span><strong className="hours">22:00–08:00</strong><p>{prefs?.timezone ?? timezone}</p></section></aside></div>
         <section className="card reflections"><h2>{t('entries')}</h2>{entries.length === 0 ? <p className="empty-state">{t('emptyEntries')}</p> : entries.map(e => <article className="entry" key={e.id}><time dateTime={e.created_at}>{date(e.created_at)}</time><p>{e.text}</p><span className="pill">{t('privateLabel')}</span></article>)}</section>
       </>}
+      {tab === 'settings' && isCloudActive() && <Budget/>}
       {tab === 'settings' && isCloudActive() && <AIConsent entries={entries}/>}
       {tab === 'settings' && isCloudActive() && <Scheduling/>}
       {tab === 'home' && isCloudActive() && <Sharing entries={entries}/>}
