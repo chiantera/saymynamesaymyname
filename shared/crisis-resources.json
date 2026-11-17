@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "automatic_crisis_copy": false,
+  "professional_copy_reviewed": false,
+  "reviewed_locales": [],
+  "regions": [
+    {
+      "countries": [
+        "AT",
+        "BE",
+        "BG",
+        "HR",
+        "CY",
+        "CZ",
+        "DK",
+        "EE",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IE",
+        "IT",
+        "LV",
+        "LT",
+        "LU",
+        "MT",
+        "NL",
+        "PL",
+        "PT",
+        "RO",
+        "SK",
+        "SI",
+        "ES",
+        "SE"
+      ],
+      "services": [
+        {
+          "kind": "emergency",
+          "number": "112"
+        }
+      ],
+      "source": "https://digital-strategy.ec.europa.eu/en/policies/112",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    },
+    {
+      "countries": [
+        "US"
+      ],
+      "services": [
+        {
+          "kind": "emergency",
+          "number": "911"
+        }
+      ],
+      "source": "https://www.911.gov/calling-911/",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    },
+    {
+      "countries": [
+        "GB"
+      ],
+      "services": [
+        {
+          "kind": "police",
+          "number": "999"
+        }
+      ],
+      "source": "https://www.gov.uk/contact-police",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    },
+    {
+      "countries": [
+        "HK"
+      ],
+      "services": [
+        {
+          "kind": "emergency",
+          "number": "999"
+        }
+      ],
+      "source": "https://www.gov.uk/foreign-travel-advice/hong-kong/getting-help",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    },
+    {
+      "countries": [
+        "KR"
+      ],
+      "services": [
+        {
+          "kind": "police",
+          "number": "112"
+        },
+        {
+          "kind": "medical_fire",
+          "number": "119"
+        }
+      ],
+      "source": "https://southkorea.embassy.gov.au/seol/consular.html",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    },
+    {
+      "countries": [
+        "CN"
+      ],
+      "services": [
+        {
+          "kind": "police",
+          "number": "110"
+        },
+        {
+          "kind": "medical",
+          "number": "120"
+        },
+        {
+          "kind": "fire",
+          "number": "119"
+        }
+      ],
+      "source": "https://www.gov.uk/foreign-travel-advice/china/getting-help",
+      "verified_on": "2026-11-17",
+      "valid_until": "2027-02-15"
+    }
+  ],
+  "directories": [
+    {
+      "id": "emotional",
+      "url": "https://findahelpline.com/",
+      "source": "https://findahelpline.com/about",
+      "verified_on": "2026-11-17"
+    },
+    {
+      "id": "abuse",
+      "url": "https://lila.help/",
+      "source": "https://lila.help/",
+      "verified_on": "2026-11-17"
+    },
+    {
+      "id": "device",
+      "url": "https://www.techsafety.org/resources-survivors",
+      "source": "https://www.techsafety.org/resources-survivors",
+      "verified_on": "2026-11-17"
+    }
+  ]
+}

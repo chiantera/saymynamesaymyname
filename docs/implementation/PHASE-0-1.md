@@ -243,3 +243,10 @@ validation and disabled Python AI consumer/publication are implemented. Mock job
 remain the default. This does not close reviewed semantic/crisis evaluation,
 region-correct response UI, AI producer/hosting or live-activation requirements.
 See SAFETY-WORKER.md.
+
+
+Crisis-support checkpoint: static regional help and private explicit-reveal worker
+notices are implemented. Source verification is separate from professional/native
+copy review; topic-specific advice and automatic persona-drop remain disabled.
+This does not close clinical/locale evaluation, real disclosure intake or live AI
+activation. See [CRISIS-SUPPORT](CRISIS-SUPPORT.md).

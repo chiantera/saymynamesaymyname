@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, os, shutil, subprocess, tempfile, time, socket
+import datetime, json, os, shutil, subprocess, tempfile, time, socket
 from urllib.request import urlopen
 from playwright.sync_api import sync_playwright, expect
 from ui_checks import audit_ui
@@ -89,6 +89,9 @@ with tempfile.TemporaryDirectory(prefix='browser-test-', dir=root/'.local') as t
             assert page.evaluate('document.activeElement !== document.body')
             # Every destination, both layouts/themes, all seven draft catalogs.
             # No hosted data or external font/processor requests are needed.
+            # Pin contact-fixture time; expiry is separately tested without moving
+            # verification dates or making a stale real contact look current.
+            page.clock.set_fixed_time(datetime.datetime(2026,11,17,12,tzinfo=datetime.timezone.utc))
             external=[]
             page.on('request', lambda request: external.append(request.url)
                     if not request.url.startswith(('http://127.0.0.1:', 'ws://127.0.0.1:', 'data:')) else None)
@@ -110,10 +113,39 @@ with tempfile.TemporaryDirectory(prefix='browser-test-', dir=root/'.local') as t
                                 audit_ui(page,(width,theme,lang,tab))
                             if lang in ('en','de','ko'):
                                 page.screenshot(path=str(artifacts/f'overhaul-{tab}-{lang}-{theme}-{width}.png'),full_page=True)
+                        # Help is static, private and usable in every locale/theme/layout.
+                        page.get_by_role('button',name=words['supportOpen'],exact=True).click()
+                        help_panel=page.get_by_role('dialog',name=words['supportTitle'],exact=True)
+                        expect(help_panel).to_be_visible()
+                        expect(help_panel.get_by_label(words['supportCountry'],exact=True)).to_have_value('')
+                        expect(help_panel.locator('a[href^="tel:"]')).to_have_count(0)
+                        help_panel.get_by_label(words['supportCountry'],exact=True).select_option('KR')
+                        expect(help_panel.locator('a[href="tel:112"]')).to_have_count(1)
+                        expect(help_panel.locator('a[href="tel:119"]')).to_have_count(1)
+                        if lang=='en': expect(help_panel.locator('a[href="tel:112"]')).to_be_in_viewport()
+                        help_panel.get_by_label(words['supportTopic'],exact=True).select_option('stalking')
+                        expect(help_panel.get_by_text(words['supportPath_manual'],exact=True)).to_be_visible()
+                        expect(help_panel.get_by_text(words['supportPath_stalking'],exact=True)).not_to_be_visible()
+                        if lang=='en': audit_ui(page,('support',width,theme))
+                        if lang in ('en','de','ko'):
+                            page.screenshot(path=str(artifacts/f'support-{lang}-{theme}-{width}.png'),full_page=True)
+                        page.keyboard.press('Escape')
+                        expect(help_panel).not_to_be_visible()
+                        expect(page.get_by_role('button',name=words['supportOpen'],exact=True)).to_be_focused()
             page.emulate_media(reduced_motion='reduce')
             assert page.locator('main h1').is_visible()
             assert not external,external
             assert not errors, errors
+            # A user gesture is required; intercept the destination, never phone home.
+            exit_requests=[]
+            def neutral_exit(route):
+                exit_requests.append(route.request.headers)
+                route.fulfill(content_type='text/html',body='<title>Neutral exit fixture</title><p>Neutral page</p>')
+            page.route('https://www.wikipedia.org/**',neutral_exit)
+            page.get_by_role('button',name=words['supportOpen'],exact=True).click()
+            page.get_by_role('dialog',name=words['supportTitle'],exact=True).get_by_role('button',name=words['supportExit'],exact=True).click()
+            expect(page).to_have_url('https://www.wikipedia.org/')
+            assert len(exit_requests)==1 and 'referer' not in exit_requests[0]
             browser.close()
     finally:
         for child in children:

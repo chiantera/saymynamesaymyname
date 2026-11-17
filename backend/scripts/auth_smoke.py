@@ -79,6 +79,7 @@ def handle(route):
     if path=='/auth/v1/authorize':
         return route.fulfill(content_type='text/html',body='<h1>Simulated Google redirect</h1>')
     if path=='/rest/v1/rpc/has_beta_access': return reply(admitted)
+    if path=='/rest/v1/rpc/support_notice': return reply({'id':None})
     if path=='/rest/v1/rpc/cloud_schedule': return reply({'revision':0,'paused':False,'paused_until':None,'quiet_start':'22:00','quiet_end':'08:00','daily_cap':3,'scopes':[]})
     if path=='/rest/v1/rpc/relationship_workspace': return reply({'relationships':[],'blocks':[]})
     if path=='/rest/v1/rpc/reflection_sharing':
@@ -134,6 +135,18 @@ try:
         context,page=new_page()
         page.goto(origin)
         page.get_by_role('button',name=en['cloudAccount'],exact=True).click()
+        # Support must also work before authentication and without an AI request.
+        before_help=len(requests)
+        page.get_by_role('button',name=en['supportOpen'],exact=True).click()
+        panel=page.get_by_role('dialog',name=en['supportTitle'],exact=True)
+        expect(panel).to_be_visible()
+        expect(panel.get_by_label(en['supportCountry'],exact=True)).to_have_value('')
+        panel.get_by_label(en['supportTopic'],exact=True).select_option('self_harm')
+        expect(panel.get_by_text(en['supportPath_manual'],exact=True)).to_be_visible()
+        expect(panel.get_by_text(en['supportPath_self_harm'],exact=True)).not_to_be_visible()
+        audit_ui(page,'signed-out-support')
+        page.keyboard.press('Escape')
+        assert len(requests)==before_help,'Opening help must not make auth/AI requests'
         audit_ui(page,'sign-in')
         page.get_by_role('button',name=en['createAccount'],exact=True).click()
         audit_ui(page,'create-account')

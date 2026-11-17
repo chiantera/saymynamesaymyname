@@ -1,8 +1,9 @@
 # Current task — Phase 0/1 implementation started
 
-Active slice: M4 budget controls and usage ledger. Implementing private atomic
-reservations, exact pricing versions and idempotent reconciliation. Live AI remains
-disabled; the free static-mock executor and retained Render setup are unchanged.
+Active slice: crisis-response paths and regional resources. Implemented static help,
+quick exit, review-gated topic copy and private explicit-reveal worker safety notices.
+Validation and hosted deployment evidence are recorded in the dated checkpoint below.
+Live AI/network remain disabled; the free mock executor and Render setup are unchanged.
 
 Plan: [PHASE-0-1](docs/implementation/PHASE-0-1.md). Branding/pricing deferred.
 
@@ -452,3 +453,39 @@ zero prices/usage/enabled processors/approved safety reviews/AI-tagged jobs,
 mock cron unchanged. Security advisor 23 intentional private RLS INFO (new policy
 table) and prior password-protection WARN. Full 76 SQL/102 backend/12 frontend
 checks passed; CI/deployment are verified after push. No live provider/key access.
+
+
+## Crisis paths and regional resources — 2026-11-17
+
+Implemented static help outside auth, current-country selection, 32 sourced
+country/region contact mappings, stale-data dial suppression, user-selected support
+directories and neutral quick exit. The seven draft catalogs now have 337 keys.
+Specific self-harm/violence/stalking advice is stored as draft copy but display is
+professionally review-gated; automatic persona-drop and live AI stay disabled.
+
+Worker safety failures now hold the current AI lease and create an owner-only,
+minimal notice. Initial UI polling returns only a notice ID; the category is
+revealed only on a private user action, with an explicit reminder that rejected
+model output is not an assessment of the user. No rejected text, region, diagnosis,
+partner contact, analytics event or shared risk profile is recorded.
+
+Validation: 111 backend unit tests, 15 frontend tests, 83 database tests; signed-out
+help in the production auth fixture, private reveal/dismiss in the SQL-backed
+browser fixture, and all existing sharing/blocking/revocation regressions pass.
+The browser matrix additionally exercises 28 help-panel locale/theme/width
+combinations, focus return, ephemeral selection, no automatic external requests,
+English axe checks and a locally intercepted no-referrer quick exit.
+
+Hosted: `20261117064518_crisis_support_paths.sql` applied; read-only
+`supabase/tests/crisis_support.sql` passed. `live_enabled=false`, prices/attempts/
+enabled providers/safety reviews/AI jobs/notices all zero. Existing mock cron is
+active. Advisor results: 24 intentional private RLS/no-policy INFO findings
+(includes the new no-direct-access notice table); the pre-existing leaked-password
+protection warning remains. See the [Supabase remediation guide](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
+No live API request, secret loading, paid host, automatic user schedule opt-in or
+production notice was created. Native-device, clinical and professional/native
+copy evaluation remain open. Details: docs/implementation/CRISIS-SUPPORT.md.
+
+Production build passes with the existing Vite chunk-size advisory: main JS about
+520 kB (169 kB gzip). The static help/resources stay in the initial client bundle
+so opening them does not depend on a later resource-fetch request.

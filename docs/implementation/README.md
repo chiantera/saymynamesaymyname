@@ -25,3 +25,5 @@ operator-only aggregate report. Live AI stays off until the remaining activation
 
 - [Safety policy and worker](SAFETY-WORKER.md): fixed input, risk indicators,
   bound local assessments, disabled AI consumer and private publication fences.
+
+- [Crisis support](CRISIS-SUPPORT.md): ephemeral country selection, expiring source-verified emergency contacts, review-gated topic paths and owner-only safety notices. Live AI remains disabled.

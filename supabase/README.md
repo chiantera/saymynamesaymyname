@@ -38,3 +38,11 @@ Safety/worker migration adds a private disabled safety-policy review and explici
 job processor routing (mock default). The metering role receives only a narrow
 AI claim/authorize/publish/hold function. Mock workers cannot finish AI jobs; the
 shared finish helper is ungranted. No login, provider or cron is activated.
+
+
+Crisis resources and private safety notices: see
+[CRISIS-SUPPORT](../docs/implementation/CRISIS-SUPPORT.md). The static help panel
+works outside authentication, selects country only on user input and hides expired
+emergency numbers. Private notices store allowlisted metadata only. Topic advice
+and automatic crisis responses require professional locale review; live AI stays
+off. No automatic contact, location lookup or third-party widget is introduced.

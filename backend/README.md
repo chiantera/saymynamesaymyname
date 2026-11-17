@@ -30,3 +30,11 @@ indicators and requires fresh bound local output assessment. `cloud_worker.py`
 selects mock by default; the disabled AI branch uses current SQL checks before
 private pending publication. No production assessor or paid host is activated.
 See ../docs/implementation/SAFETY-WORKER.md.
+
+
+Crisis resources and private safety notices: see
+[CRISIS-SUPPORT](../docs/implementation/CRISIS-SUPPORT.md). The static help panel
+works outside authentication, selects country only on user input and hides expired
+emergency numbers. Private notices store allowlisted metadata only. Topic advice
+and automatic crisis responses require professional locale review; live AI stays
+off. No automatic contact, location lookup or third-party widget is introduced.

@@ -10,6 +10,7 @@ import psycopg
 from psycopg.types.json import Jsonb
 from .ai import Composer, DeepSeekHTTP, Denied, Deployment, PostgresGate, Task
 from .safety import PolicySafety, POLICY, fingerprint
+from .crisis import support_kind
 
 ROOT=Path(__file__).resolve().parents[2]
 STOP=threading.Event()
@@ -86,8 +87,10 @@ def run_ai_once(conn, composer, price_id):
                         review_revision=result.context['review_revision'],
                         safety_policy=result.context['safety_policy'],
                         safety_review_revision=result.context['safety_review_revision'])['published']
-    except Exception:
-        try:gate.job('hold',job_id=task.job_id,lease=task.lease)
+    except Exception as error:
+        kind=support_kind(error)
+        try:gate.job('hold',job_id=task.job_id,lease=task.lease,
+                     **({'support_kind':kind} if kind else {}))
         except Exception:pass  # lease recovery is fenced against recorded costs
         return False
 

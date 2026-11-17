@@ -44,10 +44,12 @@ reviewed semantic assessor remain activation gates. A network judge would need i
 own approved processor/capability, prices and metered attempts; the local interface
 must not secretly call an unmetered API.
 
-Risk verdicts suppress generated content and hold the job. This worker does not
+Risk verdicts suppress generated content and hold the job. The worker does not
 deliver crisis advice, invent regional resources, contact anyone, send alerts or
-grant support staff access. Reviewed region-correct static resources, persona-drop
-copy and user-facing refusal/crisis paths remain required before live advice. No
+grant support staff access. It now creates a private held-output notice through
+the guarded lease wrapper; the user can explicitly open the static support panel.
+See [CRISIS-SUPPORT](CRISIS-SUPPORT.md). Topic-specific and automatic persona-drop
+copy still require professional review before live advice. No
 dangerous text or classifier rationale is written into diagnostics or job metadata.
 
 ## Queue and publication boundaries

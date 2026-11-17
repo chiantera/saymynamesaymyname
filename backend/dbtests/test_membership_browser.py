@@ -10,6 +10,7 @@ from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 import psycopg
+from test_cloud_jobs import enqueue
 from playwright.sync_api import sync_playwright, expect
 from scripts.ui_checks import audit_ui
 
@@ -62,6 +63,7 @@ def test_membership_browser(state):
         if path=='/auth/v1/logout':return reply({})
         try:
             with state.client(actor) as conn:
+                if path=='/rest/v1/rpc/support_notice':return reply(conn.execute('select public.support_notice(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/ai_budget':return reply(conn.execute('select public.ai_budget(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/ai_consent':return reply(conn.execute('select public.ai_consent(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
                 if path=='/rest/v1/rpc/cloud_schedule':return reply(conn.execute('select public.cloud_schedule(%s,%s)',(body['p_action'],Jsonb(body['p_args']))).fetchone()[0])
@@ -100,6 +102,11 @@ def test_membership_browser(state):
         with state.client('A') as conn:
             item=conn.execute("select public.create_private_checkin('en','Private','Private draft')").fetchone()[0]
             conn.execute("select public.decide_private_checkin(%s,'approve',0,'Private fictional A history')",(item['id'],))
+        # A fictional support notice exercises only explicit reveal, never output.
+        notice_job=enqueue(state)
+        with psycopg.connect(state.dsn) as conn:
+            conn.execute("insert into companion_private.support_notices(owner,job_id,kind) values(%s,%s,'stalking')",(state.people['A'],notice_job['id']))
+            conn.execute("update companion_private.cloud_jobs set status='failed' where id=%s",(notice_job['id'],))
         with sync_playwright() as p:
             paths=sorted((Path(os.environ.get('LOCALAPPDATA',''))/'ms-playwright').glob('chromium-*/chrome-win64/chrome.exe'))
             browser=p.chromium.launch(executable_path=str(paths[-1]) if paths else None)
@@ -135,6 +142,16 @@ def test_membership_browser(state):
             a.goto(ORIGIN)
             a.get_by_role('button',name=en['cloudAccount'],exact=True).click();login(a,'A')
             expect(a.locator('.entry')).to_contain_text('Private fictional A history')
+            expect(a.get_by_text(en['supportWithheld'],exact=True)).to_be_visible()
+            expect(a.get_by_text(en['supportPath_stalking'],exact=True)).not_to_be_visible()
+            a.get_by_role('button',name=en['supportReview'],exact=True).click()
+            panel=a.get_by_role('dialog',name=en['supportTitle'],exact=True)
+            expect(panel.get_by_text(en['supportWithheldDetail'],exact=True)).to_be_visible()
+            expect(panel.get_by_label(en['supportTopic'],exact=True)).to_have_value('stalking')
+            expect(panel.locator('a[href^="tel:"]')).to_have_count(0)
+            a.keyboard.press('Escape')
+            a.get_by_role('button',name=en['supportDismiss'],exact=True).click()
+            expect(a.get_by_text(en['supportWithheld'],exact=True)).not_to_be_visible()
             a.get_by_role('button',name=en['relationships'],exact=True).click()
             a.get_by_label(en['relationshipLabel'],exact=True).fill('Fictional membership space')
             a.get_by_label(en['memberAlias'],exact=True).fill('Alex')

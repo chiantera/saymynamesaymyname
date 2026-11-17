@@ -13,14 +13,16 @@ import './styles/settings.css';
 import './styles/ai-settings.css';
 import './styles/auth.css';
 import './styles/placeholders.css';
+import './styles/support.css';
 import App from './App';
 import AuthGate from './AuthGate';
+import { SupportProvider } from './Support';
 import { captureInvitation } from './invitation-links';
 
 captureInvitation();
 
 createRoot(document.getElementById('root')!).render(
-  <AuthGate>
+  <SupportProvider><AuthGate>
     <App />
-  </AuthGate>,
+  </AuthGate></SupportProvider>,
 );

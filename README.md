@@ -452,3 +452,15 @@ remain disabled. No key is loaded/uploaded and no Render host is activated. An
 evaluated local assessor and regional crisis responses remain release gates.
 See [safety/worker runbook](docs/implementation/SAFETY-WORKER.md) for implemented
 checks, 102 backend/76 database tests and exact limitations.
+
+
+## Crisis support checkpoint — 2026-11-17
+
+Static help is available before sign-in and during API outages, with ephemeral
+country selection, sourced/expiring regional contacts and user-selected external
+directories. Quick exit explains its history/device-monitoring limits. Private
+worker safety notices reveal only after user action and never save rejected text
+or infer that unsafe model output means the user is in crisis. Live AI/network
+remain disabled. Topic-specific advice and automatic persona-drop copy remain
+professionally review-gated; no real user-disclosure intake is activated. See
+[crisis support](docs/implementation/CRISIS-SUPPORT.md) for exact boundaries.

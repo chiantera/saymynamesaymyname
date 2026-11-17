@@ -29,6 +29,7 @@ import Home, { type Decision } from './screens/Home';
 import LocalRelationships from './screens/LocalRelationships';
 import SettingsScreen from './screens/SettingsScreen';
 import { Button, Notice } from './ui';
+import { SupportNotices } from './Support';
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -192,6 +193,7 @@ export default function App() {
       cloud={cloud}
     >
       <JoinInvitation onJoined={() => setTab('relationships')} />
+      {cloud && <SupportNotices />}
       {error && (
         <Notice
           tone="error"

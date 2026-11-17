@@ -66,6 +66,10 @@ for (const file of sources) {
 }
 // Explicit contracts for dynamic status/capability and planned-feature lists.
 for (const key of [
+  ...['manual','self_harm','violence','stalking','refuse','unavailable'].map(s => `supportPath_${s}`),
+  ...['manual','self_harm','violence','stalking'].map(s => `supportTopic_${s}`),
+  ...['emergency','police','medical_fire','medical','fire'].map(s => `supportService_${s}`),
+  ...['emotional','abuse','device'].map(s => `supportDirectory_${s}`),
   ...['reserved', 'started', 'unknown', 'estimated', 'reconciled', 'cancelled'].map(s => `budgetState_${s}`),
   ...['chat', 'ocr', 'transcription'].map(s => `aiCapability_${s}`),
   ...['Goals', 'Habits', 'Milestones', 'Streaks'].map(s => `growthPlan${s}`),

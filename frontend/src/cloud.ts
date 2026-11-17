@@ -6,7 +6,7 @@ export const cloud=url&&key?createClient(url,key,{auth:{flowType:'pkce',detectSe
 let active=false;
 let owner: string | null = null;
 let generation=0;
-export function setCloudActive(value:boolean,userId?:string){active=value;owner=value?(userId??null):null;++generation;}
+export function setCloudActive(value:boolean,userId?:string){active=value;owner=value?(userId??null):null;++generation;window.dispatchEvent(new Event('companion-account-change'));}
 export function isCloudActive(){return active;}
 export async function cloudRequest(path:string,method:string,body:any){
  if(!cloud)throw new Error('Cloud is not configured');
@@ -16,6 +16,7 @@ export async function cloudRequest(path:string,method:string,body:any){
  const {data:{user},error}=await cloud.auth.getUser();if(error||!user)throw new Error('Sign in required');
  assertCurrent(); if(user.id!==expectedOwner)throw new Error('Account changed');
  const checked=async (operation:()=>PromiseLike<any>)=>{assertCurrent();const result=await operation();assertCurrent();if(result.error)throw new Error('Cloud request failed');return result.data;};
+ if(path==='/support')return checked(()=>cloud!.rpc('support_notice',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/cloud/schedule')return checked(()=>cloud!.rpc('cloud_schedule',{p_action:body.action,p_args:body.args??{}}));
  if(path==='/cloud/status')return checked(()=>cloud!.rpc('cloud_worker_status'));
  if(path==='/cloud/queue')return checked(()=>cloud!.rpc('cloud_queue',{p_action:body.action,p_args:body.args??{}}));

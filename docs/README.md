@@ -24,3 +24,5 @@ or external AI is needed for this interim mode.
 - [Decisions](decisions/README.md): dated architectural choices and their limits.
 
 - [AI budget](implementation/AI-BUDGET.md): reservations, private ledger, reconciliation and retention.
+
+- [Crisis support](implementation/CRISIS-SUPPORT.md): static regional directory, quick exit and private held-output notices; reviewed response activation still pending.
