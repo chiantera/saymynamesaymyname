@@ -13,6 +13,7 @@ import psycopg
 from test_cloud_jobs import enqueue
 from playwright.sync_api import sync_playwright, expect
 from scripts.ui_checks import audit_ui
+from scripts.security_checks import assert_headers
 
 ROOT=Path(__file__).resolve().parents[2]
 ORIGIN='http://127.0.0.1:5177'
@@ -139,7 +140,7 @@ def test_membership_browser(state):
                 expect(space(page)).to_be_visible()
                 assert page.url==ORIGIN+'/'
             a,b,c=page(),page(),page()
-            a.goto(ORIGIN)
+            assert_headers(a.goto(ORIGIN),FAKE)
             a.get_by_role('button',name=en['cloudAccount'],exact=True).click();login(a,'A')
             expect(a.locator('.entry')).to_contain_text('Private fictional A history')
             expect(a.get_by_text(en['supportWithheld'],exact=True)).to_be_visible()

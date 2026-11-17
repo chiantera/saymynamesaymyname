@@ -11,7 +11,9 @@ def audit_ui(page, label):
       await Promise.all(document.getAnimations().map(a => a.finished.catch(() => {})));
     }""")
     source = Path(__file__).resolve().parents[2] / 'frontend/node_modules/axe-core/axe.min.js'
-    page.add_script_tag(content=source.read_text(encoding='utf-8'))
+    # Test instrumentation via DevTools, not an inline script in the app DOM.
+    # Keep production CSP enforced; do not enable bypass_csp for accessibility.
+    page.evaluate(source.read_text(encoding='utf-8'))
     violations = page.evaluate("""async () => {
       const result = await axe.run(document, {
         runOnly: {type:'tag', values:['wcag2a','wcag2aa','wcag21aa']}

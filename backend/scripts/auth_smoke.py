@@ -5,6 +5,7 @@ This proves client behavior, not live provider configuration or server RLS.
 """
 from pathlib import Path
 from ui_checks import audit_ui
+from security_checks import assert_headers, check_browser_policy
 from urllib.parse import urlparse, parse_qs
 from urllib.request import urlopen
 import base64, json, os, shutil, socket, subprocess, time
@@ -135,7 +136,9 @@ try:
             page.get_by_label(en['password'],exact=True).fill('fictional-test-password')
             page.get_by_role('button',name=en['signIn'],exact=True).click()
         context,page=new_page()
-        page.goto(origin)
+        response=page.goto(origin)
+        assert_headers(response,fake)
+        check_browser_policy(page,origin)
         page.get_by_role('button',name=en['cloudAccount'],exact=True).click()
         # Support must also work before authentication and without an AI request.
         before_help=len(requests)

@@ -495,3 +495,10 @@ Polling checkpoint (2026-11-17): adaptive, completion-driven, hidden-tab-aware
 cloud reads and generation-checked refresh batches are implemented. See
 [client polling](docs/implementation/POLLING.md). `httpx2` remains required by the
 installed Starlette test client; live AI remains disabled.
+
+
+Security-header checkpoint (2026-11-17): enforced CSP, no-framing, HSTS,
+no-referrer, nosniff and restricted Permissions Policy are configured. The
+production-build auth and SQL-backed browser suites passed under the policy,
+including inline-script, connection and framing rejection checks. See
+[security headers](docs/implementation/SECURITY-HEADERS.md). No live AI enabled.
