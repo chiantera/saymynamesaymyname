@@ -3,6 +3,13 @@ from pathlib import Path
 
 
 def audit_ui(page, label):
+    # Audit the settled UI, not an intermediate color during a theme/nav transition.
+    # Await real font/animation readiness rather than sleeping or disabling motion.
+    page.evaluate("""async () => {
+      await document.fonts.ready;
+      await new Promise(requestAnimationFrame);
+      await Promise.all(document.getAnimations().map(a => a.finished.catch(() => {})));
+    }""")
     source = Path(__file__).resolve().parents[2] / 'frontend/node_modules/axe-core/axe.min.js'
     page.add_script_tag(content=source.read_text(encoding='utf-8'))
     violations = page.evaluate("""async () => {

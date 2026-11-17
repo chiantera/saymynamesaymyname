@@ -395,3 +395,8 @@ English WCAG checks; 56 SQL tests and 12 frontend/24 backend tests passed. Auth
 fixture accessibility checks passed. Cloud membership, sharing-modal and private
 settings audits passed after fixing list/group semantics in provider controls.
 All local suites passed; CI/deployment results are checked after push. Screenshots are ignored fictional fixtures.
+
+CI follow-up: Linux axe initially sampled navigation colors during a theme
+transition. The shared fixture audit now awaits document font readiness and
+actual CSS animation completion before measuring contrast. No accessibility rule
+is disabled, no fixed sleep is used and no product behavior is changed.

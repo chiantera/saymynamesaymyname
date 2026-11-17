@@ -2,6 +2,7 @@ from pathlib import Path
 import json, os, shutil, subprocess, tempfile, time, socket
 from urllib.request import urlopen
 from playwright.sync_api import sync_playwright, expect
+from ui_checks import audit_ui
 
 root = Path(__file__).resolve().parents[2]
 catalog = lambda lang: json.loads((root/'shared'/'locales'/f'{lang}.json').read_text(encoding='utf-8'))
@@ -91,8 +92,6 @@ with tempfile.TemporaryDirectory(prefix='browser-test-', dir=root/'.local') as t
             external=[]
             page.on('request', lambda request: external.append(request.url)
                     if not request.url.startswith(('http://127.0.0.1:', 'ws://127.0.0.1:', 'data:')) else None)
-            axe_source=(root/'frontend/node_modules/axe-core/axe.min.js').read_text(encoding='utf-8')
-            page.add_script_tag(content=axe_source)
             for width in (360,1440):
                 page.set_viewport_size({'width':width,'height':900})
                 for theme in ('light','dark'):
@@ -108,11 +107,7 @@ with tempfile.TemporaryDirectory(prefix='browser-test-', dir=root/'.local') as t
                             expect(page.locator('main h1')).to_have_count(1)
                             assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), (width,theme,lang,tab)
                             if lang=='en':
-                                result=page.evaluate("""async () => {
-                                  const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});
-                                  return r.violations.map(v=>({id:v.id,targets:v.nodes.map(n=>n.target)}));
-                                }""")
-                                assert not result,(width,theme,lang,tab,result)
+                                audit_ui(page,(width,theme,lang,tab))
                             if lang in ('en','de','ko'):
                                 page.screenshot(path=str(artifacts/f'overhaul-{tab}-{lang}-{theme}-{width}.png'),full_page=True)
             page.emulate_media(reduced_motion='reduce')

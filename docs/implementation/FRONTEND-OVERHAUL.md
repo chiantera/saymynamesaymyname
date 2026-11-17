@@ -77,3 +77,8 @@ installation; this is a point-in-time report, not a security guarantee.
 
 CI now also runs the expanded preview browser suite before auth and membership.
 The branch is published separately for review/preview; production main is unchanged.
+
+CI follow-up: Linux axe initially sampled navigation colors during a theme
+transition. The shared fixture audit now awaits document font readiness and
+actual CSS animation completion before measuring contrast. No accessibility rule
+is disabled, no fixed sleep is used and no product behavior is changed.
