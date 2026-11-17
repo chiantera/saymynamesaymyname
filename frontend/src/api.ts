@@ -1,6 +1,8 @@
 import {cloudRequest,isCloudActive} from './cloud';
 import { browserPreview } from './browser-preview';
 import type { Locale } from './domain';
+import { ApiError } from './request-errors';
+export { ApiError } from './request-errors';
 
 export interface Preferences { locale: Locale; timezone: string; cadence_hours: number; quiet_start: string; quiet_end: string; daily_nudge_cap: number }
 export interface Relationship { id: string; label: string }
@@ -8,9 +10,6 @@ export interface Checkin { id: string; status: string; version: number; prompt: 
 export interface Entry { id: string; text: string; created_at: string; locale: Locale }
 export interface Snapshot { checkins: Checkin[]; jobs: { id: string; status: string }[] }
 let token = '';
-export class ApiError extends Error {
-  constructor(public status: number) { super('Local API request failed'); }
-}
 async function request<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
   if (isCloudActive()) return cloudRequest(path,method,body) as Promise<T>;
   if (import.meta.env.VITE_BROWSER_PREVIEW === '1') return browserPreview(path,method,body) as Promise<T>;

@@ -18,3 +18,6 @@ review gates; UI language never determines the emergency number.
 [Design contract](../DESIGN.md) · [Testing](../../docs/TESTING.md).
 Preserve recipient/version/generation arguments and fail-closed UI state. Render
 untrusted text as text; do not introduce raw HTML or provider credentials.
+
+`request-errors.ts` maps only an exact stale check-in decision to a safe conflict
+message. Other cloud errors stay generic; server details are never rendered.

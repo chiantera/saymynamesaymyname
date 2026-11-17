@@ -39,6 +39,7 @@ profiles = {}
 requests = []
 admitted = True
 queue_jobs = []
+decision_errors = []
 
 def user(actor):
     return {'id':actor,'aud':'authenticated','role':'authenticated',
@@ -106,6 +107,7 @@ def handle(route):
         checkins[actor].append(item)
         return reply(item)
     if path=='/rest/v1/rpc/decide_private_checkin':
+        if decision_errors: return reply(decision_errors.pop(0),400)
         checkins[actor][0]['status']='fulfilled'
         records[actor].append({'id':'fixture-entry','text':body['p_text'],'locale':'en','created_at':'2026-11-15T00:00:00Z'})
         return reply({'status':'fulfilled'})
@@ -201,6 +203,12 @@ try:
         login(page)
         page.get_by_role('button',name=en['generate']).click()
         page.get_by_role('textbox',name=en['review']).fill('Private fictional reflection for actor A')
+        decision_errors.append({'code':'P0001','message':'stale_decision','details':'fictional private diagnostic'})
+        page.get_by_role('button',name=en['approve'],exact=True).click()
+        expect(page.get_by_text(en['errorConflict'],exact=True)).to_be_visible()
+        expect(page.get_by_text('fictional private diagnostic')).to_have_count(0)
+        expect(page.get_by_role('textbox',name=en['review'])).to_have_value('Private fictional reflection for actor A')
+        assert not records[actor_a]
         page.get_by_role('button',name=en['approve'],exact=True).click()
         expect(page.locator('.entry')).to_have_text(__import__('re').compile('Private fictional reflection for actor A'))
         other,second=new_page()

@@ -13,7 +13,8 @@ remain disabled; `httpx2` is retained for Starlette's test client.**
 | M5 Android | Portable client/configuration only | Native project/build, auth, permissions and real-device push |
 | M6 beta release | Automated local/CI checks and web deployment | Professional/native review, recovery/support/processor and device release gates |
 
-Recent hardening: adaptive non-overlapping polling, hidden-tab pauses, immediate
+Recent hardening: typed cloud request inputs and guarded result handling, a safe
+stale-decision conflict message that preserves the draft, adaptive non-overlapping polling, hidden-tab pauses, immediate
 Home/visibility refresh and identity-checked read batches; enforced browser security
 headers with positive auth/sharing and negative script/connection/frame tests.
 Seven locale catalogs are drafts. Static support contacts have verification/expiry

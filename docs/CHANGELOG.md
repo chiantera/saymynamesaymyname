@@ -6,6 +6,10 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-17
 
+- Tightened cloud request input/result typing and mapped only the exact server
+  stale-decision error to the existing conflict message. Raw diagnostics remain
+  hidden; account-generation checks and the user’s edited draft are preserved.
+
 - Reduced cloud reads with idle/active cadence, bounded failure backoff, hidden-tab
   pause, one fresh read on return and one identity check per refresh batch. The
   SQL-backed browser regression caught and verified immediate Home refresh after
