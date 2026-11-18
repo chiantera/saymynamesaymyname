@@ -61,14 +61,14 @@ and the production build. The browser suites (`test:browser`, `test:auth`,
 handoff; CI runs them on every push. Counts come from the commands, so none are copied
 here.
 
-## In-flight work in the working tree
+## Hosting decision for testing
 
-At the time of writing, uncommitted edits exist that are not part of this handoff:
-a new [free cloud research](docs/implementation/FREE-CLOUD-RESEARCH.md) note plus
-small cross-references in `CURRENT-TASK.md`, `README.md`, `docs/CHANGELOG.md`, the
-decision record and several implementation guides. They record research only; no host
-was chosen or provisioned. Whoever owns them should commit or discard them; do not
-fold them into unrelated work.
+The [free cloud research](docs/implementation/FREE-CLOUD-RESEARCH.md) found no free
+host that fits a Frankfurt background worker. [Decision 0005](docs/decisions/0005-local-ai-worker-for-testing.md)
+makes the operator's own machine the AI worker during testing, with the
+[runbook and launcher](docs/implementation/LOCAL-WORKER.md). The restricted login has
+not been created, and every AI gate stays closed. Render or a Frankfurt Edge Function
+is chosen before beta.
 
 ## Recommended next work
 
