@@ -116,7 +116,7 @@
   "blockPerson": "封鎖 {{name}}",
   "saveAlias": "儲存你嘅名字",
   "pendingInvitations": "待處理邀請",
-  "linkOnly": "建立由你自己分享嘅連結，唔會寄電郵。連結七日後到期，取代後舊連結會失效。",
+  "linkOnly": "輸入對方嘅電郵，然後由你自己將連結傳俾對方。連結七日後失效。如果呢段關係仲有其他成員，要佢哋先批准。",
   "inviteEmail": "獲邀人電郵",
   "proposeInvitation": "提出並批准邀請",
   "noPendingInvitations": "冇待處理邀請。",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "所有人都已經批准。請建立邀請連結，然後自己傳俾對方；應用程式唔會用電郵寄出。",
   "sharingOnlyYou": "呢段關係暫時得你一個。請喺「關係」度邀請其他人；對方加入之後，你就可以喺度分享。",
   "signedInAs": "目前登入",
-  "notSignedIn": "未登入"
+  "notSignedIn": "未登入",
+  "relInviteSelf": "呢個係你自己嘅地址。請輸入你想邀請嗰個人嘅電郵。",
+  "relInviteAndLink": "邀請並建立連結"
 }

@@ -116,7 +116,7 @@
   "blockPerson": "{{name}} blockieren",
   "saveAlias": "Deinen Namen speichern",
   "pendingInvitations": "Offene Einladungen",
-  "linkOnly": "Erstelle einen Link zum eigenen Teilen; es wird keine E-Mail gesendet. Er gilt sieben Tage. Ein Ersatz deaktiviert den vorherigen Link.",
+  "linkOnly": "Gib die E-Mail-Adresse ein und schicke den Link dann selbst. Er läuft nach sieben Tagen ab. Gibt es weitere Mitglieder, müssen sie zuerst zustimmen.",
   "inviteEmail": "E-Mail der eingeladenen Person",
   "proposeInvitation": "Einladung vorschlagen und genehmigen",
   "noPendingInvitations": "Keine offenen Einladungen.",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "Alle haben zugestimmt. Erstelle den Einladungslink und schicke ihn selbst; die App versendet ihn nicht per E-Mail.",
   "sharingOnlyYou": "Bisher bist nur du in dieser Beziehung. Lade jemanden unter Beziehungen ein; sobald die Person beitritt, kannst du hier teilen.",
   "signedInAs": "Angemeldet als",
-  "notSignedIn": "Nicht angemeldet"
+  "notSignedIn": "Nicht angemeldet",
+  "relInviteSelf": "Das ist deine eigene Adresse. Gib die E-Mail der Person ein, die du einladen möchtest.",
+  "relInviteAndLink": "Einladen und Link erstellen"
 }

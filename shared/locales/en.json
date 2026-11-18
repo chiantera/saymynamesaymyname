@@ -116,7 +116,7 @@
   "blockPerson": "Block {{name}}",
   "saveAlias": "Save your name",
   "pendingInvitations": "Pending invitations",
-  "linkOnly": "Create a link to share yourself; no email is sent. It expires after seven days. Replacing it disables the previous link.",
+  "linkOnly": "Enter their email, then send them the link yourself. It expires after seven days. Others in this relationship must approve first, if there are any.",
   "inviteEmail": "Recipient email",
   "proposeInvitation": "Propose and approve invitation",
   "noPendingInvitations": "No pending invitations.",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "Everyone has approved. Create the invite link, then send it to them yourself; the app does not email it.",
   "sharingOnlyYou": "Only you are in this relationship so far. Invite someone from Relationships; once they join, you can share with them here.",
   "signedInAs": "Signed in as",
-  "notSignedIn": "Not signed in"
+  "notSignedIn": "Not signed in",
+  "relInviteSelf": "That is your own address. Enter the email of the person you want to invite.",
+  "relInviteAndLink": "Invite and create link"
 }

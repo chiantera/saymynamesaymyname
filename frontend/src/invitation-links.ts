@@ -46,3 +46,18 @@ export function clearInvitation() {
   captureProblem = false;
   if (window.location.pathname === '/join') window.history.replaceState(null, '', '/');
 }
+
+/**
+ * Mailbox key used to compare invitation addresses, mirroring the server's
+ * companion_private.email_key: lower case, and for Gmail the dots and "+tag" in
+ * the local part are ignored because Gmail delivers them to the same inbox.
+ */
+export function emailKey(value: string): string {
+  const email = value.trim().toLowerCase();
+  const at = email.lastIndexOf('@');
+  if (at < 0) return email;
+  const local = email.slice(0, at);
+  const domain = email.slice(at + 1);
+  if (domain !== 'gmail.com' && domain !== 'googlemail.com') return email;
+  return `${local.split('+')[0].replaceAll('.', '')}@gmail.com`;
+}

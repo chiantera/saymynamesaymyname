@@ -116,7 +116,7 @@
   "blockPerson": "Bloquear a {{name}}",
   "saveAlias": "Guardar tu nombre",
   "pendingInvitations": "Invitaciones pendientes",
-  "linkOnly": "Crea un enlace para compartirlo tú; no se envía ningún correo. Caduca a los siete días. Sustituirlo desactiva el enlace anterior.",
+  "linkOnly": "Escribe su correo y luego envíale tú el enlace. Caduca a los siete días. Si hay más personas en esta relación, primero deben aprobarlo.",
   "inviteEmail": "Correo del destinatario",
   "proposeInvitation": "Proponer y aprobar invitación",
   "noPendingInvitations": "No hay invitaciones pendientes.",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "Todos han aprobado. Crea el enlace de invitación y envíaselo tú; la app no lo manda por correo.",
   "sharingOnlyYou": "Por ahora solo estás tú en esta relación. Invita a alguien desde Relaciones; cuando se una, podrás compartir aquí.",
   "signedInAs": "Sesión iniciada como",
-  "notSignedIn": "Sin sesión iniciada"
+  "notSignedIn": "Sin sesión iniciada",
+  "relInviteSelf": "Esa es tu propia dirección. Escribe el correo de la persona que quieres invitar.",
+  "relInviteAndLink": "Invitar y crear enlace"
 }

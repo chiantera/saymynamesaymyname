@@ -225,3 +225,23 @@ def test_declining_or_unverified_recipient_never_admits(state):
     denied(lambda:state.preview('U',token),'invite_unavailable')
     denied(lambda:state.act('U','accept',token=token,alias='U'),'invite_unavailable')
     assert not beta(state,'U')
+
+
+def test_gmail_addresses_match_by_mailbox_and_self_invites_are_refused(state):
+    gmail=str(uuid.uuid4()); local='fictional'+gmail[:8]
+    with psycopg.connect(state.dsn) as conn:
+        conn.execute('insert into auth.users(id,email,email_confirmed_at) values(%s,%s,now())',(gmail,f'{local}@gmail.com'))
+    state.people['G']=gmail
+    rid=state.create()
+    current=state.relationship('A',rid)
+    # Typed with dots, a +tag and the googlemail domain: still the same inbox.
+    dotted='.'.join(local[:4])+local[4:]+'+invite@googlemail.com'
+    iid=state.act('A','propose',relationship_id=rid,email=dotted,membership_version=current['membership_version'])['id']
+    token=state.issue('A',iid)
+    assert state.preview('G',token)['label']=='Fictional space'
+    state.act('G','accept',token=token,alias='G')
+    assert beta(state,'G')
+    # Other providers stay exact apart from case, and nobody can invite themselves.
+    current=state.relationship('A',rid)
+    denied(lambda:state.act('A','propose',relationship_id=rid,email=state.emails['A'].upper(),
+                            membership_version=current['membership_version']),'invite_self')

@@ -81,7 +81,11 @@ fictional relationship and personally archived it; no invitation was created/sen
 That space is retained under Show archived relationships. The three-person flow is
 the isolated SQL-backed browser test described above, not three live OAuth accounts.
 
-Links use `/join#invite=...`; their fragments are removed from history
+Invitation addresses match by mailbox: lower case everywhere, and for Gmail the
+dots, `+tag` and `googlemail.com` spelling are ignored (`companion_private.email_key`).
+Other providers are compared exactly apart from case. Proposing your own address is
+refused. When you are the only member, the form proposes and creates the link in
+one step. Links use `/join#invite=...`; their fragments are removed from history
 and kept temporarily in sessionStorage in the same tab through login. This avoids
 putting invitation secrets in server URLs or persistent cross-account local storage.
 If registration/email verification opens another tab, reopen the original link after

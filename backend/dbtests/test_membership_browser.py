@@ -160,8 +160,12 @@ def test_membership_browser(state):
             a.get_by_label(en['memberAlias'],exact=True).fill('Alex')
             a.get_by_role('button',name=en['createRelationship'],exact=True).click()
             expect(space(a)).to_be_visible()
-            propose(a,'B')
-            space(a).get_by_role('button',name=en['createInviteLink'],exact=True).click()
+            # Alone in the space: your own address is refused, then one step invites and creates the link.
+            space(a).get_by_label(en['inviteEmail'],exact=True).fill(state.emails['A'].upper())
+            expect(space(a).get_by_text(en['relInviteSelf'],exact=True)).to_be_visible()
+            expect(space(a).get_by_role('button',name=en['relInviteAndLink'],exact=True)).to_be_disabled()
+            space(a).get_by_label(en['inviteEmail'],exact=True).fill(state.emails['B'])
+            space(a).get_by_role('button',name=en['relInviteAndLink'],exact=True).click()
             link_b=space(a).get_by_label(en['inviteLink'],exact=True).input_value()
             # B is verified but not yet admitted: accepting the invitation admits B.
             with psycopg.connect(state.dsn) as conn:

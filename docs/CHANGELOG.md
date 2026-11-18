@@ -6,6 +6,12 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-18
 
+- Inviting is one step when you are the only member: enter the email and the link is
+  created. Gmail addresses now match by mailbox (dots, "+tag" and googlemail.com are
+  ignored), so an invitation typed differently from the sign-in address can still be
+  accepted. Inviting your own address is refused in the form and on the server.
+  Migration applied to the hosted project. [Membership](implementation/MEMBERSHIP.md).
+
 - Redesigned the visual system at the owner's request: warm neutral surfaces, deep
   plum for actions and soft rose for attention, a single Figtree typeface, pill
   buttons that cannot be mistaken for fields, statuses as plain text instead of

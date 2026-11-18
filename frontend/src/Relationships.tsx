@@ -25,8 +25,10 @@ import {
   X,
 } from 'lucide-react';
 import { isCloudActive } from './cloud';
+import { useAccount } from './AuthGate';
 import {
   clearInvitation,
+  emailKey,
   invitationLink,
   invitationProblem,
   pendingInvitation,
@@ -424,6 +426,11 @@ function RelationshipCard({ space, busy, failed, perform }: RelationshipCardProp
   const [copied, setCopied] = useState('');
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const aliasHint = useId();
+  const account = useAccount();
+  // Your own address (including Gmail spellings of it) can never accept an invitation.
+  const ownAddress = Boolean(account?.email && email.trim() && emailKey(email) === emailKey(account.email));
+  // With nobody else to approve, inviting and creating the link is one step.
+  const alone = space.members.every((member) => member.is_self);
 
   useEffect(() => setAlias(space.mine.alias), [space.mine.alias]);
   // A membership change cancels pending invitations, so shown links are void.
@@ -433,6 +440,20 @@ function RelationshipCard({ space, busy, failed, perform }: RelationshipCardProp
   }, [space.membership_version]);
 
   const args = { relationship_id: space.id, generation: space.mine.generation };
+
+  async function invite() {
+    const proposed = await perform(() =>
+      membership.action('propose', {
+        ...args,
+        email,
+        membership_version: space.membership_version,
+      }),
+    );
+    if (!proposed?.id) return;
+    setEmail('');
+    // A new proposal starts at version 0 and is already approved by its only member.
+    if (alone) await issue(proposed.id, 0);
+  }
 
   async function issue(id: string, version: number) {
     const value = await perform(() => membership.action('issue', { invitation_id: id, version }));
@@ -556,18 +577,10 @@ function RelationshipCard({ space, busy, failed, perform }: RelationshipCardProp
           className="rel-inline"
           onSubmit={(event) => {
             event.preventDefault();
-            void perform(() =>
-              membership.action('propose', {
-                ...args,
-                email,
-                membership_version: space.membership_version,
-              }),
-            ).then((value) => {
-              if (value) setEmail('');
-            });
+            if (!ownAddress) void invite();
           }}
         >
-          <Field label={t('inviteEmail')}>
+          <Field label={t('inviteEmail')} error={ownAddress ? t('relInviteSelf') : undefined}>
             <input
               type="email"
               maxLength={254}
@@ -578,8 +591,13 @@ function RelationshipCard({ space, busy, failed, perform }: RelationshipCardProp
               onChange={(event) => setEmail(event.target.value)}
             />
           </Field>
-          <Button type="submit" icon={UserPlus} disabled={busy || !email.trim()}>
-            {t('proposeInvitation')}
+          <Button
+            type="submit"
+            variant="primary"
+            icon={UserPlus}
+            disabled={busy || !email.trim() || ownAddress}
+          >
+            {t(alone ? 'relInviteAndLink' : 'proposeInvitation')}
           </Button>
         </form>
 

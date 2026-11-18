@@ -116,7 +116,7 @@
   "blockPerson": "屏蔽 {{name}}",
   "saveAlias": "保存你的名字",
   "pendingInvitations": "待处理邀请",
-  "linkOnly": "创建由你自行分享的链接，不会发送邮件。链接七天后过期，替换后旧链接失效。",
+  "linkOnly": "输入对方的电子邮件，然后由你把链接发给对方。链接七天后失效。如果这段关系中还有其他成员，需要他们先批准。",
   "inviteEmail": "受邀人邮箱",
   "proposeInvitation": "提出并批准邀请",
   "noPendingInvitations": "没有待处理邀请。",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "所有人都已批准。请创建邀请链接，然后自己发给对方；应用不会通过电子邮件发送。",
   "sharingOnlyYou": "目前这段关系里只有你。请在“关系”中邀请他人；对方加入后，你就可以在这里分享。",
   "signedInAs": "当前登录",
-  "notSignedIn": "未登录"
+  "notSignedIn": "未登录",
+  "relInviteSelf": "这是你自己的地址。请输入你想邀请的人的电子邮件。",
+  "relInviteAndLink": "邀请并创建链接"
 }

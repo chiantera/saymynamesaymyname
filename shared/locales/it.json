@@ -116,7 +116,7 @@
   "blockPerson": "Blocca {{name}}",
   "saveAlias": "Salva il tuo nome",
   "pendingInvitations": "Inviti in attesa",
-  "linkOnly": "Crea un link da condividere personalmente; non viene inviata un’email. Scade dopo sette giorni. Sostituirlo disattiva il link precedente.",
+  "linkOnly": "Inserisci la sua email, poi mandale tu il link. Scade dopo sette giorni. Se nella relazione ci sono altre persone, devono prima approvare.",
   "inviteEmail": "Email del destinatario",
   "proposeInvitation": "Proponi e approva invito",
   "noPendingInvitations": "Nessun invito in attesa.",
@@ -361,5 +361,7 @@
   "relInviteNextStep": "Hanno approvato tutti. Crea il link di invito e mandalo tu stesso alla persona: l'app non lo invia per email.",
   "sharingOnlyYou": "Per ora in questa relazione ci sei solo tu. Invita qualcuno da Relazioni: quando si unirà, potrai condividere qui.",
   "signedInAs": "Accesso effettuato come",
-  "notSignedIn": "Accesso non effettuato"
+  "notSignedIn": "Accesso non effettuato",
+  "relInviteSelf": "Questo è il tuo indirizzo. Inserisci l'email della persona che vuoi invitare.",
+  "relInviteAndLink": "Invita e crea il link"
 }
