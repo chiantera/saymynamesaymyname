@@ -100,7 +100,7 @@
   "joinRelationship": "加入关系",
   "declineInvitation": "拒绝邀请",
   "dismissInvitation": "关闭邀请",
-  "invitationRules": "每位当前成员都必须批准每次邀请。成员变动会取消待处理邀请。加入还需要测试版准入。",
+  "invitationRules": "每位现有成员都必须批准每一份邀请。成员变动会取消待处理的邀请。接受邀请后，受邀者也将获得测试版的使用权限。",
   "membershipError": "无法完成此操作。请刷新成员和批准状态后重试。",
   "refreshMemberships": "刷新成员",
   "showArchived": "显示已归档的关系",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "编辑内容会保存在此浏览器中；能够访问此浏览器配置文件的人可能会读到它们。",
   "checkpointLoadFailed": "无法加载云端私人编辑。此设备上的副本可能仍会显示。",
   "relInviteNextStep": "所有人都已批准。请创建邀请链接，然后自己发给对方；应用不会通过电子邮件发送。",
-  "sharingOnlyYou": "目前这段关系里只有你。请在“关系”中邀请他人；对方加入后，你就可以在这里分享。"
+  "sharingOnlyYou": "目前这段关系里只有你。请在“关系”中邀请他人；对方加入后，你就可以在这里分享。",
+  "signedInAs": "当前登录",
+  "notSignedIn": "未登录"
 }

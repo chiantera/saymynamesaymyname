@@ -7,8 +7,14 @@
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   justify-content: flex-end;
-  border-block-start: 1px solid var(--line);
-  background: var(--paper);
+  pointer-events: none;
+}
+
+/* Only the two buttons float; the strip itself never hides content behind a box. */
+.support-controls > * {
+  pointer-events: auto;
+  background: var(--surface);
+  box-shadow: var(--float-shadow);
 }
 .shell-content { padding-block-end: calc(var(--space-16) + var(--control-height)); }
 .support-dialog { max-block-size: calc(100dvh - var(--space-8)); overflow-y: auto; }

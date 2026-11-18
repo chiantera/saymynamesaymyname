@@ -100,7 +100,7 @@
   "joinRelationship": "Beziehung beitreten",
   "declineInvitation": "Einladung ablehnen",
   "dismissInvitation": "Einladung schließen",
-  "invitationRules": "Jedes aktuelle Mitglied muss jede Einladung genehmigen. Mitgliedschaftsänderungen widerrufen offene Einladungen. Eine Beta-Zulassung ist ebenfalls erforderlich.",
+  "invitationRules": "Jedes aktuelle Mitglied muss jede Einladung genehmigen. Änderungen bei den Mitgliedern brechen offene Einladungen ab. Wer eine Einladung annimmt, erhält damit auch Zugang zur Beta.",
   "membershipError": "Die Aktion konnte nicht abgeschlossen werden. Aktualisiere Mitglieder und Genehmigungen und versuche es erneut.",
   "refreshMemberships": "Mitglieder aktualisieren",
   "showArchived": "Archivierte Beziehungen anzeigen",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "Änderungen werden in diesem Browser gespeichert; Personen mit Zugriff auf das Browserprofil können sie möglicherweise lesen.",
   "checkpointLoadFailed": "Private Cloud-Änderungen konnten nicht geladen werden. Kopien auf diesem Gerät werden möglicherweise weiterhin angezeigt.",
   "relInviteNextStep": "Alle haben zugestimmt. Erstelle den Einladungslink und schicke ihn selbst; die App versendet ihn nicht per E-Mail.",
-  "sharingOnlyYou": "Bisher bist nur du in dieser Beziehung. Lade jemanden unter Beziehungen ein; sobald die Person beitritt, kannst du hier teilen."
+  "sharingOnlyYou": "Bisher bist nur du in dieser Beziehung. Lade jemanden unter Beziehungen ein; sobald die Person beitritt, kannst du hier teilen.",
+  "signedInAs": "Angemeldet als",
+  "notSignedIn": "Nicht angemeldet"
 }

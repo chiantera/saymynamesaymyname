@@ -100,7 +100,7 @@
   "joinRelationship": "Entra nella relazione",
   "declineInvitation": "Rifiuta invito",
   "dismissInvitation": "Chiudi invito",
-  "invitationRules": "Ogni membro attuale deve approvare ciascun invito. I cambiamenti dei membri annullano gli inviti in attesa. Serve anche l’ammissione alla beta.",
+  "invitationRules": "Ogni membro attuale deve approvare ogni invito. Le modifiche ai membri annullano gli inviti in sospeso. Accettando un invito, la persona invitata ottiene anche l'accesso alla beta.",
   "membershipError": "Impossibile completare l’azione. Aggiorna membri e approvazioni, poi riprova.",
   "refreshMemberships": "Aggiorna membri",
   "showArchived": "Mostra relazioni archiviate",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "Le modifiche sono salvate in questo browser; chi può accedere al profilo del browser potrebbe leggerle.",
   "checkpointLoadFailed": "Impossibile caricare le modifiche private dal cloud. Le copie su questo dispositivo potrebbero essere ancora visibili.",
   "relInviteNextStep": "Hanno approvato tutti. Crea il link di invito e mandalo tu stesso alla persona: l'app non lo invia per email.",
-  "sharingOnlyYou": "Per ora in questa relazione ci sei solo tu. Invita qualcuno da Relazioni: quando si unirà, potrai condividere qui."
+  "sharingOnlyYou": "Per ora in questa relazione ci sei solo tu. Invita qualcuno da Relazioni: quando si unirà, potrai condividere qui.",
+  "signedInAs": "Accesso effettuato come",
+  "notSignedIn": "Accesso non effettuato"
 }

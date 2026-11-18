@@ -112,6 +112,8 @@ time {
 
 a {
   color: var(--action);
+  font-weight: 600;
+  text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
@@ -125,7 +127,6 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--action);
   outline-offset: 2px;
-  border-radius: var(--radius-control);
 }
 
 main:focus {
@@ -144,6 +145,11 @@ textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
+/*
+ * Buttons are pills with a filled or tinted background and no input-like border,
+ * so they can never be mistaken for a field, a status or a card. The default is
+ * the secondary style; .btn--primary and .btn--danger refine it.
+ */
 button {
   display: inline-flex;
   align-items: center;
@@ -152,13 +158,13 @@ button {
   min-block-size: var(--control-height);
   max-inline-size: 100%;
   padding-block: var(--space-2);
-  padding-inline: var(--space-4);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-control);
-  background: var(--surface);
-  color: var(--ink);
+  padding-inline: var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--action-wash);
+  color: var(--action);
   font-size: var(--text-sm);
-  font-weight: 550;
+  font-weight: 650;
   line-height: var(--leading-tight);
   text-align: center;
   overflow-wrap: anywhere;
@@ -171,12 +177,15 @@ button {
 
 button:hover:not(:disabled) {
   border-color: var(--action);
-  background: var(--wash);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 input,

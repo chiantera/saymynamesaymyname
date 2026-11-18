@@ -6,6 +6,13 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-18
 
+- Redesigned the visual system at the owner's request: warm neutral surfaces, deep
+  plum for actions and soft rose for attention, a single Figtree typeface, pill
+  buttons that cannot be mistaken for fields, statuses as plain text instead of
+  button-like chips, text-style in-page links, and the signed-in account shown in the
+  shell. Contrast pairs re-measured; all browser suites, including the automated
+  accessibility audits, pass. See [DESIGN](../frontend/DESIGN.md).
+
 - Accepting a relationship invitation now admits the verified recipient to the beta
   ([0006](decisions/0006-invitation-grants-beta-access.md)); unadmitted invitees see
   the invitation review instead of a dead end. Approved invitations now say the link

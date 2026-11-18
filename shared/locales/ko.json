@@ -100,7 +100,7 @@
   "joinRelationship": "관계 참여",
   "declineInvitation": "초대 거절",
   "dismissInvitation": "초대 닫기",
-  "invitationRules": "모든 현재 구성원이 각 초대를 승인해야 합니다. 구성원이 변경되면 대기 중인 초대가 취소됩니다. 베타 이용 승인도 필요합니다.",
+  "invitationRules": "현재 구성원 모두가 각 초대를 승인해야 합니다. 구성원이 바뀌면 대기 중인 초대는 취소됩니다. 초대를 수락하면 초대받은 사람도 베타를 이용할 수 있게 됩니다.",
   "membershipError": "작업을 완료하지 못했습니다. 구성원과 승인을 새로 고친 후 다시 시도하세요.",
   "refreshMemberships": "구성원 새로 고침",
   "showArchived": "보관된 관계 표시",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "수정 내용은 이 브라우저에 저장되며, 이 브라우저 프로필에 접근할 수 있는 사람은 내용을 읽을 수 있습니다.",
   "checkpointLoadFailed": "비공개 클라우드 수정 내용을 불러오지 못했습니다. 이 기기의 사본은 계속 표시될 수 있습니다.",
   "relInviteNextStep": "모두 승인했습니다. 초대 링크를 만든 뒤 직접 보내 주세요. 앱이 이메일로 보내지 않습니다.",
-  "sharingOnlyYou": "아직 이 관계에는 나만 있습니다. 관계 화면에서 누군가를 초대하세요. 참여하면 여기에서 공유할 수 있습니다."
+  "sharingOnlyYou": "아직 이 관계에는 나만 있습니다. 관계 화면에서 누군가를 초대하세요. 참여하면 여기에서 공유할 수 있습니다.",
+  "signedInAs": "로그인 계정",
+  "notSignedIn": "로그인하지 않음"
 }

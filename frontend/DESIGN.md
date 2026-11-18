@@ -1,7 +1,23 @@
-# Design reference: "the day's rhythm, after hours"
+# Design reference: warm neutral and plum
 
-Bottle-glass green, lamp amber, cool paper. Hierarchy comes from spacing, type and
-hairlines, not from cards. Read this before touching a screen.
+Warm neutral surfaces, one deep plum for everything you can press, soft rose for
+"now" and attention. Hierarchy comes from spacing, type and hairlines, not from
+cards. Read this before touching a screen.
+
+## The three shapes rule
+
+Anything a person can press must look pressable, and nothing else may.
+
+- **Buttons** are pills (`--radius-button`) with a plum fill (primary) or a plum tint
+  (secondary), never an input-like border. Destructive buttons are outlined in red.
+- **Fields** (inputs, selects, textareas) are rounded rectangles (`--radius-control`)
+  with a visible border on a white surface.
+- **Statuses** (`Chip`) are plain coloured text with a dot or icon: no border, no fill.
+- **Links** are underlined plum text. In-page section links are text with a marker for
+  the current section, never boxes.
+
+The shell always shows who is using the app: the signed-in email with an initial
+avatar, or "Not signed in" in the fictional preview.
 
 ## Files and ownership
 
@@ -26,28 +42,30 @@ missing something, compose around it in your screen file and report it.
 
 | Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| `--paper` | `#eef1ec` | `#0f1a17` | Page background |
-| `--surface` | `#fafbf8` | `#172521` | Raised surfaces, controls |
-| `--ink` | `#16241f` | `#e9eee7` | Text |
-| `--muted` | `#55635c` | `#9fb0a6` | Secondary text |
-| `--line` | `#d3dad3` | `#2a3b35` | Hairlines, decorative borders |
-| `--line-strong` | `#74837a` | `#6f857a` | Control borders (3:1 non-text contrast) |
-| `--action` | `#1d5b49` | `#7fd1b0` | Primary actions, selected nav, links |
-| `--action-ink` | `#f4f8f3` | `#0c1f19` | Text on `--action` |
-| `--action-hover` | `#17493b` | `#9bdcc1` | Hover fill of primary buttons |
-| `--lamp` | `#e9a93c` | `#f0b95a` | The one highlight: now, pending, attention. Marks only |
-| `--lamp-wash` | `#f6e7c9` | `#3e402b` | Tinted fill behind lamp text |
-| `--lamp-ink` | `#6b4a08` | `#f6d9a0` | Text on `--lamp-wash` |
-| `--danger` | `#a8432f` | `#f08e78` | Destructive actions, errors |
-| `--danger-ink` | `#ffffff` | `#0f1a17` | Text on `--danger` |
-| `--danger-wash` | `#f2e9e4` | `#35342d` | Error notice fill |
-| `--wash` | `#e2e9e1` | `#1e302a` | Quiet fills: selected rows, quiet-hours shading |
+| `--paper` | `#f6f3f1` | `#161218` | Page background |
+| `--surface` | `#ffffff` | `#211b24` | Rail, cards, fields |
+| `--ink` | `#241d26` | `#f3eef3` | Text |
+| `--muted` | `#675e6b` | `#b7adba` | Secondary text |
+| `--line` | `#e6e0e3` | `#352d39` | Hairlines, decorative borders |
+| `--line-strong` | `#8d838f` | `#85798a` | Field borders (3:1 non-text contrast) |
+| `--action` | `#5e2b63` | `#dcb3df` | Primary buttons, selected nav, links |
+| `--action-ink` | `#ffffff` | `#2a1230` | Text on `--action` |
+| `--action-hover` | `#4b2050` | `#e8c9ea` | Hover fill of primary buttons |
+| `--action-wash` | `#f1e7f1` | `#36283a` | Secondary buttons, selected nav, avatars |
+| `--lamp` | `#d4728b` | `#ee9ab0` | Rose highlight: now, pending, attention. Marks only |
+| `--lamp-wash` | `#fbe9ee` | `#3c2530` | Tinted fill behind rose text |
+| `--lamp-ink` | `#8b2c46` | `#f7cad6` | Text on `--lamp-wash`, pending statuses |
+| `--danger` | `#b3261e` | `#f3a097` | Destructive actions, errors |
+| `--danger-ink` | `#ffffff` | `#2a1210` | Text on `--danger` |
+| `--danger-wash` | `#fbecea` | `#3b2322` | Error notice fill |
+| `--success` | `#2f6b4f` | `#8fd1b0` | Confirmations |
+| `--wash` | `#efeaed` | `#2b2330` | Quiet fills: hover, quiet-hours shading |
 | `--backdrop`, `--float-shadow` | | | Dialog backdrop; the single elevation |
 
-Contrast (WCAG AA, measured): every text token on `--paper`, `--surface` and `--wash` is
-at least 5:1 in both themes; `--lamp-ink` on `--lamp-wash` is 6.6:1 light and 7.8:1 dark.
-`--lamp` itself is never text and never a background for text (it fails as either in one
-theme). `--line` is decorative only; anything a person must find uses `--line-strong`.
+Contrast (WCAG AA, measured 2026-11-18): text tokens are at least 5.2:1 on `--paper`,
+`--surface` and `--wash` in both themes; `--action-ink` on `--action` is 10.5:1 light and
+9.4:1 dark; `--lamp-ink` on `--lamp-wash` is 7.1:1 and 9.6:1. `--lamp` is never text and
+never a text background. `--line` is decorative only; fields use `--line-strong`.
 
 Theme: `html[data-theme]` is `system`, `light` or `dark`. Explicit wins, otherwise
 `prefers-color-scheme`. The dark values exist twice in `tokens.css`; never hard-code a
@@ -55,9 +73,9 @@ colour in a screen file, and never write a `prefers-color-scheme` query of your 
 
 ## Type
 
-- Display: `var(--font-display)` Bricolage Grotesque Variable, weight `var(--weight-display)`
-  (650; 600 for ko, zh-Hans, yue-Hant), tracking `var(--tracking-display)` (-0.02em; 0 for CJK).
-- Text: `var(--font-text)` Atkinson Hyperlegible Next Variable. CJK falls back to `--font-cjk`.
+- One family: Figtree Variable for display and text (`--font-display`, `--font-text`).
+  Display weight `var(--weight-display)` (680; 600 for ko, zh-Hans, yue-Hant), tracking
+  `var(--tracking-display)` (-0.015em; 0 for CJK). CJK falls back to `--font-cjk`.
 - Scale: `--text-xs` 0.8125, `--text-sm` 0.9375, `--text-md` 1, `--text-lg` 1.1875,
   `--text-xl` 1.5, `--text-2xl` up to 2 (fluid), `--text-3xl` up to 2.75 (fluid), in rem.
 - `h1` is `--text-3xl`, `h2` `--text-xl`, `h3` `--text-lg`, `h4` `--text-md`. Body line
@@ -70,7 +88,8 @@ colour in a screen file, and never write a `prefers-color-scheme` query of your 
 
 - Space: `--space-1` 4px, `-2` 8, `-3` 12, `-4` 16, `-5` 20, `-6` 24, `-8` 32, `-10` 40,
   `-12` 48, `-16` 64. Use tokens, not raw lengths.
-- Radius: `--radius-control` 6px, `--radius-surface` 14px, `--radius-pill` for chips only.
+- Radius: `--radius-button` (pill) for buttons only, `--radius-control` 10px for fields,
+  `--radius-surface` 16px for cards. Avatars are circles.
 - Elevation: `--float-shadow`, only on dialogs, the mobile tab bar and toasts.
 - Controls are at least `--control-height` (44px).
 - Motion: `--motion-fast` 120ms, `--motion-base` 180ms, `--ease`. Only in response to an
@@ -81,8 +100,8 @@ colour in a screen file, and never write a `prefers-color-scheme` query of your 
 ## Layout
 
 - 720px and wider: sticky left rail (`--rail-width`) with brand, five destinations and a
-  footer (mode notice, account control, language). Narrower: header (brand, language,
-  account control), mode notice at the top of the content, fixed bottom tab bar.
+  footer (who is signed in, account control, mode notice, language). Narrower: header (brand, language,
+  account control), identity and mode notice at the top of the content, fixed bottom tab bar.
   `Shell.tsx` mounts exactly one layout, so each control exists once.
 - Content: every direct child of `.shell-content` is capped at `--content-width` (46rem).
   A screen that earns a secondary column uses `.page.page--split` with `.page__header`,
@@ -103,7 +122,7 @@ colour in a screen file, and never write a `prefers-color-scheme` query of your 
 | `Field` | `label: string`, `hideLabel?`, `hint?`, `error?`, `className?`, one control as child | Label is linked by `htmlFor`; its text is the exact accessible name. Hint and error use `aria-describedby`. |
 | `Check` | `label: ReactNode`, `hint?`, plus input attributes (`checked`, `onChange`, `disabled`) | Hint is outside the label so the name stays exact. |
 | `Section` | `title`, `level?: 2 \| 3`, `ariaLabel?`, `description?`, `actions?`, `raised?`, `className?` | `ariaLabel` makes it a named region. `raised` draws the one surface a screen may need. |
-| `Chip` | `tone?: 'neutral' \| 'action' \| 'lamp' \| 'danger'`, `icon?` | Status only, never clickable. Lamp means now, pending or attention. |
+| `Chip` | `tone?: 'neutral' \| 'action' \| 'lamp' \| 'danger'`, `icon?` | Status only, never clickable: coloured text with a dot or icon, no box. Lamp means now, pending or attention. |
 | `Notice` | `tone?: 'info' \| 'warning' \| 'error'`, `role?: 'status' \| 'alert'`, `icon?`, `actions?` | The caller chooses the role; omit it for static text. |
 | `EmptyState` | `icon?`, `action?`, children (the sentence) | Invite the next action. |
 | `ConfirmDialog` | `open`, `title`, `confirmLabel`, `cancelLabel`, `tone?: 'primary' \| 'danger'`, `busy?`, `confirmDisabled?`, `onConfirm`, `onCancel`, children | Native `dialog` with `showModal`. Named by `title`. Escape calls `onCancel` unless `busy`. Focus returns to the opener. Stays mounted; content renders only while open. |

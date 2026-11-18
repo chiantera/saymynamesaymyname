@@ -100,7 +100,7 @@
   "joinRelationship": "Unirme a la relación",
   "declineInvitation": "Rechazar invitación",
   "dismissInvitation": "Cerrar invitación",
-  "invitationRules": "Cada miembro actual debe aprobar cada invitación. Los cambios de miembros cancelan las invitaciones pendientes. También se requiere admisión a la beta.",
+  "invitationRules": "Cada miembro actual debe aprobar cada invitación. Los cambios de miembros cancelan las invitaciones pendientes. Al aceptar una invitación, la persona invitada también obtiene acceso a la beta.",
   "membershipError": "No se pudo completar la acción. Actualiza los miembros y las aprobaciones e inténtalo de nuevo.",
   "refreshMemberships": "Actualizar miembros",
   "showArchived": "Mostrar relaciones archivadas",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "Las ediciones se guardan en este navegador; quien acceda a su perfil podría leerlas.",
   "checkpointLoadFailed": "No se pudieron cargar las ediciones privadas de la nube. Las copias de este dispositivo aún pueden mostrarse.",
   "relInviteNextStep": "Todos han aprobado. Crea el enlace de invitación y envíaselo tú; la app no lo manda por correo.",
-  "sharingOnlyYou": "Por ahora solo estás tú en esta relación. Invita a alguien desde Relaciones; cuando se una, podrás compartir aquí."
+  "sharingOnlyYou": "Por ahora solo estás tú en esta relación. Invita a alguien desde Relaciones; cuando se una, podrás compartir aquí.",
+  "signedInAs": "Sesión iniciada como",
+  "notSignedIn": "Sin sesión iniciada"
 }

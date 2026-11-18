@@ -100,7 +100,7 @@
   "joinRelationship": "Join relationship",
   "declineInvitation": "Decline invitation",
   "dismissInvitation": "Dismiss invitation",
-  "invitationRules": "Every current member must approve each invitation. Membership changes cancel pending invitations. Joining also requires beta admission.",
+  "invitationRules": "Every current member must approve each invitation. Membership changes cancel pending invitations. Accepting an invitation also gives the invited person access to the beta.",
   "membershipError": "Couldn’t complete this action. Refresh to check membership and approvals, then try again.",
   "refreshMemberships": "Refresh memberships",
   "showArchived": "Show archived relationships",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "Edits are stored in this browser; people with access to this browser profile may be able to read them.",
   "checkpointLoadFailed": "Could not load private cloud edits. Copies on this device may still be shown.",
   "relInviteNextStep": "Everyone has approved. Create the invite link, then send it to them yourself; the app does not email it.",
-  "sharingOnlyYou": "Only you are in this relationship so far. Invite someone from Relationships; once they join, you can share with them here."
+  "sharingOnlyYou": "Only you are in this relationship so far. Invite someone from Relationships; once they join, you can share with them here.",
+  "signedInAs": "Signed in as",
+  "notSignedIn": "Not signed in"
 }

@@ -100,7 +100,7 @@
   "joinRelationship": "加入關係",
   "declineInvitation": "拒絕邀請",
   "dismissInvitation": "關閉邀請",
-  "invitationRules": "每位目前成員都要批准每次邀請。成員有變動會取消待處理邀請。加入亦需要測試版批准。",
+  "invitationRules": "每位現有成員都要批准每一個邀請。成員有變動，未處理嘅邀請就會取消。接受邀請之後，受邀嘅人都會可以使用測試版。",
   "membershipError": "完成唔到呢個操作。請重新整理成員同批准狀態，再試一次。",
   "refreshMemberships": "重新整理成員",
   "showArchived": "顯示已封存關係",
@@ -359,5 +359,7 @@
   "checkpointDevicePrivacy": "編輯內容會儲存喺呢個瀏覽器；可以存取呢個瀏覽器設定檔嘅人可能會睇到。",
   "checkpointLoadFailed": "無法載入雲端私人編輯。呢部裝置上嘅副本可能仍然會顯示。",
   "relInviteNextStep": "所有人都已經批准。請建立邀請連結，然後自己傳俾對方；應用程式唔會用電郵寄出。",
-  "sharingOnlyYou": "呢段關係暫時得你一個。請喺「關係」度邀請其他人；對方加入之後，你就可以喺度分享。"
+  "sharingOnlyYou": "呢段關係暫時得你一個。請喺「關係」度邀請其他人；對方加入之後，你就可以喺度分享。",
+  "signedInAs": "目前登入",
+  "notSignedIn": "未登入"
 }

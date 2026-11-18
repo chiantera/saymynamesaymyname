@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { House, LogIn, LogOut, Martini, Settings, Sprout, Waypoints } from 'lucide-react';
 import { useAccount } from './AuthGate';
 import { localeNames, locales, type Locale } from './domain';
-import { Button, Chip, Field, Icon, type LucideIcon } from './ui';
+import { Button, Field, Icon, type LucideIcon } from './ui';
 
 export const tabs = ['home', 'relationships', 'growth', 'bartender', 'settings'] as const;
 export type Tab = (typeof tabs)[number];
@@ -110,9 +110,24 @@ export default function Shell({ tab, onTab, language, onLanguage, busy, cloud, c
     </Button>
   );
 
+  // Who is using the app right now: the signed-in email, or the fictional preview.
+  const email = account?.email ?? null;
+  const identity = (
+    <div className="shell-who">
+      <span className="shell-who__avatar" aria-hidden="true">
+        {email ? email.slice(0, 1).toLocaleUpperCase(language) : '?'}
+      </span>
+      <span className="shell-who__text">
+        <span className="shell-who__label">{t(email ? 'signedInAs' : 'notSignedIn')}</span>
+        <span className="shell-who__name" title={email ?? undefined}>
+          {email ?? t('demoBadge')}
+        </span>
+      </span>
+    </div>
+  );
+
   const modeNotice = (
     <div className="shell-mode">
-      <Chip tone={cloud ? 'action' : 'lamp'}>{t(cloud ? 'cloudAccount' : 'demoBadge')}</Chip>
       <p className="shell-mode__description">{t(cloud ? 'cloudMode' : 'demoNotice')}</p>
       <p>{t('contextOff')}</p>
       <p>{t('translationNotice')}</p>
@@ -121,7 +136,12 @@ export default function Shell({ tab, onTab, language, onLanguage, busy, cloud, c
 
   const main = (
     <main id="main" className="shell-main" tabIndex={-1} key="main">
-      {compact && modeNotice}
+      {compact && (
+        <div className="shell-intro">
+          {identity}
+          {modeNotice}
+        </div>
+      )}
       <div className="shell-content" key="content">
         {children}
       </div>
@@ -149,8 +169,11 @@ export default function Shell({ tab, onTab, language, onLanguage, busy, cloud, c
         {brand}
         {navigation}
         <div className="shell-rail__foot">
+          <div className="shell-account-block">
+            {identity}
+            {accountControl}
+          </div>
           {modeNotice}
-          {accountControl}
           {languagePicker}
         </div>
       </header>

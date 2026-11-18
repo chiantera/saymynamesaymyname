@@ -47,6 +47,8 @@ export interface AccountControl {
   available: boolean;
   busy: boolean;
   act: () => void;
+  /** The verified account's email in cloud mode; null in the fictional preview. */
+  email: string | null;
 }
 
 const AccountContext = createContext<AccountControl | null>(null);
@@ -60,6 +62,7 @@ export default function AuthGate({children}: {children: ReactNode}) {
   const {t} = useTranslation();
   const [screen, setScreen] = useState<Screen>('checking');
   const [sessionKey, setSessionKey] = useState('preview');
+  const [accountEmail, setAccountEmail] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -94,7 +97,7 @@ export default function AuthGate({children}: {children: ReactNode}) {
         if (access.error) {
           setScreen('login'); setMessage('authUnavailable');
         } else if (access.data === true) {
-          setCloudActive(true, user.id); setScreen('cloud'); setMessage('');
+          setCloudActive(true, user.id); setAccountEmail(user.email ?? null); setScreen('cloud'); setMessage('');
         } else if (pendingInvitation()) {
           // Not admitted yet, but holding an invitation. Accepting a valid,
           // recipient-bound invitation is the one action the server allows before
@@ -389,6 +392,7 @@ export default function AuthGate({children}: {children: ReactNode}) {
     available: cloud !== null,
     busy,
     act: () => screen === 'cloud' ? void logout() : navigate('login'),
+    email: screen === 'cloud' ? accountEmail : null,
   };
   // The key remounts the application whenever the account or mode changes.
   return <AccountContext.Provider value={account}><Fragment key={screen + sessionKey}>{children}</Fragment></AccountContext.Provider>;
