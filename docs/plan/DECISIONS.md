@@ -301,8 +301,9 @@ requires a separate build instruction. Preserve the agreed phased scope.
    details. Users may opt into richer previews. This turns the agreed discreet-
    notification requirement into a specific default.
 4. **Initial access:** an **invite-only beta**, with explicitly admitted
-   testers before public signup. Beta admission is separate from joining a relationship;
-   every relationship invitation still follows unanimous approval and recipient consent.
+   testers before public signup. Accepting a relationship invitation also admits the
+   verified recipient (owner decision 2026-11-18, superseding the earlier "separate
+   admission" rule); every invitation still follows unanimous approval and recipient consent.
 
 **Hosting, region, worldwide access and budget — updated decisions**
 1. **Vercel — DECIDED direction:** use Vercel rather than Netlify for the web app,

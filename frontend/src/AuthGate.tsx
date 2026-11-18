@@ -4,10 +4,11 @@ import {cloud, setCloudActive} from './cloud';
 import {initializeAuth} from './auth-bootstrap';
 import {authRedirect} from './auth-links';
 import {pendingInvitation} from './invitation-links';
+import {JoinInvitation} from './Relationships';
 import {CircleAlert, CircleCheck, Hourglass} from 'lucide-react';
 import {Button, Field, Icon, type LucideIcon} from './ui';
 
-type Screen = 'checking' | 'preview' | 'login' | 'signup' | 'reset' | 'password' | 'pending' | 'cloud';
+type Screen = 'checking' | 'preview' | 'login' | 'signup' | 'reset' | 'password' | 'pending' | 'invitee' | 'cloud';
 
 /* Presentation of the status line. Decided by message key, never by its text. */
 type MessageTone = 'none' | 'error' | 'pending' | 'success';
@@ -67,6 +68,7 @@ export default function AuthGate({children}: {children: ReactNode}) {
   const sequence = useRef(0);
   const recovery = useRef(false);
   const signedOutDestination = useRef<'preview' | 'login'>('preview');
+  const recheck = useRef<() => void>(() => undefined);
 
   useEffect(() => {
     let stopped = false;
@@ -93,6 +95,11 @@ export default function AuthGate({children}: {children: ReactNode}) {
           setScreen('login'); setMessage('authUnavailable');
         } else if (access.data === true) {
           setCloudActive(true, user.id); setScreen('cloud'); setMessage('');
+        } else if (pendingInvitation()) {
+          // Not admitted yet, but holding an invitation. Accepting a valid,
+          // recipient-bound invitation is the one action the server allows before
+          // admission, and it admits this account. Nothing else is rendered.
+          setCloudActive(true, user.id); setScreen('invitee'); setMessage('');
         } else {
           setScreen('pending'); setMessage('betaPending');
         }
@@ -116,6 +123,13 @@ export default function AuthGate({children}: {children: ReactNode}) {
         timer = setTimeout(() => void checkSession(), 0);
       }
     });
+    recheck.current = () => {
+      if (stopped) return;
+      ++sequence.current;
+      setCloudActive(false); setScreen('checking');
+      clearTimeout(timer);
+      timer = setTimeout(() => void checkSession(), 0);
+    };
     void initializeAuth().then(async result => {
       if (stopped) return;
       ready = true;
@@ -221,6 +235,30 @@ export default function AuthGate({children}: {children: ReactNode}) {
         <p className="auth-checking" role="status">
           {t('checkingAccount')}
         </p>
+      </main>
+    );
+  }
+
+  if (screen === 'invitee') {
+    return (
+      <main className="auth auth--invitee">
+        {brand}
+        <JoinInvitation
+          onJoined={() => {
+            try {
+              sessionStorage.setItem('companion.open-tab', 'relationships');
+            } catch {
+              /* Storage is optional. */
+            }
+            recheck.current();
+          }}
+          onDismissed={() => recheck.current()}
+        />
+        <div className="auth-links">
+          <Button disabled={busy} onClick={() => void logout()}>
+            {t('signOut')}
+          </Button>
+        </div>
       </main>
     );
   }

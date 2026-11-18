@@ -1,3 +1,4 @@
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 import psycopg
@@ -31,7 +32,9 @@ def test_unanimity_and_recipient_binding(state):
     assert len(token)==64 and state.preview('D',token)['label']=='Fictional space'
     denied(lambda:state.preview('A',token),'invite_unavailable')
     denied(lambda:state.act('B','accept',token=token,alias='forwarded'),'invite_unavailable')
-    denied(lambda:state.preview('E',token),'beta_access_required')
+    # Unadmitted accounts may preview only invitations addressed to them.
+    denied(lambda:state.preview('E',token),'invite_unavailable')
+    denied(lambda:state.act('E','accept',token=token,alias='E'),'invite_unavailable')
 
 def test_join_adds_no_private_history_grant(state):
     rid=state.create()
@@ -188,3 +191,37 @@ def test_stale_proposal_and_client_privilege_bypasses_denied(state):
             with conn.transaction(): conn.execute('select companion_private.pair_blocked(%s,%s)',(state.people['B'],state.people['C']))
         with pytest.raises(psycopg.Error):
             with conn.transaction(): conn.execute('insert into public.companion_relationships(owner,label) values(%s,\'bypass\')',(state.people['A'],))
+
+
+def beta(state,person):
+    with psycopg.connect(state.dsn) as conn:
+        return conn.execute('select exists(select 1 from public.beta_access where user_id=%s)',(state.people[person],)).fetchone()[0]
+
+
+def test_accepting_invitation_admits_only_the_intended_verified_recipient(state):
+    rid=state.create()
+    token=state.issue('A',state.propose('A',rid,'E'))
+    assert not beta(state,'E')
+    assert state.preview('E',token)['label']=='Fictional space'
+    # Everything except redeeming the invitation still needs admission.
+    denied(lambda:state.act('E','create',label='x',alias='E'),'beta_access_required')
+    denied(lambda:state.workspace('E'),'beta_access_required')
+    state.act('E','accept',token=token,alias='E')
+    assert beta(state,'E')
+    assert [r['id'] for r in state.workspace('E')['relationships']]==[rid]
+    denied(lambda:state.act('E','accept',token=token,alias='E'),'invite_unavailable')
+
+
+def test_declining_or_unverified_recipient_never_admits(state):
+    rid=state.create()
+    token=state.issue('A',state.propose('A',rid,'E'))
+    state.act('E','decline',token=token)
+    assert not beta(state,'E')
+    unverified=str(uuid.uuid4()); email=f'{unverified}@example.invalid'
+    with psycopg.connect(state.dsn) as conn:
+        conn.execute('insert into auth.users(id,email) values(%s,%s)',(unverified,email))
+    state.people['U']=unverified; state.emails['U']=email
+    token=state.issue('A',state.propose('A',rid,'U'))
+    denied(lambda:state.preview('U',token),'invite_unavailable')
+    denied(lambda:state.act('U','accept',token=token,alias='U'),'invite_unavailable')
+    assert not beta(state,'U')

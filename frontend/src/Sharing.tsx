@@ -228,7 +228,7 @@ export default function Sharing({ entries }: { entries: Entry[] }) {
             <legend className="sharing-recipients__legend">{t('sharingRecipients')}</legend>
             {eligible.length === 0 && (
               <p className="muted text-sm">
-                {t(selected ? 'sharingNoRecipients' : 'sharingPickRelationship')}
+                {t(!selected ? 'sharingPickRelationship' : selected.members.some((member) => !member.is_self) ? 'sharingNoRecipients' : 'sharingOnlyYou')}
               </p>
             )}
             {eligible.length > 0 && (

@@ -85,12 +85,12 @@
   "authLinkError": "No se pudo completar este enlace. Puede haber caducado o pertenecer a otro navegador. Empieza de nuevo.",
   "authActionError": "No se pudo completar la solicitud. Revisa los datos o inténtalo más tarde.",
   "authUnavailable": "Los servicios de la cuenta no están disponibles. Inténtalo en unos momentos.",
-  "betaExplanation": "Verifica tu correo y espera la admisión a la beta. Crear una cuenta no comparte tu contenido ni te admite automáticamente.",
+  "betaExplanation": "El acceso es por invitación. Si alguien te invitó, abre su enlace de invitación en este navegador con la sesión iniciada en esta cuenta. Crear una cuenta no comparte tu contenido.",
   "authLinkExpired": "Este enlace ha caducado o ya se usó. Solicita uno nuevo y ábrelo de inmediato en el mismo navegador y perfil.",
   "authLinkBrowser": "Inicia de nuevo la recuperación en este navegador y perfil y abre aquí el nuevo enlace del correo.",
   "invitationReview": "Revisar invitación",
   "inviteUnavailable": "Esta invitación no está disponible. Puede haber caducado, sido sustituida o cancelada, o estar destinada a otra cuenta verificada.",
-  "inviteSignIn": "Inicia sesión con la cuenta verificada destinataria para revisar la invitación. La admisión a la beta es independiente.",
+  "inviteSignIn": "Inicia sesión con la dirección de correo a la que se envió esta invitación. Al aceptarla, esa cuenta también obtiene acceso a la beta.",
   "inviteLoading": "Comprobando invitación…",
   "currentMembers": "Miembros actuales",
   "linkExpires": "El enlace caduca: {{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "Eliminar solo de este dispositivo",
   "checkpointRestore": "Restaurar en el editor",
   "checkpointDevicePrivacy": "Las ediciones se guardan en este navegador; quien acceda a su perfil podría leerlas.",
-  "checkpointLoadFailed": "No se pudieron cargar las ediciones privadas de la nube. Las copias de este dispositivo aún pueden mostrarse."
+  "checkpointLoadFailed": "No se pudieron cargar las ediciones privadas de la nube. Las copias de este dispositivo aún pueden mostrarse.",
+  "relInviteNextStep": "Todos han aprobado. Crea el enlace de invitación y envíaselo tú; la app no lo manda por correo.",
+  "sharingOnlyYou": "Por ahora solo estás tú en esta relación. Invita a alguien desde Relaciones; cuando se una, podrás compartir aquí."
 }

@@ -85,12 +85,12 @@
   "authLinkError": "Impossibile completare il link di accesso. Potrebbe essere scaduto o appartenere a un altro browser. Ricomincia.",
   "authActionError": "Impossibile completare la richiesta. Controlla i dati o riprova più tardi.",
   "authUnavailable": "I servizi dell’account non sono disponibili. Riprova tra poco.",
-  "betaExplanation": "Verifica l’email e attendi l’ammissione alla beta. Creare un account non condivide i contenuti e non ti ammette automaticamente.",
+  "betaExplanation": "L'accesso è su invito. Se qualcuno ti ha invitato, apri il suo link di invito in questo browser mentre hai effettuato l'accesso con questo account. Creare un account non condivide i tuoi contenuti.",
   "authLinkExpired": "Il link di accesso è scaduto o è già stato usato. Richiedine uno nuovo e aprilo subito nello stesso browser e profilo.",
   "authLinkBrowser": "Ricomincia il recupero in questo browser e profilo, poi apri qui il nuovo link email.",
   "invitationReview": "Rivedi invito",
   "inviteUnavailable": "Questo invito non è disponibile. Potrebbe essere scaduto, sostituito, annullato o destinato a un altro account verificato.",
-  "inviteSignIn": "Accedi con l’account verificato del destinatario per rivedere l’invito. L’ammissione alla beta è separata.",
+  "inviteSignIn": "Accedi con l'indirizzo email a cui è stato inviato questo invito. Accettandolo, quell'account ottiene anche l'accesso alla beta.",
   "inviteLoading": "Verifica dell’invito…",
   "currentMembers": "Membri attuali",
   "linkExpires": "Il link scade: {{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "Rimuovi solo da questo dispositivo",
   "checkpointRestore": "Ripristina nell’editor",
   "checkpointDevicePrivacy": "Le modifiche sono salvate in questo browser; chi può accedere al profilo del browser potrebbe leggerle.",
-  "checkpointLoadFailed": "Impossibile caricare le modifiche private dal cloud. Le copie su questo dispositivo potrebbero essere ancora visibili."
+  "checkpointLoadFailed": "Impossibile caricare le modifiche private dal cloud. Le copie su questo dispositivo potrebbero essere ancora visibili.",
+  "relInviteNextStep": "Hanno approvato tutti. Crea il link di invito e mandalo tu stesso alla persona: l'app non lo invia per email.",
+  "sharingOnlyYou": "Per ora in questa relazione ci sei solo tu. Invita qualcuno da Relazioni: quando si unirà, potrai condividere qui."
 }

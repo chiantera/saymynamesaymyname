@@ -85,12 +85,12 @@
   "authLinkError": "This sign-in link could not be completed. It may have expired or belong to another browser. Start again.",
   "authActionError": "Couldn’t complete that request. Check your details or try again later.",
   "authUnavailable": "Account services are unavailable. Try again shortly.",
-  "betaExplanation": "Verify your email and wait for beta admission. Creating an account does not share your content or admit you automatically.",
+  "betaExplanation": "Access is by invitation. If someone invited you, open their invite link in this browser while signed in to this account. Creating an account does not share your content.",
   "authLinkExpired": "This sign-in link has expired or was already used. Request a new link and open it immediately in the same browser/profile.",
   "authLinkBrowser": "Start recovery again in this browser/profile, then open the new email link here.",
   "invitationReview": "Review invitation",
   "inviteUnavailable": "This invitation is unavailable. It may be expired, replaced, cancelled, or intended for a different verified account.",
-  "inviteSignIn": "Sign in with the intended verified account to review this invitation. Beta admission is separate.",
+  "inviteSignIn": "Sign in with the email address this invitation was sent to. Accepting it also gives that account access to the beta.",
   "inviteLoading": "Checking invitation…",
   "currentMembers": "Current members",
   "linkExpires": "Link expires: {{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "Remove from this device only",
   "checkpointRestore": "Restore to editor",
   "checkpointDevicePrivacy": "Edits are stored in this browser; people with access to this browser profile may be able to read them.",
-  "checkpointLoadFailed": "Could not load private cloud edits. Copies on this device may still be shown."
+  "checkpointLoadFailed": "Could not load private cloud edits. Copies on this device may still be shown.",
+  "relInviteNextStep": "Everyone has approved. Create the invite link, then send it to them yourself; the app does not email it.",
+  "sharingOnlyYou": "Only you are in this relationship so far. Invite someone from Relationships; once they join, you can share with them here."
 }

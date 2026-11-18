@@ -85,12 +85,12 @@
   "authLinkError": "无法完成此登录链接。链接可能已过期或来自其他浏览器。请重新开始。",
   "authActionError": "无法完成请求。请检查信息或稍后重试。",
   "authUnavailable": "账户服务暂不可用。请稍后重试。",
-  "betaExplanation": "请验证邮箱并等待测试版准入批准。创建账户不会共享你的内容，也不会自动获得准入。",
+  "betaExplanation": "仅限受邀使用。如果有人邀请了你，请在登录此账户的状态下，用这个浏览器打开对方的邀请链接。创建账户不会分享你的内容。",
   "authLinkExpired": "此登录链接已过期或已使用。请申请新链接，并立即在同一浏览器和配置文件中打开。",
   "authLinkBrowser": "请在此浏览器和配置文件中重新发起找回密码，然后在这里打开新的邮件链接。",
   "invitationReview": "查看邀请",
   "inviteUnavailable": "此邀请不可用。可能已过期、被替换或取消，也可能是发给另一个已验证账户的。",
-  "inviteSignIn": "请使用受邀的已验证账户登录以查看邀请。测试版准入需要单独批准。",
+  "inviteSignIn": "请使用接收此邀请的电子邮件地址登录。接受邀请后，该账户也将获得测试版的使用权限。",
   "inviteLoading": "正在检查邀请…",
   "currentMembers": "当前成员",
   "linkExpires": "链接过期时间：{{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "仅从此设备移除",
   "checkpointRestore": "恢复到编辑器",
   "checkpointDevicePrivacy": "编辑内容会保存在此浏览器中；能够访问此浏览器配置文件的人可能会读到它们。",
-  "checkpointLoadFailed": "无法加载云端私人编辑。此设备上的副本可能仍会显示。"
+  "checkpointLoadFailed": "无法加载云端私人编辑。此设备上的副本可能仍会显示。",
+  "relInviteNextStep": "所有人都已批准。请创建邀请链接，然后自己发给对方；应用不会通过电子邮件发送。",
+  "sharingOnlyYou": "目前这段关系里只有你。请在“关系”中邀请他人；对方加入后，你就可以在这里分享。"
 }

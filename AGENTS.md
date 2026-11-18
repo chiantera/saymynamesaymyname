@@ -30,8 +30,9 @@ instructed to activate it after its evidence gates are met.
   do not promise recall of independent downloaded copies.
 - Invitations need every current member's explicit approval plus acceptance by
   the verified intended recipient. Preserve digest-only tokens, expiry, single
-  use, membership revisions and generation-bound commands. Beta admission is
-  separate from relationship membership.
+  use, membership revisions and generation-bound commands. Accepting a valid
+  invitation also admits that verified account to the beta (decision 0006);
+  nothing else bypasses admission, and declining admits nobody.
 - Archive/mute are personal per relationship. Leaving is immediate and cancels
   queued work; rejoining needs a fresh approved invitation. Blocks affect only
   the user pair: A blocking B must not stop B/C communication, sharing or plans.

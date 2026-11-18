@@ -163,7 +163,12 @@ def test_membership_browser(state):
             propose(a,'B')
             space(a).get_by_role('button',name=en['createInviteLink'],exact=True).click()
             link_b=space(a).get_by_label(en['inviteLink'],exact=True).input_value()
+            # B is verified but not yet admitted: accepting the invitation admits B.
+            with psycopg.connect(state.dsn) as conn:
+                conn.execute('delete from public.beta_access where user_id=%s',(state.people['B'],))
             join(b,link_b,'B','Blair')
+            with psycopg.connect(state.dsn) as conn:
+                assert conn.execute('select count(*) from public.beta_access where user_id=%s',(state.people['B'],)).fetchone()[0]==1
             b.get_by_role('button',name=en['home'],exact=True).click()
             expect(b.locator('.entry')).to_have_count(0)
             b.get_by_role('button',name=en['relationships'],exact=True).click()

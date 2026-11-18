@@ -6,6 +6,13 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-18
 
+- Accepting a relationship invitation now admits the verified recipient to the beta
+  ([0006](decisions/0006-invitation-grants-beta-access.md)); unadmitted invitees see
+  the invitation review instead of a dead end. Approved invitations now say the link
+  must be created and sent manually, and sharing explains when a relationship has no
+  other members yet. Migration applied to the hosted project; the waiting invitee
+  was admitted at the owner's request.
+
 - Decided the operator's machine runs the restricted AI worker during testing
   ([0005](decisions/0005-local-ai-worker-for-testing.md)). Added a launcher that loads
   only an ignored, allowlisted env file and a connection check that claims nothing.

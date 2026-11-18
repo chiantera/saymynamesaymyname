@@ -21,8 +21,8 @@ previews; they are not functioning counseling or personal-growth services.
   Browser storage is not encrypted and may be unavailable or evicted; another
   device cannot recover a change until it syncs. [Recovery details](docs/implementation/EDIT-RECOVERY.md).
 - Web email/password and Google sign-in, verified beta admission, password recovery
-  and private saved-reflection sync. Beta admission and relationship invitation are
-  separate gates. Wider email delivery and native auth still need release testing.
+  and private saved-reflection sync. Accepting a relationship invitation also admits
+  the invited, verified account to the beta. Wider email delivery and native auth still need release testing.
 - Optional relationships: any member can propose an invitation, every current
   member approves, and the verified intended recipient explicitly accepts.
 - Personal archive/mute, immediate leaving and pairwise blocking. A blocking B does

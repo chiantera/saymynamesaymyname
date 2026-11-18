@@ -85,12 +85,12 @@
   "authLinkError": "無法完成呢個登入連結。連結可能已過期，或者喺另一個瀏覽器開始。請重新開始。",
   "authActionError": "無法完成要求。請檢查資料，或者稍後再試。",
   "authUnavailable": "暫時用唔到帳戶服務。請稍後再試。",
-  "betaExplanation": "請驗證電郵並等候測試版批准。建立帳戶唔會分享你嘅內容，亦唔會自動獲准使用。",
+  "betaExplanation": "要有邀請先可以用。如果有人邀請咗你，請喺登入咗呢個帳戶嘅情況下，用呢個瀏覽器打開對方嘅邀請連結。建立帳戶唔會分享你嘅內容。",
   "authLinkExpired": "呢個登入連結已過期或者已用過。請申請新連結，並即刻喺同一個瀏覽器設定檔開啟。",
   "authLinkBrowser": "請喺呢個瀏覽器設定檔重新開始重設密碼，再喺呢度開啟新電郵連結。",
   "invitationReview": "查看邀請",
   "inviteUnavailable": "呢個邀請用唔到。可能已過期、被取代或取消，又或者係畀另一個已驗證帳戶。",
-  "inviteSignIn": "請用獲邀嘅已驗證帳戶登入查看邀請。測試版批准係分開處理嘅。",
+  "inviteSignIn": "請用收到呢個邀請嘅電郵地址登入。接受邀請之後，嗰個帳戶都會可以使用測試版。",
   "inviteLoading": "檢查邀請中…",
   "currentMembers": "目前成員",
   "linkExpires": "連結到期時間：{{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "只從呢部裝置移除",
   "checkpointRestore": "還原到編輯器",
   "checkpointDevicePrivacy": "編輯內容會儲存喺呢個瀏覽器；可以存取呢個瀏覽器設定檔嘅人可能會睇到。",
-  "checkpointLoadFailed": "無法載入雲端私人編輯。呢部裝置上嘅副本可能仍然會顯示。"
+  "checkpointLoadFailed": "無法載入雲端私人編輯。呢部裝置上嘅副本可能仍然會顯示。",
+  "relInviteNextStep": "所有人都已經批准。請建立邀請連結，然後自己傳俾對方；應用程式唔會用電郵寄出。",
+  "sharingOnlyYou": "呢段關係暫時得你一個。請喺「關係」度邀請其他人；對方加入之後，你就可以喺度分享。"
 }

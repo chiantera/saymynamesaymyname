@@ -55,7 +55,7 @@ function formatExpiry(iso: string, language: string) {
 
 /* Invitation review: shown above every destination while a link is pending. */
 
-export function JoinInvitation({ onJoined }: { onJoined: () => void }) {
+export function JoinInvitation({ onJoined, onDismissed }: { onJoined: () => void; onDismissed?: () => void }) {
   const { t, i18n } = useTranslation();
   const [token, setToken] = useState(pendingInvitation);
   const [problem, setProblem] = useState(invitationProblem);
@@ -86,6 +86,7 @@ export function JoinInvitation({ onJoined }: { onJoined: () => void }) {
     clearInvitation();
     setToken(null);
     setProblem(false);
+    onDismissed?.();
   }
 
   async function decide(action: 'accept' | 'decline') {
@@ -749,6 +750,10 @@ function InvitationItem({
         </p>
       )}
 
+      {!expired && invite.approved && !issued && !link && (
+        <p className="text-sm rel-invite__next">{t('relInviteNextStep')}</p>
+      )}
+
       {expired ? (
         <>
           <p className="text-sm">{t('invitationExpired')}</p>
@@ -765,7 +770,13 @@ function InvitationItem({
               {t('approveInvitation')}
             </Button>
           )}
-          <Button size="sm" icon={LinkIcon} disabled={busy || !invite.approved} onClick={onIssue}>
+          <Button
+            size="sm"
+            variant={invite.approved && !issued && !link ? 'primary' : undefined}
+            icon={LinkIcon}
+            disabled={busy || !invite.approved}
+            onClick={onIssue}
+          >
             {t(issued ? 'replaceInviteLink' : 'createInviteLink')}
           </Button>
           <Button size="sm" icon={X} disabled={busy} onClick={onCancel}>

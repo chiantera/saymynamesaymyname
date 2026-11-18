@@ -85,12 +85,12 @@
   "authLinkError": "Dieser Anmeldelink konnte nicht abgeschlossen werden. Er ist eventuell abgelaufen oder gehört zu einem anderen Browser. Beginne erneut.",
   "authActionError": "Die Anfrage konnte nicht abgeschlossen werden. Prüfe die Angaben oder versuche es später erneut.",
   "authUnavailable": "Die Kontodienste sind nicht verfügbar. Versuche es in Kürze erneut.",
-  "betaExplanation": "Bestätige deine E-Mail-Adresse und warte auf die Beta-Zulassung. Ein Konto teilt keine Inhalte und gewährt nicht automatisch Zugang.",
+  "betaExplanation": "Der Zugang erfolgt per Einladung. Wenn dich jemand eingeladen hat, öffne den Einladungslink in diesem Browser, während du mit diesem Konto angemeldet bist. Ein Konto zu erstellen teilt keine deiner Inhalte.",
   "authLinkExpired": "Dieser Anmeldelink ist abgelaufen oder wurde bereits verwendet. Fordere einen neuen Link an und öffne ihn sofort im selben Browserprofil.",
   "authLinkBrowser": "Starte die Wiederherstellung in diesem Browserprofil erneut und öffne den neuen E-Mail-Link hier.",
   "invitationReview": "Einladung prüfen",
   "inviteUnavailable": "Diese Einladung ist nicht verfügbar. Sie kann abgelaufen, ersetzt, widerrufen oder für ein anderes bestätigtes Konto bestimmt sein.",
-  "inviteSignIn": "Melde dich mit dem vorgesehenen bestätigten Konto an, um die Einladung zu prüfen. Die Beta-Zulassung ist davon getrennt.",
+  "inviteSignIn": "Melde dich mit der E-Mail-Adresse an, an die diese Einladung ging. Wenn du sie annimmst, erhält dieses Konto auch Zugang zur Beta.",
   "inviteLoading": "Einladung wird geprüft…",
   "currentMembers": "Aktuelle Mitglieder",
   "linkExpires": "Link gültig bis: {{date}}",
@@ -357,5 +357,7 @@
   "checkpointRemoveDevice": "Nur von diesem Gerät entfernen",
   "checkpointRestore": "Im Editor wiederherstellen",
   "checkpointDevicePrivacy": "Änderungen werden in diesem Browser gespeichert; Personen mit Zugriff auf das Browserprofil können sie möglicherweise lesen.",
-  "checkpointLoadFailed": "Private Cloud-Änderungen konnten nicht geladen werden. Kopien auf diesem Gerät werden möglicherweise weiterhin angezeigt."
+  "checkpointLoadFailed": "Private Cloud-Änderungen konnten nicht geladen werden. Kopien auf diesem Gerät werden möglicherweise weiterhin angezeigt.",
+  "relInviteNextStep": "Alle haben zugestimmt. Erstelle den Einladungslink und schicke ihn selbst; die App versendet ihn nicht per E-Mail.",
+  "sharingOnlyYou": "Bisher bist nur du in dieser Beziehung. Lade jemanden unter Beziehungen ein; sobald die Person beitritt, kannst du hier teilen."
 }

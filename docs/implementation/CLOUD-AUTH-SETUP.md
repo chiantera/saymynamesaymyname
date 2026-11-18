@@ -8,7 +8,8 @@ core login/recovery and a second browser/device; current automated fixtures inte
 Auth transport and do not re-prove live email/OAuth configuration. See
 [current status](../../CURRENT-TASK.md) and [milestones](../CHANGELOG.md).
 
-Beta admission is operator-controlled and separate from relationship invitation.
+Beta admission is operator-controlled, except that accepting a valid relationship
+invitation also admits the verified recipient ([decision 0006](../decisions/0006-invitation-grants-beta-access.md)).
 Owner RLS and guarded RPCs require current verified identity/admission. A Google
 identity grants no Drive or Calendar access. Native Android return paths, broader
 signup/email delivery, MFA/session recovery and lifecycle release testing remain open.

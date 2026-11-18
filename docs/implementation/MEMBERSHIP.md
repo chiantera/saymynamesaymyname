@@ -85,7 +85,9 @@ Links use `/join#invite=...`; their fragments are removed from history
 and kept temporarily in sessionStorage in the same tab through login. This avoids
 putting invitation secrets in server URLs or persistent cross-account local storage.
 If registration/email verification opens another tab, reopen the original link after
-verification. Beta admission remains separate. Fictional local previews keep their
+verification. An unadmitted but verified recipient sees only the invitation review;
+accepting admits them to the beta and opens Relationships, declining admits nobody
+([decision 0006](../decisions/0006-invitation-grants-beta-access.md)). Fictional local previews keep their
 existing private-label flow; shared memberships require a cloud account.
 
 Actual outward messages, content sharing and queued-send cancellation are not

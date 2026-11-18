@@ -39,7 +39,17 @@ type RecoveredEdit = { id: string; text: string; checkin_id: string; base_versio
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const [tab, setTab] = useState<Tab>('home');
+  const [tab, setTab] = useState<Tab>(() => {
+    // Set once by the invitation screen so a new member lands on their relationship.
+    try {
+      const next = sessionStorage.getItem('companion.open-tab');
+      sessionStorage.removeItem('companion.open-tab');
+      if (next === 'relationships') return 'relationships';
+    } catch {
+      /* Storage is optional. */
+    }
+    return 'home';
+  });
   const [prefs, setPrefs] = useState<Preferences | null>(null);
   const [snapshot, setSnapshot] = useState<Snapshot>({ checkins: [], jobs: [] });
   const [entries, setEntries] = useState<Entry[]>([]);
