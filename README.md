@@ -31,7 +31,7 @@ previews; they are not functioning counseling or personal-growth services.
   source/access checks. New members do not inherit historical sharing audiences.
 - Durable PostgreSQL schedules, leases, expiration, pause/quiet-hour controls,
   private drafts and a bounded static mock consumer on the existing Frankfurt cron.
-  Schedules remain opt-in. Render is retained as a later worker option.
+  Schedules remain opt-in. Render is retained; [free cloud alternatives](docs/implementation/FREE-CLOUD-RESEARCH.md) are under investigation.
 - Private AI consent settings, provider/capability review gates, budget limits,
   atomic reservations and a usage ledger. These foundations do not activate AI.
 - Italian, Spanish, Korean, Mandarin/Simplified, Cantonese/Traditional, English and

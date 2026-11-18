@@ -56,6 +56,10 @@ create/read relationships, propose/approve/redeem invitations, enqueue/claim/fin
 read check-ins, decide with expected version, and read resulting owned/shared entries.
 All operations accept a validated actor; do not accept arbitrary client owner IDs.
 
+The current static mock executor and prospective hosting options are described in
+[cloud scheduling](CLOUD-SCHEDULING.md) and [free cloud research](FREE-CLOUD-RESEARCH.md).
+Research does not change the accepted runtime or authorize provisioning.
+
 HTTP initial local contracts:
 - GET /api/health: mode/capabilities, no keys or private diagnostics.
 - GET /api/demo/session: local-only fictional session, never production authentication.

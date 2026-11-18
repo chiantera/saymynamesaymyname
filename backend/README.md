@@ -9,6 +9,9 @@ the DeepSeek branch, network transport and review gates remain disabled. The
 hosted free executor is currently the bounded static Postgres consumer, with
 Render retained for later. No module loads a saved local API key automatically.
 
+See [free cloud research](../docs/implementation/FREE-CLOUD-RESEARCH.md) for
+unselected alternatives and the requirements before changing worker hosting.
+
 - [Runtime modules](app/README.md)
 - [Unit tests](tests/README.md), [real SQL/browser fixtures](dbtests/README.md)
 - [Browser scripts](scripts/README.md)

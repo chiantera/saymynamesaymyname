@@ -1,6 +1,6 @@
 # Current implementation status
 
-Updated 2026-11-17. Phase 0/1 remains in progress. **Live AI and network transport
+Updated 2026-11-18. Phase 0/1 remains in progress. **Live AI and network transport
 remain disabled; `httpx2` is retained for Starlette's test client.**
 
 | Milestone | Present state | Remaining boundary |
@@ -19,8 +19,12 @@ adaptive non-overlapping polling, hidden-tab pauses, immediate
 Home/visibility refresh and identity-checked read batches; enforced browser security
 headers with positive auth/sharing and negative script/connection/frame tests.
 Active edits checkpoint to account-scoped browser storage and sync privately after
-cloud acknowledgement; storage failure and offline startup remain limitations. Seven locale catalogs are drafts. Static support contacts have verification/expiry
-metadata; country is explicit and temporary. Topic advice and automatic crisis
+cloud acknowledgement; storage failure and offline startup remain limitations.
+The Frankfurt mock executor serves the current beta. For future Python worker
+hosting, see the [free cloud comparison](docs/implementation/FREE-CLOUD-RESEARCH.md).
+
+Seven locale catalogs are drafts. Static support contacts carry verification and
+expiry metadata. Country selection is explicit and temporary. Topic advice and automatic crisis
 responses remain professionally review-gated.
 
 Verification comes from [test commands](docs/TESTING.md), CI and separate production

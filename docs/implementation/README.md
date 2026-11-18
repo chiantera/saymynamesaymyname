@@ -9,6 +9,7 @@ claim. These guides describe implemented contracts and remaining gates; the
 - [Membership](MEMBERSHIP.md): unanimity, recipient-bound tokens and pairwise blocks.
 - [Sharing](SHARING.md): explicit fixed-copy grants and revocation.
 - [Cloud scheduling](CLOUD-SCHEDULING.md): jobs, leases, static free consumer and Render switch-over.
+- [Free cloud research](FREE-CLOUD-RESEARCH.md): Frankfurt worker and storage options, costs and limits.
 - [AI consent](AI-CONSENT.md): saved-source preferences and processor/capability review.
 - [AI budget](AI-BUDGET.md): exact reservations, unknown holds and reconciliation.
 - [DeepSeek adapter](DEEPSEEK-ADAPTER.md): dormant fixed-input composition and accounting.

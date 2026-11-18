@@ -14,3 +14,6 @@ remain opt-in; the free plan has resource limits and no promise of continuous up
 The installed executor and hosted synthetic/browser tests are documented in
 [the runbook](../implementation/CLOUD-SCHEDULING.md). This note does not approve a
 future paid service, AI provider or external message.
+
+[Free cloud research](../implementation/FREE-CLOUD-RESEARCH.md) compares possible
+future worker hosts and storage; it does not supersede this interim decision.

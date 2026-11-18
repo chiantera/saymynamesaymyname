@@ -2,6 +2,9 @@
 
 **Current mode: free Postgres mock worker is live; Render is retained for later.**
 
+[Free cloud research](FREE-CLOUD-RESEARCH.md) compares alternatives without changing
+the current executor or authorizing a new host.
+
 ## Milestone 1 — durable queue
 
 Implemented private jobs with per-owner idempotency keys, one active job per owner,
@@ -144,7 +147,7 @@ only fictional users and rolls back; it refuses to claim if real work is active.
 
 Its worker functions run through the MCP administrator; local subprocess tests
 
-prove the restricted role. No real Render login or live worker has been verified.
+prove the restricted role. No live Render worker has been verified.
 
 The platform prevents this admin session from SET ROLE companion_worker; the smoke
 

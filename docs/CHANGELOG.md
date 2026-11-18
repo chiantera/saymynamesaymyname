@@ -4,6 +4,11 @@ Dated evidence is separate from [current status](../CURRENT-TASK.md). Commands a
 CI report actual test totals. Local fixtures, hosted schema checks, production
 asset checks and real user/device acceptance prove different things.
 
+## 2026-11-18
+
+- Compared Frankfurt worker hosts and EU storage for uploads, including costs,
+  idle shutdown and backup limits. See the [research](implementation/FREE-CLOUD-RESEARCH.md).
+
 ## 2026-11-17
 
 - Switched the database command to discover tests automatically while explicitly
