@@ -6,6 +6,11 @@ asset checks and real user/device acceptance prove different things.
 
 ## 2026-11-18
 
+- Decided the operator's machine runs the restricted AI worker during testing
+  ([0005](decisions/0005-local-ai-worker-for-testing.md)). Added a launcher that loads
+  only an ignored, allowlisted env file and a connection check that claims nothing.
+  No login was created, no gate opened, no provider called. [Runbook](implementation/LOCAL-WORKER.md).
+
 - Compared Frankfurt worker hosts and EU storage for uploads, including costs,
   idle shutdown and backup limits. See the [research](implementation/FREE-CLOUD-RESEARCH.md).
 

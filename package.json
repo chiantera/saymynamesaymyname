@@ -12,7 +12,9 @@
     "test:auth": "uv run --directory backend python scripts/auth_smoke.py",
     "test:database": "uv run --directory backend pytest dbtests --ignore-glob=dbtests/*_browser.py -q",
     "test:membership": "uv run --directory backend pytest dbtests/test_membership_browser.py -q --tb=short",
-    "test:docs": "node scripts/check-docs.mjs"
+    "test:docs": "node scripts/check-docs.mjs",
+    "worker:check": "uv run --directory backend python -m app.local_worker --check",
+    "worker:local": "uv run --directory backend python -m app.local_worker"
   },
   "engines": {
     "node": "24.x"

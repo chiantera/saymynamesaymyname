@@ -22,6 +22,9 @@ Active edits checkpoint to account-scoped browser storage and sync privately aft
 cloud acknowledgement; storage failure and offline startup remain limitations.
 The Frankfurt mock executor serves the current beta. For future Python worker
 hosting, see the [free cloud comparison](docs/implementation/FREE-CLOUD-RESEARCH.md).
+During testing the operator's machine is the AI worker ([decision 0005](docs/decisions/0005-local-ai-worker-for-testing.md));
+its [launcher](docs/implementation/LOCAL-WORKER.md) exists, but no restricted login
+has been created and every AI gate stays closed.
 
 Seven locale catalogs are drafts. Static support contacts carry verification and
 expiry metadata. Country selection is explicit and temporary. Topic advice and automatic crisis

@@ -14,6 +14,7 @@ use fictional text, mocked HTTP and synthetic identities, never real provider ke
 | `npm run test:database` | Real PostgreSQL authorization, concurrency, queue/recovery, consent, accounting, safety notices and edit tombstones | Isolated loopback fixture |
 | `npm run test:membership` | Production build + fake Auth transport backed by real SQL/RLS, grants/revocation/blocking and enforced headers | PostgreSQL fixture, Chromium; free port 5177 |
 | `npm run test:docs` | Relative Markdown targets/anchors and documentation authority contracts | Node |
+| `npm run worker:check` | Operator-only: restricted hosted login, TLS and metering role; claims nothing | `.local/worker.env`, see [local worker](implementation/LOCAL-WORKER.md) |
 
 Counts come from commands, not copied prose. Collection is not execution. The
 database command discovers the directory while excluding `*_browser.py` files.
